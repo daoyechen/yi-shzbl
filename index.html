@@ -83,6 +83,8 @@ main{flex:1;overflow-y:auto;padding:0 0 60px}
 .bar select,.bar button{border:1px solid var(--line2);background:#fff;padding:4px 9px;border-radius:5px;cursor:pointer}
 .bar button:hover,.bar select:hover{border-color:var(--gold)}
 .bar .sp{flex:1}
+/* 宽表在窄屏会撑破布局：统一外包一层横向滚动容器 */
+.tscroll{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .bar .cb{display:flex;align-items:center;gap:4px;cursor:pointer;user-select:none}
 .wrap2{padding:16px 22px}
 
@@ -133,7 +135,60 @@ td:first-child{min-width:150px}
 #toast.on{opacity:1}
 kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid var(--line2);
   border-radius:3px;padding:1px 4px;color:var(--ink2)}
+/* ── 手机竖屏（2026-11-13）──
+   原来只在窄屏把侧栏从 290px 缩到 210px，手机上仍然是「左目录 + 右正文」两栏，
+   正文被挤成一条窄缝且无法收起。这里改为：侧栏变抽屉，正文占满，目录按钮开关。 */
+.hd .menu{display:none}
+#mask{display:none}
+.dhd{display:none}          /* 抽屉头只在手机端出现 */          /* 抽屉头只在手机端出现 */
 @media(max-width:900px){aside{width:210px}}
+@media(max-width:820px){
+  body{font-size:16px}
+  .hd{gap:8px;padding:8px 12px;flex-wrap:wrap}
+  .hd .menu{display:inline-flex;align-items:center;justify-content:center;width:36px;height:34px;
+    border:1px solid var(--line2);border-radius:7px;background:#fff;font-size:17px;cursor:pointer;
+    flex:none;line-height:1}
+  .zsw{order:2;margin-left:auto}
+  .zsw button{padding:6px 11px;font-size:13px}
+  .title{order:1;flex:1 1 auto;min-width:0;font-size:16px;line-height:1.35;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .title small{display:none}
+  .hd .kb{display:none}
+  .search{order:3;flex-basis:100%;max-width:none}
+  .tabs{padding:0 6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{padding:8px 10px;font-size:13.5px;white-space:nowrap;flex:none}
+  .stat{padding:7px 12px}
+  .wrap{display:block;height:auto}
+  aside{position:fixed;left:0;top:0;bottom:0;width:84vw;max-width:340px;height:100vh;height:100dvh;
+    transform:translateX(-101%);transition:transform .22s ease;z-index:70;
+    box-shadow:2px 0 16px rgba(0,0,0,.2);border-right:1px solid var(--line2)}
+  aside.open{transform:none}
+  #mask.on{display:block;position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:65}
+  main{height:auto;overflow:visible;padding-bottom:40px}
+  .bar{position:static;padding:8px 12px;gap:8px}
+  .bar .kv{display:none}
+  .wrap2{padding:12px}
+  .card{margin-bottom:12px;border-radius:8px}
+  .card .ch{padding:7px 12px;flex-wrap:wrap;gap:6px}
+  .card .cb2{padding:11px 13px;font-size:16px;line-height:1.95}
+  .it{padding:9px 14px;font-size:14.5px}
+  .tscroll table{white-space:nowrap;font-size:13px}
+  .tscroll th,.tscroll td{padding:6px 8px}
+  aside .gh{padding:10px 13px}
+  .integrity{position:static;z-index:1}   /* 手机端别压住目录抽屉 */
+  .integrity{position:static;z-index:1}   /* 手机端别压住目录抽屉 */
+  .dhd{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;
+    background:#f1ead9;border-bottom:1px solid var(--line2);font-family:var(--sans);
+    font-size:13px;font-weight:700;color:var(--zhu);position:sticky;top:0;z-index:3}
+  .dhd button{border:none;background:none;font-size:17px;color:var(--ink2);cursor:pointer;
+    padding:2px 8px;line-height:1}
+}
+/* 小屏手机：标题让位给 ☰ 与区切换（区名本身已经说明是哪本书） */
+@media(max-width:520px){
+  .title{display:none}
+  .stat{font-size:10.5px;padding:6px 10px}
+}
 </style>
 </head>
 <body>
@@ -141,6 +196,7 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
 本页面需要启用 JavaScript 才能交互(数据已内嵌在文件内,无需联网)。若在预览窗格中打开,请先下载到本地再用浏览器打开。</div></noscript>
 <header>
   <div class="hd">
+    <button class="menu" id="menu" aria-label="目录" title="目录">☰</button>
     <div class="zsw" id="zsw" style="display:none"></div>
     <div class="title"><span id="ttl">《伤寒论》多版本对照</span><small>骨架:<span id="skn">宋本《伤寒论》398 条</span></small></div>
     <div class="search">
@@ -148,7 +204,7 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
       <input id="q" placeholder="搜条号 / 关键词(如:桂枝汤、营弱卫强、阴濡弱)…" autocomplete="off">
       <button class="clr" id="qclr" title="清空">✕</button>
     </div>
-    <div style="font-family:var(--sans);font-size:11px;color:var(--ink3)">
+    <div class="kb" style="font-family:var(--sans);font-size:11px;color:var(--ink3)">
       <kbd>j</kbd><kbd>k</kbd> 上下条 · <kbd>/</kbd> 搜索
     </div>
   </div>
@@ -162,9 +218,13 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
   </div>
   <div class="stat" id="stat"></div>
 </header>
+<div id="mask"></div>
 
 <div class="wrap">
-  <aside id="side"></aside>
+  <aside id="side">
+    <div class="dhd"><span>目录</span><button id="dclose" aria-label="关闭目录">✕</button></div>
+    <div id="sidelist"></div>
+  </aside>
   <main>
     <section class="view on" id="v-cmp">
       <div class="bar">
@@ -298,7 +358,7 @@ function buildSide(){
     }
     h += '</div></div>';
   }
-  $('#side').innerHTML = h || '<div class="empty">无匹配条目</div>';
+  $('#sidelist').innerHTML = h || '<div class="empty">无匹配条目</div>';
   markSide();
   $('#cnt').textContent = D.items.filter(match).length + ' / ' + D.items.length + ' 条';
 }
@@ -597,9 +657,19 @@ function checkIntegrity(){
 function toast(t){ const e = $('#toast'); e.textContent = t; e.classList.add('on');
   setTimeout(()=>e.classList.remove('on'), 1600); }
 
+function wrapTables(){
+  document.querySelectorAll('main table').forEach(t=>{   // <main> 没有 id，别写 #main
+    const p = t.parentElement;
+    if (p && p.classList.contains('tscroll')) return;
+    const d = document.createElement('div');
+    d.className = 'tscroll';
+    p.insertBefore(d, t); d.appendChild(t);
+  });
+}
 function buildAll(){
   buildStat(); buildSide(); select(cur ? cur.n : D.items[0].n);
   buildFang(); buildPian(); buildIndep(); buildReview(); buildAbout();
+  wrapTables();
 }
 function fillSel(){
   const o1 = VERS.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join('');
@@ -613,10 +683,28 @@ document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
   $('#v-' + curTab).classList.add('on');
   if (curTab === 'cmp') buildSide();
 });
+/* ── 手机竖屏:目录抽屉 ──
+   窄屏时侧栏默认移出屏外，点 ☰ 拉开、点遮罩/选项/Esc 收起。宽屏不受影响。 */
+function drawer(open){
+  const a = $('#side'); if (!a) return;
+  a.classList.toggle('open', !!open);
+  const m = $('#mask'); if (m) m.classList.toggle('on', !!open);
+  if (open){                       // 拉开时把当前条滚到眼前，省得自己找
+    const sel = a.querySelector('.it.on');
+    // 留出抽屉头的高度，别让当前条被压在「目录/✕」下面
+    if (sel) a.scrollTop = Math.max(0, sel.offsetTop - 70);
+    else a.scrollTop = 0;
+  }
+}
+const isNarrow = () => window.matchMedia('(max-width:820px)').matches;
+$('#menu').onclick = () => drawer(!$('#side').classList.contains('open'));
+$('#mask').onclick = () => drawer(false);
+$('#dclose').onclick = () => drawer(false);
+
 // 事件委托:绑定在容器上,侧栏重建后依然有效
 $('#side').addEventListener('click', e => {
   const el = e.target.closest('.it');
-  if (el) { select(+el.dataset.n); return; }
+  if (el) { select(+el.dataset.n); if (isNarrow()) drawer(false); return; }
   const gh = e.target.closest('.gh');
   if (gh) { const b = gh.nextElementSibling;
     b.style.display = (b.style.display === 'none') ? 'block' : 'none'; }
@@ -642,6 +730,7 @@ document.addEventListener('keydown', e => {
     if (e.key === 'Escape') e.target.blur();
     return;
   }
+  if (e.key === 'Escape'){ drawer(false); return; }
   if (e.key === '/'){ e.preventDefault(); $('#q').focus(); return; }
   if (curTab !== 'cmp') return;
   if (e.key === 'j' || e.key === 'k'){
@@ -667,13 +756,16 @@ function loadZone(i){
   const z = ZONES[i];
   D = z.data || {}; VERS = D.vers || [];
   cur = null; curTab = 'cmp';
+  drawer(false);
   $('#ttl').textContent = z.title || (z.name || '') + '多版本对照';
   $('#skn').textContent = (D.skel && D.skel['名称']) || '';
   document.title = $('#ttl').textContent;
   document.querySelectorAll('#zsw button').forEach((b,k)=>b.classList.toggle('on', k===i));
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on', b.dataset.v==='cmp'));
   document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on', v.id==='v-cmp'));
-  ['#side','#detail','#fangbox','#pianbox','#indepbox','#revbox','#aboutbox']
+  // 注意别清 #side：抽屉头 .dhd 在里面，清空会把「目录/✕」一起抹掉，
+  // 之后 buildSide 找不到 #sidelist 会抛错（2026-11-13 踩过）
+  ['#detail','#fangbox','#pianbox','#indepbox','#revbox','#aboutbox']
     .forEach(s=>{ const e=$(s); if (e) e.innerHTML=''; });
   $('#q').value=''; $('#qclr').style.display='none';
   if ($('#fDiff')) $('#fDiff').checked=false;
@@ -682,6 +774,7 @@ function loadZone(i){
   // 深链必须在 buildAll 之前读取:buildAll 内的 select 会改写 hash(旧版踩过)
   const h = +location.hash.replace('#','');
   refreshCounts(); fillSel(); checkIntegrity(); buildAll();
+  const _sd = $('#side'); if (_sd) _sd.scrollTop = 0;   // 换区后目录回到顶部
   if (h && D.items.some(x=>x.n===h)) select(h);
   try{
     const u = new URL(location.href);
