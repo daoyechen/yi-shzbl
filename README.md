@@ -112,8 +112,6 @@ SH 各版有异文的条数（同一条可有多版）：唐本 380、注解伤�
 | :---: | :---: | :---: |
 | ![鸡蛋](assets/jidan.png) | ![Maggie庄131419](assets/maggie-zhuang.png) | ![心悦神怡](assets/xinyue-shenyi.png) |
 
-头像裁成 240px 圆形透明 PNG，直接放在 `assets/`；按提供顺序对应。
-
 ---
 
 ## 下一步
