@@ -1,6 +1,6 @@
 {
  "builder": "tools/build_index.py v1.0",
- "generated": "2026-11-15T10:18:28+08:00",
+ "generated": "2026-11-15T22:17:10+08:00",
  "packages": {
   "shanghan": {
    "name": "伤寒论",
@@ -39,8 +39,8 @@
  },
  "index": {
   "file": "index.html",
-  "sha256": "f75ac6068ab860af27b16107c92acc9941844b6492c0fdc216fcd8a9a0469696",
-  "bytes": 42000,
+  "sha256": "309110d1411151c5ac1c4d3cb572fda829d1b3567d31a1e96ab6a398dfc29f2c",
+  "bytes": 53829,
   "mode": "fetch"
  }
 }
