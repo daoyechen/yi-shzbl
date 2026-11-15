@@ -203,9 +203,25 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
 :where(.colwrap){display:none}      /* 分栏选择器只在移动版出现 */
 :where(.dnav){display:none}         /* 抽屉内「视图」入口 */
 :where(.navbar){display:none}       /* 条导航条（第几条 + 上/下 + 设置） */
+/* 悬浮切换按钮：右下角，只切「单列 ⇄ 双列」，不占布局 */
+:where(.fab){display:none}
+.fab{position:fixed;right:14px;bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  width:46px;height:46px;border-radius:50%;border:1px solid var(--line2);background:#fff;
+  color:var(--zhu);line-height:1;cursor:pointer;z-index:55;
+  box-shadow:0 4px 14px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;
+  padding:0;-webkit-tap-highlight-color:transparent;transition:transform .12s ease}
+.fab:active{transform:scale(.92)}
+.fab.on{background:var(--zhu);color:#fff;border-color:var(--zhu)}
 .navbar .navrow{display:flex;align-items:center;gap:6px;min-height:36px}
 .navbar .navrow .nav-no{font-family:var(--sans);font-size:12.5px;color:var(--ink2);white-space:nowrap;flex:none}
 .navbar .navrow .nav-no b{color:var(--zhu);font-size:14px}
+/* 篇名：夹在「N/398 条」与上下箭头之间，纯 CSS 自适应。
+   flex-basis:0 + min-width:0 = 「有多少用多少」：没余量时压到 0 宽、文字被裁掉，
+   不占位、不挤压按钮、不换行；有余量时自动撑开，过长给省略号。
+   注意：这里不能再放 .sp 弹簧，否则余量被它全吃掉，篇名永远是 0 宽。 */
+.navbar .navrow .nav-pian{font-family:var(--serif);font-size:11.5px;color:var(--ink3);
+  flex:1 1 0px;min-width:0;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;padding:0 4px}
 .navbar .navrow .sp{flex:1}
 .navbar .navbtn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:30px;
   border:1px solid var(--line2);border-radius:6px;background:#fff;cursor:pointer;font-size:15px;
@@ -222,15 +238,32 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
 .navbar .setrow select{border:1px solid var(--line2);background:#fff;padding:3px 6px;border-radius:5px;
   font-size:12px;flex:none}
 .navbar .setrow .tag{font-family:var(--sans);font-size:11.5px;color:var(--ink3);flex:none}
-/* 多栏对比：.multi2 / .multi3 作用于 #detail */
-.pane .multi2,.pane .multi3{display:grid;gap:10px;align-items:start}
-.pane .multi2{grid-template-columns:repeat(2,minmax(0,1fr))}
-.pane .multi3{grid-template-columns:repeat(3,minmax(0,1fr))}
-.pane .multi2 .card,.pane .multi3 .card{margin-bottom:0}
-.pane .multi2 .cb2,.pane .multi3 .cb2{font-size:13px;line-height:1.85;padding:9px 10px}
-.pane .multi2 .ch,.pane .multi3 .ch{padding:6px 9px;gap:4px}
-.pane .multi2 .ch .vn,.pane .multi3 .ch .vn{font-size:12.5px}
-.pane .multi2 .base,.pane .multi3 .base{grid-column:1/-1}
+/* 多栏对比：JS 按高度动态分列的真瀑布流（.mflow）。
+   为什么不用 CSS column-count：它是「先填满左列再填右列」，阅读顺序变纵向，
+   版本对照要的是「同一行左右可比」，所以必须按高度贪心分配。 */
+.pane .mflow{display:flex;gap:10px;align-items:flex-start}
+.pane .mflow .mcol{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:10px}
+.pane .mflow .card{margin:0}
+.pane .mflow .cb2{font-size:13px;line-height:1.85;padding:9px 10px}
+.pane .mflow .ch{padding:6px 9px;gap:4px}
+.pane .mflow .ch .vn{font-size:12.5px}
+.pane .mflow .base{flex:0 0 100%}
+.pane .multi2 .base,.pane .multi3 .base{flex:0 0 100%}
+
+/* 左固定右滑：左列（底本）不滚，右列独立横向滑动对比各版。
+   整块高度锁定在内容区可视范围内，只让右列滚，左列始终在眼前。 */
+.pane .pinsplit{display:flex;gap:10px;align-items:stretch;
+  height:100%;max-height:100%;overflow:hidden}
+.pane .pinsplit .pinleft{flex:0 0 44%;max-width:44%;min-width:0;overflow:hidden;
+  display:flex;flex-direction:column}
+.pane .pinsplit .pinright{flex:1 1 0;min-width:0;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:10px;padding-right:2px}
+.pane .pinsplit .card{margin:0}
+.pane .pinsplit .cb2{font-size:13.5px;line-height:1.9;padding:9px 10px}
+.pane .pinsplit .ch{padding:6px 9px;gap:4px}
+.pane .pinsplit .ch .vn{font-size:12.5px}
+.pane .pinsplit .pinhint{font-family:var(--sans);font-size:11px;color:var(--ink3);
+  padding:4px 2px 6px;flex:none}
 
 @media(max-width:820px){
   /* 内容区独立滚动：只在正文范围内上下滑，顶栏与导航条不动 */
@@ -240,6 +273,10 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
     -webkit-overflow-scrolling:touch;padding-bottom:24px}
   .view{width:100%;min-width:0}
   .wrap2{padding:10px;width:100%;min-width:0}
+  /* 左固定右滑模式：让 #detail 撑满 main 剩余高度，pinsplit 才能内部滚动 */
+  .pane:has(.pinsplit){height:100%;max-height:100%;box-sizing:border-box;
+    display:flex;flex-direction:column;padding-bottom:10px}
+  .pane:has(.pinsplit) .pinsplit{flex:1;min-height:0}
   .card{max-width:100%;min-width:0}
   .card .cb2{overflow-wrap:anywhere;word-break:break-word}
   /* 导航条按钮收紧，避免溢出屏宽 */
@@ -259,6 +296,7 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
   .dnav button .cnt2{font-family:var(--sans);font-size:11px;color:var(--ink3)}
   .dnav button.on{color:var(--zhu);font-weight:700;background:var(--hl)}
   .dnav button:hover{background:#efe8da}
+  .fab{display:flex}
   .colwrap{display:inline-flex;align-items:center;gap:4px;flex:none}
   .colwrap .tag{font-family:var(--sans);font-size:11.5px;color:var(--ink3)}
   .colwrap select{border:1px solid var(--line2);background:#fff;padding:3px 6px;border-radius:5px;font-size:12px}
@@ -307,7 +345,7 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
       <div class="navbar" id="navbar">
         <div class="navrow">
           <span class="nav-no"><b id="nav-cur">-</b> / <span id="nav-all">465</span> 条</span>
-          <span class="sp"></span>
+          <span class="nav-pian" id="nav-pian"></span>
           <button class="navbtn" id="nav-up" aria-label="上一条" title="上一条">↑</button>
           <button class="navbtn" id="nav-dn" aria-label="下一条" title="下一条">↓</button>
           <button class="navbtn" id="nav-set" aria-label="筛选设置" title="筛选设置">⚙</button>
@@ -376,6 +414,11 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
   </main>
 </div>
 <div id="toast"></div>
+<button id="fab" class="fab" aria-label="切换单列/双列" title="切换单列/双列">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8">
+    <rect x="3" y="4" width="7.5" height="16" rx="1.2"/><rect x="13.5" y="4" width="7.5" height="16" rx="1.2"/>
+  </svg>
+</button>
 
 <script>window.__SHJ_FETCH__=1;</script>
 <script>
@@ -479,30 +522,67 @@ function markSide(){
   document.querySelectorAll('#side .it').forEach(el =>
     el.classList.toggle('on', cur && +el.dataset.n === cur.n));
 }
+/* 瀑布流分列：卡片按顺序插入当前最矮的那一列。
+   需要先入 DOM 再量高度，故逐个 append 后立即测 offsetHeight。 */
+function flowCards(cards){
+  const flow = $('#detail .mflow');
+  if (!flow) return;
+  const colsEl = [...flow.querySelectorAll('.mcol')];
+  const heights = colsEl.map(() => 0);
+  for (const html of cards){
+    // 选当前最矮的列（等高时取靠左，保证顺序稳定）
+    let k = 0;
+    for (let i = 1; i < heights.length; i++) if (heights[i] < heights[k] - 0.5) k = i;
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    const node = tmp.firstElementChild;
+    colsEl[k].appendChild(node);
+    heights[k] += node.offsetHeight + 10;   // 10 = gap
+  }
+}
+
+/* 左固定右滑：给 .pinsplit 算一个显式高度。
+   纯 CSS 的 height:100% 在 #detail 没有确定高度时不会撑开，
+   右栏卡片就会被父级裁掉（实测「脉浮头项强痛而恶寒」被切断）。
+   这里按「可视高度 - 顶栏 - 导航条 - #detail 的纵向 padding」实算。 */
+function fitPin(){
+  const ps = $('#detail .pinsplit');
+  if (!ps) return;
+  const main = document.querySelector('main');
+  if (!main) return;
+  const nav = $('#navbar');
+  const navH = (nav && getComputedStyle(nav).display !== 'none') ? nav.offsetHeight : 0;
+  const padTop = parseFloat(getComputedStyle($('#detail')).paddingTop) || 0;
+  const padBot = parseFloat(getComputedStyle($('#detail')).paddingBottom) || 0;
+  const avail = main.clientHeight - navH - padTop - padBot - 4;
+  ps.style.height = Math.max(240, avail) + 'px';
+}
+
 function select(n){
   const it = D.items.find(x => x.n === n);
   if (!it) return;
   cur = it;
   const pane = $('#detail');
-  const cols = +($('#colsel') && $('#colsel').value || 1);
-  let h = '';
-  if (cols > 1) h += `<div class="multi${cols}">`;
-  h += `<div class="card base"><div class="ch"><span class="vn">${esc(BASE())}</span>
-    <span class="pg">p${it.pg}</span><span class="pg">${esc(it.pian||'')}</span>
-    <span style="flex:1"></span><span class="pg">骨架条 ${it.n}</span></div>
+  const mode = ($('#colsel') && $('#colsel').value) || '1';
+  const cols = +mode || 1;
+  // 先收集各卡 HTML（底本单列，其余进瀑布流）
+  // 底本卡：条号已在导航条显示，此处不再重复；页码(p419)是影印本页码，改由「体例说明」页解释
+  let baseH = `<div class="card base"><div class="ch"><span class="vn">${esc(BASE())}</span>
+    <span class="pg">${esc(it.pian||'')}</span></div>
     <div class="cb2">${mk(it.s)}</div></div>`;
+  const cards = [];
   for (const v of VERS){
     const c = it.v[v];
     if (c.ok){
       const tag = CF[c.cf] || 't-low';
       const seg = (c.d||c.t).split('\n');
-      h += `<div class="card"><div class="ch"><span class="vn">${esc(v)}</span>
-        <span class="tag ${tag}">${esc(c.cf)}</span><span class="pg">p${c.pg}</span></div>
-        <div class="cb2">${seg.map(mk).join('<br>')}</div></div>`;
+      cards.push(`<div class="card"><div class="ch"><span class="vn">${esc(v)}</span>
+        <span class="tag ${tag}">${esc(c.cf)}</span></div>
+        <div class="cb2">${seg.map(mk).join('<br>')}</div></div>`);
     }else{
-      h += `<div class="card"><div class="ch"><span class="vn" style="color:var(--ink3)">${esc(v)}</span>
+      cards.push(`<div class="card"><div class="ch"><span class="vn" style="color:var(--ink3)">${esc(v)}</span>
         <span class="tag t-none">此版无</span><span class="pg">${esc(c.rs||'')}</span></div>
-        <div class="cb2" style="color:var(--ink3);font-size:14px">依据:${esc(c.ev||'')}</div></div>`;
+        <div class="cb2" style="color:var(--ink3);font-size:14px">依据:${esc(c.ev||'')}</div></div>`);
     }
   }
   // ★ 注文(如成无己注)挂在条下 —— 2026-11-04
@@ -510,16 +590,30 @@ function select(n){
   if (nts){
     for (const vn of Object.keys(nts)){
       const paras = nts[vn].split('\n').filter(x => x.trim());
-      h += `<div class="card" style="border-left:3px solid var(--gold)">
+      cards.push(`<div class="card" style="border-left:3px solid var(--gold)">
         <div class="ch"><span class="vn">${esc(vn)}·注文</span>
         <span class="pg">${paras.length} 段</span></div>
         <div class="cb2" style="font-size:14px;line-height:1.85">${
           paras.map(p => esc(p).replace(/^((注\d+·[^）]*)|（[^）]*）)$/,
-            '<b style="color:var(--gold)">$1</b>')).join('<br>')}</div></div>`;
+            '<b style="color:var(--gold)">$1</b>')).join('<br>')}</div></div>`);
     }
   }
-  if (cols > 1) h += '</div>';
-  pane.innerHTML = h;
+  if (mode === 'pin'){
+    // 左固定底本 + 右侧各版独立滚动
+    pane.innerHTML = `<div class="pinsplit"><div class="pinleft">${baseH}</div>`
+      + `<div class="pinright" id="pinright">`
+      + `<div class="pinhint">↑ 左为底本，右侧上下滑动看各版（${cards.length} 版）</div>`
+      + cards.join('') + '</div></div>';
+    fitPin();
+  } else if (cols > 1){
+    // 瀑布流：底本置顶横跨，其余卡按「最短列优先」贪心分配
+    pane.innerHTML = baseH + `<div class="mflow" data-cols="${cols}">`
+      + Array.from({length: cols}, () => '<div class="mcol"></div>').join('')
+      + '</div>';
+    flowCards(cards);
+  } else {
+    pane.innerHTML = baseH + cards.join('');
+  }
   document.querySelector('main').scrollTop = 0;
   markSide();
   updateNav();
@@ -538,6 +632,14 @@ function updateNav(){
   if (elAll) elAll.textContent = tot;
   if (!elCur) return;
   elCur.textContent = cur ? cur.n : '-';
+  // 篇名：纯 CSS 自适应（flex:1 1 0），这里只负责填文本。
+  // 空间不足时 CSS 会把它压到 0 宽并裁掉文字，不占位、不换行。
+  const ep = $('#nav-pian');
+  if (ep){
+    const txt = (cur && cur.pian || '').replace(/\s+/g, ' ').trim();
+    ep.textContent = txt;
+    ep.title = txt;              // 悬停可看全文
+  }
   const vis = visList();
   const i = cur ? vis.indexOf(cur.n) : -1;
   const up = $('#nav-up'), dn = $('#nav-dn');
@@ -735,7 +837,17 @@ function buildAbout(){
 · <b>此版无(四种)</b>:①本版分条较粗、并入前条 ②人工裁定确认本版无此条 ③本版无对应段 ④未核实(照实写「未核实」)。<br>
 · <b>转录</b>:各版字面照录,不校订;医统本含私用区缺字字符,页面显示为方框,原件如此。`;
   let h = `<div class="card"><div class="ch"><span class="vn">口径</span></div><div class="cb2" style="font-size:14px">${kj}<br>
-· <b>不臆造</b>:某版没有的条文只标「此版无」并给出依据;各版多出的内容给独立章节 ID,单列《版本独有内容》。</div></div>`;
+· <b>不臆造</b>:某版没有的条文只标「此版无」并给出依据;各版多出的内容给独立章节 ID,单列《版本独有内容》。</div></div>
+
+<div class="card"><div class="ch"><span class="vn">字段说明</span></div><div class="cb2" style="font-size:14px;line-height:1.9">
+<b>条号</b>（顶部「N / 总数 条」）—— 骨架条号，本书的统一坐标。${isSH?'宋本共 398 条。':'赵开美本共 465 条。'}<br>
+<b>页码 pN</b> —— <b>该版本影印件自身的实体书页</b>，不是总页数、也不是条号。用于回查原书扫描件：
+在影印本里翻到第 N 页，即可看到该条原文。<br>
+&nbsp;&nbsp;· 底座（${esc(BASE())}）页码范围：${(()=>{const ps=D.items.map(x=>x.pg).filter(x=>x!=null); return ps.length?(Math.min(...ps)+'–'+Math.max(...ps)):'—';})()}<br>
+&nbsp;&nbsp;· 各版页码范围：${VERS.map(v=>{const ps=D.items.map(x=>x.v[v]&&x.v[v].ok?x.v[v].pg:null).filter(x=>x!=null); return ps.length?`${esc(v)} ${Math.min(...ps)}–${Math.max(...ps)}`:'';}).filter(Boolean).join('；')}<br>
+&nbsp;&nbsp;· 各版页数范围不同，是因为各版篇幅、分卷与扫描起讫不同，<b>同一页号在不同版本指向不同内容，不可跨版比较</b>。<br>
+<b>篇名</b> —— 显示在顶部条号右侧，过长时省略；原件篇题多含「合一十六法 方一十四首」这类统计语，属原书体例，保留不删。
+</div></div>`;
   // 各版体例佐证：没有数据就不出空卡片（金匮侧尚未登记 cover）
   if (Object.keys(D.cover || {}).length){
     h += '<div class="card"><div class="ch"><span class="vn">各版「此版无」主因与原文依据</span></div><div class="cb2" style="font-size:14px">';
@@ -851,10 +963,13 @@ function fillSel(){
   $('#fVer2').innerHTML = '<option value="">全部</option>' + o1;
   const f3 = $('#fVer3');
   if (f3) f3.innerHTML = '<option value="">全部</option>' + o1;
-  // 多栏对比：仅在移动版显示（桌面端 CSS 里 .colwrap{display:none}）
+  // 视图模式：单列 / 双列瀑布 / 三列瀑布 / 左固定右滑
   const cw = $('#colwrap');
-  if (cw){ cw.innerHTML = '<span class="tag">分栏</span><select id="colsel">'
-    + '<option value="1">1</option><option value="2">2</option><option value="3">3</option></select>'; }
+  if (cw){ cw.innerHTML = '<span class="tag">视图</span><select id="colsel">'
+    + '<option value="1">单列</option>'
+    + '<option value="2">双列</option>'
+    + '<option value="3">三列</option>'
+    + '<option value="pin">左固定右滑</option></select>'; }
 }
 document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
   document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
@@ -911,6 +1026,9 @@ $('#side').addEventListener('click', e => {
     b.style.display = (b.style.display === 'none') ? 'block' : 'none'; }
 });
 window.addEventListener('error', e => toast('出错了:' + e.message));
+window.addEventListener('resize', () => {
+  if ($('#detail .pinsplit')) fitPin();
+});
 $('#q').oninput = () => { $('#qclr').style.display = $('#q').value ? 'block' : 'none'; buildSide(); buildIndep(); };
 $('#qclr').onclick = () => { $('#q').value = ''; $('#qclr').style.display = 'none'; buildSide(); $('#q').focus(); };
 $('#fDiff').onchange = buildSide; $('#fSame').onchange = buildSide;
@@ -926,6 +1044,16 @@ $('#srchbtn').onclick = () => {
 };
 $('#nav-up').onclick = () => stepSel(-1);
 $('#nav-dn').onclick = () => stepSel(1);
+/* 悬浮按钮：单列 ⇄ 双列。单列时全宽阅读，双列时瀑布流对照。 */
+$('#fab').onclick = () => {
+  const c = $('#colsel');
+  if (!c) return;
+  const isTwo = !(c.value === '1');
+  c.value = isTwo ? '1' : '2';
+  c.dispatchEvent(new Event('change', {bubbles:true}));
+  $('#fab').classList.toggle('on', !isTwo);
+  toast(c.value === '1' ? '单列' : '双列对照');
+};
 $('#nav-set').onclick = () => {
   const r = $('#setrow');
   const open = !r.classList.contains('open');
