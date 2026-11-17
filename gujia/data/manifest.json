@@ -1,0 +1,49 @@
+{
+ "builder": "tools/build_index.py v2.0",
+ "site": "gujia",
+ "generated": "2026-11-17T13:09:28+08:00",
+ "packages": {
+  "shanghan": {
+   "name": "伤寒论",
+   "source": "34_总装产出_v0.12.0/viewer_data.json",
+   "条数": 398,
+   "版本数": 9,
+   "review": 97,
+   "异文条": 398,
+   "sha256": "816fdb6709309206a2717b53431a87d98f96f264f3e15f891d4ec8f0d66987c4",
+   "data": "data/shanghan.json",
+   "data_sha256": "9036977f6c033cfcae24cc264bd3a652cd225b471362131de7e0cbd741a35534",
+   "data_bytes": 2970764,
+   "注本": 0
+  },
+  "jingui": {
+   "name": "金匮要略",
+   "source": "38_总装产出_金匮_v0.3.0/viewer_data.json",
+   "条数": 465,
+   "版本数": 4,
+   "review": 6,
+   "异文条": 394,
+   "sha256": "b2e6eab35f1c86ff825a34cae84f9422314d6e4065956b005fbc26303b24466f",
+   "data": "data/jingui.json",
+   "data_sha256": "600991a69114d802007b64451e20cc36cc01bc1488c962d80294f9f781177f7d",
+   "data_bytes": 1350433,
+   "注本": 0
+  },
+  "heji": {
+   "name": "伤寒杂病论",
+   "zones": [
+    "shanghan",
+    "jingui"
+   ],
+   "data": "data/zones.json",
+   "data_sha256": "9f9bfcf6a178b10dd2f746d1e7a3b6503632bbd6bd2e4ffb1fad876b575382ee",
+   "data_bytes": 4321529
+  }
+ },
+ "index": {
+  "file": "index.html",
+  "sha256": "c429d1f4c3448b8b4e855e7d1b7af4c786fd29477b5d5d45318fa1e183001ae9",
+  "bytes": 67845,
+  "mode": "fetch"
+ }
+}
