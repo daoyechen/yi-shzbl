@@ -1,0 +1,4 @@
+# 物料层不入库，只留说明与忽略规则
+*
+!.gitignore
+!README.md
