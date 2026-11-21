@@ -1,7 +1,7 @@
 # AGENTS.md
 
 > **《伤寒杂病论》结构数据化 + 多版本对照阅读。**
-> **本文件只放硬规则。** 进度与已定结论看 [`CHANGES.md`](CHANGES.md)，怎么编译发布看 [`docs/跑起来.md`](docs/跑起来.md)，目录结构看 [`00_base/README.md`](00_base/README.md)（全项目目录总表）。
+> **本文件只放硬规则。** 进度与已定结论看 [`CHANGES.md`](CHANGES.md)，怎么编译发布看 [`08_tools/README.md`](08_tools/README.md)，目录结构看 [`00_base/README.md`](00_base/README.md)（全项目目录总表）。
 
 ---
 
@@ -126,7 +126,7 @@ L1 很少动。真要动，按此表处理：
 
 | 想了解 | 看 |
 |---|---|
-| 怎么编译、怎么发布、JG 全链路 | `docs/跑起来.md` |
+| 怎么编译、怎么发布、JG 全链路 | `08_tools/README.md` |
 | 移动版布局、视图模式、CSS 坑 | `docs/前端约定.md` |
 | L2 注本契约 | `50_data/51_notes/契约.md` |
 | 目录结构与后续重组 | `00_base/README.md` |
@@ -147,7 +147,7 @@ L1 很少动。真要动，按此表处理：
 |---|---|
 | 做了什么、得出什么、为什么 | `CHANGES.md` |
 | 当前状态、下一步待办 | `CHANGES.md` 最新几条 |
-| 怎么跑、怎么发布 | `docs/跑起来.md` |
+| 怎么跑、怎么发布 | `08_tools/README.md` |
 | 目录结构 | `00_base/README.md` |
 | 前端细节 | `docs/前端约定.md` |
 | 注本契约 | `50_data/51_notes/契约.md` |
