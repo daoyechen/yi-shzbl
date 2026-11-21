@@ -21,3 +21,36 @@ _待验/
 
 # ── 本机备份文件
 *.bak2026*
+
+# ── 流水层（新结构）：内容一律忽略，只留 README.md
+# 物料层：11 入口、12 筛选、19 软链都不入库；15_catalog 例外（账本，结论不可再生）
+10_material/*
+!10_material/README.md
+!10_material/11_inbox/
+!10_material/12_screening/
+!10_material/15_catalog/
+10_material/11_inbox/*
+!10_material/11_inbox/README.md
+# 12_screening 整目录入库（筛选结论不可再生，脚本随结论走）
+
+20_process/*
+!20_process/README.md
+!20_process/*/
+20_process/*/*
+!20_process/*/README.md
+
+30_dispatch/*
+!30_dispatch/README.md
+!30_dispatch/*/
+30_dispatch/*/*
+!30_dispatch/*/README.md
+
+40_return/*
+!40_return/README.md
+!40_return/41_return_tmp/
+!40_return/49_return_persistence/
+40_return/41_return_tmp/*
+!40_return/41_return_tmp/README.md
+
+.archive/*
+!.archive/README.md
