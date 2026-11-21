@@ -4,7 +4,7 @@ __pycache__/
 *.pyc
 
 # ── 原件扫描件：不进仓库（NAS 有备份，单件最大 402 MB，全量 5.3 GB）
-_待验/
+_待验
 *.pdf
 *.epub
 *.mobi
@@ -52,5 +52,4 @@ _待验/
 40_return/41_return_tmp/*
 !40_return/41_return_tmp/README.md
 
-.archive/*
-!.archive/README.md
+.archive/
