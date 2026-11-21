@@ -1,0 +1,6 @@
+on:
+  push:
+    branches: ["master"]
+    paths:
+      - '90_out/**'
+      - '.github/workflows/**'
