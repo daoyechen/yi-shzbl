@@ -17,12 +17,15 @@
     └── 交付/交付格式.md
 """
 import csv
+import hashlib
 import json
 import os
 import re
 import shutil
 import subprocess
 import sys
+import zipfile
+from datetime import datetime
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = HERE
@@ -87,6 +90,7 @@ def build_one(r, apply):
 
     dst_dir = os.path.join(M, dirname)
     if apply:
+        shutil.rmtree(dst_dir, ignore_errors=True)     # 重建，防上一轮残留混进包
         for sub in ("数据", "工具", "交付"):
             os.makedirs(os.path.join(dst_dir, sub), exist_ok=True)
 
@@ -133,6 +137,28 @@ def build_one(r, apply):
             tpl = tpl.replace(k, v)
         open(os.path.join(dst_dir, "任务书.md"), "w", encoding="utf-8").write(tpl)
 
+        # 6) PACK_VERSION.md（哈希由承接人算，避免打包含自身哈希的循环）
+        files_now = []
+        for dp, _, fn in os.walk(dst_dir):
+            for f in sorted(fn):
+                q = os.path.join(dp, f)
+                rel = os.path.relpath(q, dst_dir)
+                if rel != "PACK_VERSION.md":
+                    files_now.append(rel)
+        ver = (
+            "# PACK_VERSION\n\n"
+            "- 派发包：%s_派发包.zip\n" % dirname +
+            "- 生成时间：%s\n" % datetime.now().strftime("%Y-%m-%d %H:%M") +
+            "- 包内文件：%d 个\n" % (len(files_now) + 1) +
+            "- 派发包 SHA256：<在此填你算出的值，命令见下>\n"
+            "- 收到日期：<YYYY-MM-DD>\n\n"
+            "## 怎么填\n\n"
+            "```bash\nshasum -a 256 %s_派发包.zip\n```\n\n" % dirname +
+            "与我方在包外给的 `.sha256` 比对，一致即传输完整。\n\n"
+            "## 包内文件\n\n" + "".join("- `%s`\n" % f for f in sorted(files_now + ["PACK_VERSION.md"]))
+        )
+        open(os.path.join(dst_dir, "PACK_VERSION.md"), "w", encoding="utf-8").write(ver)
+
     return "OK %s（%s，%s 字，%s）" % (dirname, r["文件名"], r["字数"], "已打包" if apply else "可打包")
 
 
@@ -159,9 +185,32 @@ def main():
                 os.remove(z)
             p = subprocess.run([sys.executable, ZIPTOOL, z, M, dn],
                                capture_output=True, text=True)
-            size = os.path.getsize(z) / 1e6 if os.path.exists(z) else 0
-            print("  %-22s %6.1f MB  %s" % (os.path.basename(z), size,
-                                            "ok" if p.returncode == 0 else p.stderr[:60]))
+            if p.returncode != 0 or not os.path.exists(z):
+                print("  %-40s 打包失败 %s" % (os.path.basename(z), p.stderr[:60]))
+                continue
+            # 包内 manifest.json（对象格式，pack_check 可核）
+            with zipfile.ZipFile(z) as zf:
+                ents = []
+                for info in zf.infolist():
+                    if info.is_dir():
+                        continue
+                    data = zf.read(info)
+                    ents.append({"path": info.filename,
+                                 "bytes": len(data),
+                                 "sha256": hashlib.sha256(data).hexdigest()})
+            man = {"pack": os.path.basename(z),
+                   "generated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                   "files": ents}
+            tmp = os.path.join(M, "._manifest.tmp")
+            json.dump(man, open(tmp, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+            with zipfile.ZipFile(z, "a", zipfile.ZIP_DEFLATED) as zf:
+                zf.write(tmp, "manifest.json")
+            os.remove(tmp)
+            # 外部 sha256
+            h = hashlib.sha256(open(z, "rb").read()).hexdigest()
+            open(z + ".sha256", "w").write("%s  %s\n" % (h, os.path.basename(z)))
+            size = os.path.getsize(z) / 1e6
+            print("  %-40s %6.2f MB  条目%d  ok" % (os.path.basename(z), size, len(ents) + 1))
     return 0 if not bad else 1
 
 
