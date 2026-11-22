@@ -1,0 +1,880 @@
+{
+  "moved_at": "2026-11-22T21:43:20.237697+08:00",
+  "backup_root": "/tmp/shz-before-trash-20261122-__16yz2w",
+  "items": [
+    {
+      "relative": ".archive/35_总装产出_金匮_v0.1.0/00_README.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/35_总装产出_金匮_v0.1.0/00_README.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/35_总装产出_金匮_v0.1.0/00_README.md",
+      "sha256": "f93b1c230f3bd587a4ff87309f18d45de11f5dcfd3a63f6d46a8b330ce7fd48d",
+      "bytes": 1583,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/35_总装产出_金匮_v0.1.0/01_条文总表.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/35_总装产出_金匮_v0.1.0/01_条文总表.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/35_总装产出_金匮_v0.1.0/01_条文总表.json",
+      "sha256": "4f86c13e61479a762883f9b6730eb2dba281b19e74d2b1e5c7e8008d17d9b999",
+      "bytes": 1862826,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/35_总装产出_金匮_v0.1.0/02_条文对照本.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/35_总装产出_金匮_v0.1.0/02_条文对照本.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/35_总装产出_金匮_v0.1.0/02_条文对照本.md",
+      "sha256": "0cd97e5679c3364d3cbc6f3331fc5d1f376d467275885ea9497690c0540fe408",
+      "bytes": 255647,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/35_总装产出_金匮_v0.1.0/03_锚点表.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/35_总装产出_金匮_v0.1.0/03_锚点表.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/35_总装产出_金匮_v0.1.0/03_锚点表.md",
+      "sha256": "393a675de7c2b15194972374b8a7cca430d79247c5c9ec74dbb9b1f94ed5185d",
+      "bytes": 289,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/35_总装产出_金匮_v0.1.0/04_差异索引.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/35_总装产出_金匮_v0.1.0/04_差异索引.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/35_总装产出_金匮_v0.1.0/04_差异索引.md",
+      "sha256": "7ba2e0da9c2aad6da3630e0cc323e9f9af3adc1bbbdf7a4cf32943c05c0bf7fb",
+      "bytes": 134,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/35_总装产出_金匮_v0.1.0/05_版本独有内容.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/35_总装产出_金匮_v0.1.0/05_版本独有内容.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/35_总装产出_金匮_v0.1.0/05_版本独有内容.md",
+      "sha256": "3451f266884d295a6f320d4c20449c8a9c88b3a1315cf55cb1e88f5e99e00ddd",
+      "bytes": 244,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/35_总装产出_金匮_v0.1.0/06_方剂对照表.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/35_总装产出_金匮_v0.1.0/06_方剂对照表.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/35_总装产出_金匮_v0.1.0/06_方剂对照表.md",
+      "sha256": "f98d8bdd39b1f3bcf40fa0ba6ebdd9d8126a1752f6c331a58a811bd5816779b5",
+      "bytes": 606,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/35_总装产出_金匮_v0.1.0/07_各版条文清单.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/35_总装产出_金匮_v0.1.0/07_各版条文清单.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/35_总装产出_金匮_v0.1.0/07_各版条文清单.md",
+      "sha256": "0186c9ab524259faf7294370155c8e0f7e9a64e615ddc13e977e1026fb206c74",
+      "bytes": 405613,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/35_总装产出_金匮_v0.1.0/08_待复核清单.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/35_总装产出_金匮_v0.1.0/08_待复核清单.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/35_总装产出_金匮_v0.1.0/08_待复核清单.md",
+      "sha256": "796059df3d5ab0318f9f8382bf336f09638ec94103f9280c30bcab19fd0544d9",
+      "bytes": 17603,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/35_总装产出_金匮_v0.1.0/09_篇级对照.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/35_总装产出_金匮_v0.1.0/09_篇级对照.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/35_总装产出_金匮_v0.1.0/09_篇级对照.md",
+      "sha256": "eee206802cc327f0b9736a2f3c8cb6968aec7278673b0783a12838e23fd571ba",
+      "bytes": 9195,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/35_总装产出_金匮_v0.1.0/10_各版体例说明.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/35_总装产出_金匮_v0.1.0/10_各版体例说明.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/35_总装产出_金匮_v0.1.0/10_各版体例说明.md",
+      "sha256": "ab28b025249b301a0834064361bbf60a53d8ff7f7022e1bbf3a74722e41913f7",
+      "bytes": 6418,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/35_总装产出_金匮_v0.1.0/11_数据来源与缺口.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/35_总装产出_金匮_v0.1.0/11_数据来源与缺口.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/35_总装产出_金匮_v0.1.0/11_数据来源与缺口.md",
+      "sha256": "e7fbcc3c5e8c0159046deb4f5d10d8a66add11a8a2ab3ea3b486cad9b6a01170",
+      "bytes": 4982,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/35_总装产出_金匮_v0.1.0/viewer_data.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/35_总装产出_金匮_v0.1.0/viewer_data.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/35_总装产出_金匮_v0.1.0/viewer_data.json",
+      "sha256": "0a352823bb5a45920f132ab3548af1a99f84e66fe0af5019d04ae1db50299df2",
+      "bytes": 755802,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/35_总装产出_金匮_v0.1.0/对照浏览器_金匮.html",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/35_总装产出_金匮_v0.1.0/对照浏览器_金匮.html",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/35_总装产出_金匮_v0.1.0/对照浏览器_金匮.html",
+      "sha256": "ebfea9166c835b26a628a7e866f6ad14d41a367be2ce923900a1d57f437aebc9",
+      "bytes": 797247,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_丙方案/17_丙方案落地报告.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_丙方案/17_丙方案落地报告.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_丙方案/17_丙方案落地报告.md",
+      "sha256": "be0bee63a313292fafe34b8f2a5d5e2630df80891760cb3ea3b10f175028ecc1",
+      "bytes": 7866,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/J-2_6-r5_验收记录.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/J-2_6-r5_验收记录.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/J-2_6-r5_验收记录.md",
+      "sha256": "18ec84ec0d7bb1a17af00c92db5504d43f6757f91b63c4d47ac255270cf410d3",
+      "bytes": 5524,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/SHA256SUMS.txt",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/SHA256SUMS.txt",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/SHA256SUMS.txt",
+      "sha256": "06bf5fa1430b40c1fd8957fae9c88346d552b1a50e753940c4906c0079935bc2",
+      "bytes": 1030,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/_旧版/27_结构数据交付_v1.0_原版_GBK名.zip",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/_旧版/27_结构数据交付_v1.0_原版_GBK名.zip",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/_旧版/27_结构数据交付_v1.0_原版_GBK名.zip",
+      "sha256": "e1da09c3e3235266436ea0c74e60895b3d8099c51d11d87e137555825134430f",
+      "bytes": 19951843,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/回传/28_交接包_整本总装工具与规范.manifest.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/回传/28_交接包_整本总装工具与规范.manifest.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/回传/28_交接包_整本总装工具与规范.manifest.json",
+      "sha256": "740c0bd33be3af9ded12ef2eb2c2daa061020af0f64270e8d92f00558ccf01b7",
+      "bytes": 3921,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/回传/28_交接包_整本总装工具与规范.zip",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/回传/28_交接包_整本总装工具与规范.zip",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/回传/28_交接包_整本总装工具与规范.zip",
+      "sha256": "7c66cd21b10cd262a0268ef8f59d6fb1c13056596798b38a89ac1b77492b409b",
+      "bytes": 103920,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/回传/29_补充包_版本包与骨架v1.manifest.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/回传/29_补充包_版本包与骨架v1.manifest.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/回传/29_补充包_版本包与骨架v1.manifest.json",
+      "sha256": "4f911f06452644980758122ce1379623198dc695e66ea32b7fe672d992352cd6",
+      "bytes": 59009,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/回传/29_补充包_版本包与骨架v1.zip",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/回传/29_补充包_版本包与骨架v1.zip",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/回传/29_补充包_版本包与骨架v1.zip",
+      "sha256": "a0a36056e8bf03c3515d9d6de8df844f3a9697be1c8d402ca6bb18525e394f81",
+      "bytes": 8443172,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/回传/J-2_6-r5_说明_HV3版.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/回传/J-2_6-r5_说明_HV3版.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/回传/J-2_6-r5_说明_HV3版.md",
+      "sha256": "03bf29c7689e83cd0b669287996990938d7a4c44648b5d9e67a970544ae2bb09",
+      "bytes": 7288,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/回传/J-2_6-r5_金匮条级骨架核改.zip",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/回传/J-2_6-r5_金匮条级骨架核改.zip",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/回传/J-2_6-r5_金匮条级骨架核改.zip",
+      "sha256": "9570cd26b2c63f0634ae3142110cd0e8716665e5587be281797222f48e5ba4b8",
+      "bytes": 7763053,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/回传/交接答复.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/回传/交接答复.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/回传/交接答复.md",
+      "sha256": "f14dde0cf21bd22406e27b5be07af82b5515edafad0a96c86395a5607b55e6d4",
+      "bytes": 26208,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/回传/补充答复.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/回传/补充答复.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/回传/补充答复.md",
+      "sha256": "3042964786ee6043fc8ec021781beddf5676df4445d2282b699d8f7c46905ae7",
+      "bytes": 19485,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/索要清单与Prompt.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/索要清单与Prompt.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/索要清单与Prompt.md",
+      "sha256": "8e47786a2812f541880a6dee1c2712f0e43a7e85021668e3eced0d1d39de5a8c",
+      "bytes": 12635,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/追问_r2.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/追问_r2.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/追问_r2.md",
+      "sha256": "ee6e2d1fde80b41eea98427daf77b977d00b6de9c89c787794730664af319f49",
+      "bytes": 4102,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/追问_r3.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/追问_r3.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/追问_r3.md",
+      "sha256": "1a6c5a2ff5c91f7b087b5959c680e3d291d3b10fac389073595b235264ac828f",
+      "bytes": 4872,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/验收复核报告_第五批_2_6与2_4.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/验收复核报告_第五批_2_6与2_4.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/验收复核报告_第五批_2_6与2_4.md",
+      "sha256": "68bb7b954bd30125cc511ccb8fe449eec172cb265eaca185dfb25b5521fde97d",
+      "bytes": 12040,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/验收报告_r1.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/验收报告_r1.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/验收报告_r1.md",
+      "sha256": "03eec6765dabcce73e4a603ce4887510aa1d2b794dbc9f71d179bce43390dfe7",
+      "bytes": 10367,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/验收报告_r2.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/验收报告_r2.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/验收报告_r2.md",
+      "sha256": "67f949bcc0f24d77c7d3e7b1c4d5d0342f52c2c03305d42550f7b39e6b9a2ed3",
+      "bytes": 10207,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_交接/33_与原agent交接/验收报告_r3.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_交接/33_与原agent交接/验收报告_r3.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_交接/33_与原agent交接/验收报告_r3.md",
+      "sha256": "6fd85382186a4fa10cc1350f970410476a0a78fea2ab9897ea02f43113ba32af",
+      "bytes": 7831,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_审计/27_结构数据交付_v1.0_UTF8flag修正版.zip",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/27_结构数据交付_v1.0_UTF8flag修正版.zip",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/27_结构数据交付_v1.0_UTF8flag修正版.zip",
+      "sha256": "981fdfa989006cd6173a8403e13da806e66164da2b1549159ce33d675928a6f6",
+      "bytes": 19951843,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_审计/早期回传/BATCH_20261108_待验P0P1.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期回传/BATCH_20261108_待验P0P1.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期回传/BATCH_20261108_待验P0P1.md",
+      "sha256": "cd04cfccffee0d5725e5662058681319b8581711b74f0d989eeb5b503d8f4bba",
+      "bytes": 3545,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_审计/早期回传/BATCH_20261109_人工验证.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期回传/BATCH_20261109_人工验证.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期回传/BATCH_20261109_人工验证.md",
+      "sha256": "7247e655511de1265fc07bc096d8dd5b6a7022b8e15cad15e701b976b1d87b49",
+      "bytes": 5114,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_审计/早期回传/HV1_D1对件_AUDIT.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期回传/HV1_D1对件_AUDIT.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期回传/HV1_D1对件_AUDIT.md",
+      "sha256": "c9e182db06604c0ae3a4f8a8441ab9cac6ceadc9375e51dcd4731170eff24101",
+      "bytes": 5092,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_审计/早期回传/HV2_D2验真_AUDIT_r1.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期回传/HV2_D2验真_AUDIT_r1.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期回传/HV2_D2验真_AUDIT_r1.md",
+      "sha256": "55a7b6ada6948ef93a10ad691f88ea8c87aed06afdbc9a6a025e4a779d05c140",
+      "bytes": 3441,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_审计/早期回传/HV2_D2验真_AUDIT_r2.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期回传/HV2_D2验真_AUDIT_r2.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期回传/HV2_D2验真_AUDIT_r2.md",
+      "sha256": "b04b767c848fcc10c481a5e83c39bf591a9fb91d2b17a688dc85cc759952ad51",
+      "bytes": 4098,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_审计/早期回传/HV3_L9定性_AUDIT_r1.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期回传/HV3_L9定性_AUDIT_r1.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期回传/HV3_L9定性_AUDIT_r1.md",
+      "sha256": "48d4846e36982fc1ad973ad365a7886d0da5917a52a92777237e01529f6f5003",
+      "bytes": 3296,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_审计/早期回传/HV3_L9定性_AUDIT_r2.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期回传/HV3_L9定性_AUDIT_r2.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期回传/HV3_L9定性_AUDIT_r2.md",
+      "sha256": "20d226eb0ed7de9bbdf9062cb4cf7258054494c66b3d6715892d6115314dc55e",
+      "bytes": 4060,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_审计/早期回传/README.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期回传/README.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期回传/README.md",
+      "sha256": "8de869aa47d05d2fb495b69021c454b2348f8f579b7d40c5ab653b57562da823",
+      "bytes": 2965,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_审计/早期回传/SC-L9-collate_AUDIT.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期回传/SC-L9-collate_AUDIT.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期回传/SC-L9-collate_AUDIT.md",
+      "sha256": "779f5a3d32be08b813d908d46ca9119f680b0d19c0ad7a854d26a7997c6991c5",
+      "bytes": 3676,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_审计/早期回传/SL-D1-verify_AUDIT.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期回传/SL-D1-verify_AUDIT.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期回传/SL-D1-verify_AUDIT.md",
+      "sha256": "dfedf5b346d8510e0bd9870b21c869a3ee772d374c3e9e3534189755e72876ef",
+      "bytes": 3387,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_审计/早期回传/SL-D1xL3-collate_AUDIT.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期回传/SL-D1xL3-collate_AUDIT.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期回传/SL-D1xL3-collate_AUDIT.md",
+      "sha256": "d8a7d9cd5a689d7ecec85aca655920ed453ae5349bde5d19ad2e0b74e620db5a",
+      "bytes": 2493,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_审计/早期回传/SL-D2-verify_AUDIT.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期回传/SL-D2-verify_AUDIT.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期回传/SL-D2-verify_AUDIT.md",
+      "sha256": "7080d3534a8b57370e234891e51c2a621bf8e742d464227e4a19a544d233ed10",
+      "bytes": 2360,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_审计/早期回传/供件作业单_r2.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期回传/供件作业单_r2.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期回传/供件作业单_r2.md",
+      "sha256": "1dee2c8b85b331d849cd5ee5e891dcda29adba891e305c4362a758f113a9433f",
+      "bytes": 7091,
+      "rule": false,
+      "section4": true
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/baseline/L3_kangping_398.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/baseline/L3_kangping_398.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/baseline/L3_kangping_398.json",
+      "sha256": "2463d639d53e0107741e0a0cf413bd376fa8aa9d1417b9acb1c1311da3ea5206",
+      "bytes": 192102,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/baseline/L9_guilin_397.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/baseline/L9_guilin_397.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/baseline/L9_guilin_397.json",
+      "sha256": "673987ce399459c07bb5997e8384ce9253f446df7eb44e23efbf2bf434b94160",
+      "bytes": 373002,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/baseline/L9_sanlu_links_41.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/baseline/L9_sanlu_links_41.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/baseline/L9_sanlu_links_41.json",
+      "sha256": "54aca6945ec2fe7e13aaf359a7ae4767244b4e9405e82db0d5ce02959ed524e3",
+      "bytes": 6042,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/baseline/assembly_9ver_398.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/baseline/assembly_9ver_398.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/baseline/assembly_9ver_398.json",
+      "sha256": "fbeea6007e22e10d0371d48caf2ed0a0041e7ff9faadeceec0aa8218d36f956a",
+      "bytes": 3387315,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/skeleton/songben_398.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/skeleton/songben_398.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/skeleton/songben_398.json",
+      "sha256": "0171289f5d52de37a4a29836afba7ecc13e3a33e7bf8873b684aa0d78a1ecf29",
+      "bytes": 183527,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/skill_ref/SKILL.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/SKILL.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/SKILL.md",
+      "sha256": "6932d1ae53d721cf9eab9710ff4f984177d409dcab536c8c09327dfcdc4f8dfc",
+      "bytes": 24331,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/acceptance.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/acceptance.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/acceptance.md",
+      "sha256": "a735cd8c8262bbbb0bafb5e5358e775f60a38d401dfae5c6974f5c81a7bc88d0",
+      "bytes": 5128,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/acquisition.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/acquisition.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/acquisition.md",
+      "sha256": "31313ad35e1db60ce5bff634b0b0434255cb52ed8c105ae656e68e9abc65e5a5",
+      "bytes": 10973,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/cataloging.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/cataloging.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/cataloging.md",
+      "sha256": "a153367d4533c523d7c4bd84ac261515e2d9a29143b07f3d51e8020866dcb6bb",
+      "bytes": 3838,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/collation.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/collation.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/collation.md",
+      "sha256": "a41b6959d69a6697c6d681b66abe6a2da6ae6cb9de4d4253054b194a8f396271",
+      "bytes": 6482,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/dispatch.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/dispatch.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/dispatch.md",
+      "sha256": "2eca651e6f753f83c8d20336af35d85f2a8c5c023a4c42f92a867dc20ff26935",
+      "bytes": 6164,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/gaplist.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/gaplist.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/gaplist.md",
+      "sha256": "c4b305e04c5a3162aee85739fbb99f124a802de3f70fed2dda24771fb774895e",
+      "bytes": 3795,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/genealogy.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/genealogy.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/genealogy.md",
+      "sha256": "3e0ddabadddaebb7c46fc75e1cfe7022b57aa57fa8ceac436ae43cdba080b955",
+      "bytes": 4087,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/incremental.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/incremental.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/incremental.md",
+      "sha256": "f552cdb91e98037ae596b92360f16b24eab941b8990d9e53ac29bfc5986a31dc",
+      "bytes": 6701,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/pitfalls.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/pitfalls.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/pitfalls.md",
+      "sha256": "56d9b28890a3dd9a1c539c2c7ac3daf09379f09e108917d126f18dbf23c16677",
+      "bytes": 6307,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/postmortem.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/postmortem.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/postmortem.md",
+      "sha256": "407c41f9aa276e19ac3cfc0ff4010b30e268e636ce5d8ee083862203606204c2",
+      "bytes": 6969,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/skeleton.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/skeleton.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/skeleton.md",
+      "sha256": "e01eb3a7692a77cc2fe237fcc4a020005c8bc627c88be3930d2f70f120c9e846",
+      "bytes": 3926,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/transcription.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/transcription.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/transcription.md",
+      "sha256": "11312c206afd161a17841e00b6c60c1e4b9987ef1cd68a1520b1233582d2ba36",
+      "bytes": 5025,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/webpage.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/webpage.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/skill_ref/refs/webpage.md",
+      "sha256": "2d56808f7e9156639a32b813bd9ddb140fec5c2b748e1ace27efb64235f1d81a",
+      "bytes": 5385,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/specs/anti_hallucination.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/specs/anti_hallucination.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/specs/anti_hallucination.md",
+      "sha256": "263e31590f40edf2e834eaee22c9ff7448e7b148360d34a333a205241d6b3846",
+      "bytes": 4679,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/specs/assembly_contract.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/specs/assembly_contract.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/specs/assembly_contract.md",
+      "sha256": "5d04c5f366af9ce618763720963460c44bfdd3c70b4c2abcd18b0a114a8a76d4",
+      "bytes": 7072,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/specs/dual_attr.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/specs/dual_attr.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/specs/dual_attr.md",
+      "sha256": "9505d0f1d9121c392b7141d13c17e38bd292db1467b7a0fb32828e3a4d6169a9",
+      "bytes": 4650,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/specs/numbering_contract.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/specs/numbering_contract.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/specs/numbering_contract.md",
+      "sha256": "2d941d032122d33a8a6820d5b532f5010780ea34170da66c47d1cc7c99b4eb54",
+      "bytes": 5386,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/templates/ledger.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/templates/ledger.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/templates/ledger.json",
+      "sha256": "8103823ea3c539aec951a0f5f64101240aa3171bdbe4e6caf8ab47f87da4cf1b",
+      "bytes": 1315,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/README.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/README.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/README.md",
+      "sha256": "8c03056728e18088346541318d1ab4d09159aa2e056b18d662ab624f2771bb38",
+      "bytes": 2191,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/deliverables/SKILL.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/deliverables/SKILL.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/deliverables/SKILL.md",
+      "sha256": "f927b566628066410155d16bf6202ea0add646bcc7b2793978d19dbe9f493db8",
+      "bytes": 1529,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/deliverables/checklist.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/deliverables/checklist.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/deliverables/checklist.md",
+      "sha256": "c30bf6e4eba6299d9ef4cb50d3427745adb378c710ee7a774c910c746f64e234",
+      "bytes": 3361,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/deliverables/disputes.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/deliverables/disputes.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/deliverables/disputes.md",
+      "sha256": "c524ca3bacf9cc933a4fa2887c1a3b777ee450482b8d2d539756bf4381ab2e98",
+      "bytes": 1410,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/deliverables/source_index.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/deliverables/source_index.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/deliverables/source_index.md",
+      "sha256": "4ec4c3919488a048622e576a7e08b3b1db180ad26695433214438c3e10714da4",
+      "bytes": 1948,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/spec.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/spec.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/_base/templates/version_pkg_skeleton/spec.json",
+      "sha256": "b3e17c6d940f9382f343a31cdc59f5fa8127c28daa92419116f7cce186dca828",
+      "bytes": 435,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/30_派发包/派发说明_待验P0P1_20261108.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/30_派发包/派发说明_待验P0P1_20261108.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/30_派发包/派发说明_待验P0P1_20261108.md",
+      "sha256": "1fac6475d7524b1a6c72c256449a322c81870f88b4a521535866594b9266956f",
+      "bytes": 6084,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/00_总览.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/00_总览.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/00_总览.md",
+      "sha256": "61f81945d25a288ef2bd64f2d85be06304a33859b37740d438040f235b78aaf0",
+      "bytes": 7698,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/H01_待核校核定_人工/交付/README.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/H01_待核校核定_人工/交付/README.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/H01_待核校核定_人工/交付/README.md",
+      "sha256": "d7d572fb83fe4f1431111c27c8d59e969d93dccb182ea9dfe674a9120b76dc5f",
+      "bytes": 805,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/H01_待核校核定_人工/任务书.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/H01_待核校核定_人工/任务书.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/H01_待核校核定_人工/任务书.md",
+      "sha256": "035e254d41f1f0e2f5203cc1530b857cc8f42e34965d005aa4d06b4a0c4b0c4e",
+      "bytes": 5201,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/H01_待核校核定_人工/工具/H01_配置.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/H01_待核校核定_人工/工具/H01_配置.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/H01_待核校核定_人工/工具/H01_配置.json",
+      "sha256": "d25b17f2477150b79eb0c59645f65d1ea55014168bb9969c0308c6cdc3312356",
+      "bytes": 320272,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/H02_医统缺字识别_人工/交付/README.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/H02_医统缺字识别_人工/交付/README.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/H02_医统缺字识别_人工/交付/README.md",
+      "sha256": "35bd571b1c9520d34f0c074b4d0481eb360e9b95dc29f6674af95f80228a77ee",
+      "bytes": 1802,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/H02_医统缺字识别_人工/任务书.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/H02_医统缺字识别_人工/任务书.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/H02_医统缺字识别_人工/任务书.md",
+      "sha256": "daa6a2c21a4fbd9ccdc706dd603d4f66ebf28658396f7d71cade7ecc32af641a",
+      "bytes": 8812,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/H02_医统缺字识别_人工/工具/H02_配置.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/H02_医统缺字识别_人工/工具/H02_配置.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/H02_医统缺字识别_人工/工具/H02_配置.json",
+      "sha256": "1fc59c45c92a2141ad538874fe81a77cbea72c889a6647fed842f951d8f6a981",
+      "bytes": 117959,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/L01_邓珍重切条_LLM/交付/README.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/L01_邓珍重切条_LLM/交付/README.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/L01_邓珍重切条_LLM/交付/README.md",
+      "sha256": "861ad2a2da180d6ef1e1c9159b4872e8c1fdbdd1daacef65f1fc891aa33085bc",
+      "bytes": 805,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/L01_邓珍重切条_LLM/任务书.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/L01_邓珍重切条_LLM/任务书.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/L01_邓珍重切条_LLM/任务书.md",
+      "sha256": "e1ae66c142017de5492c42d7f1489ed00d04cbc5633e522ebd3ffca68d05d8f2",
+      "bytes": 4849,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/L01_邓珍重切条_LLM/工具/L01_配置.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/L01_邓珍重切条_LLM/工具/L01_配置.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/L01_邓珍重切条_LLM/工具/L01_配置.json",
+      "sha256": "d3355460ad77fa67ab8fa9db03b1027ac14802f14eceaf76863af17d8b5f8aa7",
+      "bytes": 400633,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/L02_俞桥补录_LLM/交付/交付格式.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/L02_俞桥补录_LLM/交付/交付格式.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/L02_俞桥补录_LLM/交付/交付格式.md",
+      "sha256": "020af242cecfb600434a33a527fad45a712e910df92a01d820a3634c22ea00a6",
+      "bytes": 862,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/L02_俞桥补录_LLM/任务书.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/L02_俞桥补录_LLM/任务书.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/L02_俞桥补录_LLM/任务书.md",
+      "sha256": "6be8bd662011bdffdf13a01ad95249cb106f22dc3ebc9b733444d7280ac7ead7",
+      "bytes": 5939,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/M01_异文对齐_机械/交付/交付格式.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/M01_异文对齐_机械/交付/交付格式.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/M01_异文对齐_机械/交付/交付格式.md",
+      "sha256": "9228900ae3518704cbbf848ac96c611d339ddf51b76d5887c4b22db431b0daff",
+      "bytes": 1088,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/M01_异文对齐_机械/任务书.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/M01_异文对齐_机械/任务书.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/M01_异文对齐_机械/任务书.md",
+      "sha256": "f85fd7ea529c94f112d683ed6636a63053a9fd84b62bd9dc0f599841efce4c9d",
+      "bytes": 5126,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/M02_方剂抽取_机械/交付/交付格式.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/M02_方剂抽取_机械/交付/交付格式.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/M02_方剂抽取_机械/交付/交付格式.md",
+      "sha256": "a058f628b5f7f8c3fcfa077407fb7057a7ae980861b096aeacc19276fa2415f8",
+      "bytes": 915,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/M02_方剂抽取_机械/任务书.md",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/M02_方剂抽取_机械/任务书.md",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/M02_方剂抽取_机械/任务书.md",
+      "sha256": "ba58033d92c7c1ead3ff56ecc8dbef37b6af34f4a7099de3db7b3a578d303d0c",
+      "bytes": 4421,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/_分发包清单.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/_分发包清单.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/_分发包清单.json",
+      "sha256": "b31d63d90fbf8c73fd33288fca7ee900d30950b1045d3cc8bb45e36dd5034481",
+      "bytes": 1640,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_审计/早期派发包/36_派发包_剩余工序/_包清单.json",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_审计/早期派发包/36_派发包_剩余工序/_包清单.json",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_审计/早期派发包/36_派发包_剩余工序/_包清单.json",
+      "sha256": "5175d82f23e949ef1c84add9a073430acb9c88893c08686bdcd467064fee884a",
+      "bytes": 43836,
+      "rule": true,
+      "section4": false
+    },
+    {
+      "relative": ".archive/_旧版/index_v0.11.1.html",
+      "source": "/Users/levi/Documents/医/共创/伤寒杂病论/.archive/_旧版/index_v0.11.1.html",
+      "destination": "/Users/levi/Documents/医/共创/伤寒杂病论/.trash/.archive/_旧版/index_v0.11.1.html",
+      "sha256": "704ec1dac32b353047eae31fe9d0706344afe7ce39fb4d37ea0b01d47a9ada0e",
+      "bytes": 3055112,
+      "rule": true,
+      "section4": false
+    }
+  ],
+  "permanent_delete": false
+}
