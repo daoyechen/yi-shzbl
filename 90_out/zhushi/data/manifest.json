@@ -1,7 +1,7 @@
 {
  "builder": "tools/build_index.py v2.0",
  "site": "zhushi",
- "generated": "2026-11-22T15:26:37+08:00",
+ "generated": "2026-11-22T17:26:31+08:00",
  "packages": {
   "shanghan": {
    "name": "伤寒论",
@@ -10,11 +10,11 @@
    "版本数": 9,
    "review": 97,
    "异文条": 398,
-   "sha256": "fd1ee15db4022577fa1f7ac54a9ecb1f8ed7e7206fb0233352c51d0ba700f1a9",
+   "sha256": "1ae5f0dd26bce6eb744bcc419987ceb8cc2d5812cbe0264d77802eb79532c204",
    "data": "data/shanghan.json",
-   "data_sha256": "dd323339063d9a1c0ca972889b540efee8385eee62c35fae83a1a17e030b19b5",
-   "data_bytes": 7980947,
-   "注本": 15
+   "data_sha256": "4547337fa35d1dba74171ebf70a652f239127875ed6a27ccbd5474d5b61626e7",
+   "data_bytes": 8077941,
+   "注本": 16
   },
   "jingui": {
    "name": "金匮要略",
@@ -36,8 +36,8 @@
     "jingui"
    ],
    "data": "data/zones.json",
-   "data_sha256": "023c51213f92cda01641645bc10c6a563307e55035e96225540fa59da2ffc98a",
-   "data_bytes": 12885225
+   "data_sha256": "f402bed984ca88e026a3813eb31a40c9a6942c1d91dcbe88a9de32262c6082b1",
+   "data_bytes": 12982219
   }
  },
  "index": {
@@ -48,9 +48,9 @@
  },
  "l2": {
   "source": "50_data/51_notes/*/{manifest,notes}.json",
-  "sha256": "2c756c3a45b8c2ce9c21c457569e1f15e76dba2e3e1c64fc84ec809cb302ef0b",
-  "注本数": 23,
-  "注文条": 8509,
+  "sha256": "25550d5cef2e6fd9e57f975e291631d2fb2876f444832352e30013bc7af2ec31",
+  "注本数": 24,
+  "注文条": 8810,
   "覆盖条": {
    "shanghan": 398,
    "jingui": 460
