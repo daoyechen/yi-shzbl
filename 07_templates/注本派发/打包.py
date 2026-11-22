@@ -214,6 +214,12 @@ def main():
             with zipfile.ZipFile(z, "a", zipfile.ZIP_DEFLATED) as zf:
                 zf.write(tmp, "manifest.json")
             os.remove(tmp)
+            # 删掉 zip_utf8_flag 生成的外部 manifest：双份清单会打架，
+            # 权威清单只有包内 manifest.json，外部只留整包 .sha256
+            stem = z[:-4] if z.endswith(".zip") else z
+            for extman in (stem + ".manifest.json", z + ".manifest.json"):
+                if os.path.exists(extman):
+                    os.remove(extman)
             # 外部 sha256
             h = hashlib.sha256(open(z, "rb").read()).hexdigest()
             open(z + ".sha256", "w").write("%s  %s\n" % (h, os.path.basename(z)))
