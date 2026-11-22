@@ -4,6 +4,16 @@
   "targets": [],
   "base": "",
   "source": "",
+  "source_page": "电子文本，无页码",
   "layer": "L2",
-  "status": "目录"
+  "status": "目录",
+  "条数": 0,
+  "覆盖": "0/398 或 0/465",
+  "text_source": "",
+  "proof_level": "对照阅读级（残错 ≤2%）",
+  "files": {
+    "原样": "转录_原样.md",
+    "校订": "转录_校订.md",
+    "校正表": "校正表.csv"
+  }
 }

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """把 H01 / H02 / M01 三份回传结果注入金匮总装产出（v0.2.0）。
 
-只动派生产物，不动 `版本包_金匮基线_v2` 与 `版本正文_金匮` 原件。
+只动派生产物，不动 `04_packages/版本包_金匮基线_v2` 与 `05_texts/版本正文_金匮` 原件。
 
 做四件事：
   1. H02：15 个私用区码位 → 本字，替换 viewer_data 各版 t/d（1:1，不改长度）
@@ -11,7 +11,7 @@
   4. 重算 stats，写 `12_回传结果应用.md`
 
 用法：
-    python3 apply_returns_r1.py [--out 38_总装产出_金匮_v0.2.0]
+    python3 apply_returns_r1.py [--out 50_data/52_l1_assembly/jingui]
 """
 import argparse
 import json
@@ -19,8 +19,8 @@ import os
 import re
 import shutil
 
-B = "/Users/levi/Documents/医/共创/伤寒杂病论"
-R = os.path.join(B, "37_回传验收_r1")
+B = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+R = os.path.join(B, "40_return", "41_return_tmp")
 H01 = os.path.join(R, "回传包_H01_待核校核定_r2/H01_待核校核定_人工/交付/H01_待核校核定_交付.json")
 H02 = os.path.join(R, "H02_医统缺字识别_人工/交付/H02_医统缺字_交付.json")
 M01 = os.path.join(R, "回传包_M01_异文对齐/M01_异文对齐_机械/交付/异文标注.json")
@@ -38,7 +38,7 @@ def is_pua(c):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default=os.path.join(B, "38_总装产出_金匮_v0.2.0"))
+    ap.add_argument("--out", default=os.path.join(B, "50_data", "52_l1_assembly", "jingui"))
     a = ap.parse_args()
     out = a.out
     vp = os.path.join(out, "viewer_data.json")

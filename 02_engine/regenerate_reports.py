@@ -9,14 +9,14 @@ assemble 生成的这些文件取自「版本包」，不含 H01/H02/M01/L01/L02
 只读 viewer_data，不碰骨架、不动版本包。
 
 用法：
-  python3 regenerate_reports.py --out 38_总装产出_金匮_v0.3.0
+  python3 regenerate_reports.py --out 50_data/52_l1_assembly/jingui
 """
 import argparse
 import json
 import os
 import re
 
-B = "/Users/levi/Documents/医/共创/伤寒杂病论"
+B = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def jload(p):
@@ -25,7 +25,7 @@ def jload(p):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default=os.path.join(B, "38_总装产出_金匮_v0.3.0"))
+    ap.add_argument("--out", default=os.path.join(B, "50_data", "52_l1_assembly", "jingui"))
     ap.add_argument("--book", default="金匮要略")
     a = ap.parse_args()
     out = a.out

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """把 L01 / L02 / M02 三份回传注入金匮总装产出 → v0.3.0。
 
-只动派生产物；`版本包_金匮基线_v2` 与 `版本正文_金匮` 原件不动。
+只动派生产物；`04_packages/版本包_金匮基线_v2` 与 `05_texts/版本正文_金匮` 原件不动。
 
 做四件事：
   1. L01：邓珍 150 格定性 → 7 条「有」写 t（中置信）/ 5 条「?」进 review / 102 并入 / 36 无
@@ -13,7 +13,7 @@
 
 用法：
     python3 apply_returns_r2.py --src /tmp/shz_inspect/金匮三包交付 \
-        --out 38_总装产出_金匮_v0.3.0
+        --out 50_data/52_l1_assembly/jingui
 """
 import argparse
 import json
@@ -23,8 +23,8 @@ import shutil
 import unicodedata
 from collections import Counter, defaultdict
 
-B = "/Users/levi/Documents/医/共创/伤寒杂病论"
-BASE = os.path.join(B, "38_总装产出_金匮_v0.2.0")
+B = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE = os.path.join(B, "50_data", "52_l1_assembly", "jingui")
 
 UI = {"不同浏览器/设备数据独立", "建议定期备份重要内容",
       "支持现代浏览器Chrome/Firefox/Edge等", "清除缓存会丢失数据"}
@@ -180,7 +180,7 @@ def main():
     # ── 3. M02 方剂 ────────────────────────────────────────────────
     m02 = jload(M02)
     # 清洗 PUA（用 H02 已释字表）
-    h02p = os.path.join(B, "37_回传验收_r1/H02_医统缺字识别_人工/交付/H02_医统缺字_交付.json")
+    h02p = os.path.join(B, "40_return", "49_return_persistence", "版本判同", "r1", "H02_医统缺字识别_人工", "交付", "H02_医统缺字_交付.json")
     pua = {}
     if os.path.exists(h02p):
         for r in jload(h02p)["rows"]:

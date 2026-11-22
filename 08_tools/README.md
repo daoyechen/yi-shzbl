@@ -37,16 +37,17 @@ cd .. && python3 08_tools/build_index.py
 
 `90_out/index.html` 与 `90_out/*/data/` **必须同一次提交推**，只推一个会报「Failed to fetch」（缓存错配，不是代码坏）。必须走 http(s)，`file://` 下 fetch 被拒。详见 `docs/前端约定.md` §五。
 
-## 路径常量（2026-11-21 重组时改过）
+## 路径约定
 
-改目录结构时，这五个文件里的常量必须同步改，否则引擎与编译器当场断：
+当前脚本按项目根目录定位，不依赖已迁移的 `00_公共地基/` 等旧目录。修改目录结构时，先扫描 `02_engine/`、`08_tools/`、注册表和模板中的硬编码路径，再搬目录；历史日志和迁移对照表保留旧路径，不作为当前命令。
 
-| 文件 | 关键常量 |
+| 入口 | 当前路径 |
 |---|---|
-| `02_engine/shjkit/skeleton.py` | `FOUND`（项目根）、`REG_PATH`（`01_skeleton/`） |
-| `02_engine/shjkit/assemble.py` | `_ROOT`、宋本转录件候选路径（`05_texts/版本正文`） |
-| `01_skeleton/骨架注册表.json` | 3 条 `路径` 字段 |
-| `02_engine/h02_proofs.py` 等 6 个 | `00_公共地基/xxx` 已改新顶层名 |
-| `build_index.py`（本目录） | `ENGINE`／`L2`／`SITE_DIR`／`LANDING`／`SH_SRC`／`JG_SRC` |
+| 引擎 | `02_engine/` |
+| 骨架注册表 | `01_skeleton/骨架注册表.json` |
+| L1 总装 | `50_data/52_l1_assembly/` |
+| L2 注本 | `50_data/51_notes/` |
+| 物料台账 | `10_material/15_catalog/` |
+| 网页输出 | `90_out/` |
 
-旧→新对照见 `50_data/PATH_MAP.md`。
+旧→新对照仅用于解释历史迁移，见 `50_data/PATH_MAP.md`。

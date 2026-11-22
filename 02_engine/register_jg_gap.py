@@ -20,7 +20,7 @@
   4. 幂等：重复运行不会重复写入（按 id 判重）。
 
 用法：
-  python3 register_jg_gap.py --out 38_总装产出_金匮_v0.3.0
+  python3 register_jg_gap.py --out 50_data/52_l1_assembly/jingui
   python3 register_jg_gap.py --out ... --dry
 """
 import argparse
@@ -28,8 +28,8 @@ import json
 import os
 import re
 
-B = "/Users/levi/Documents/医/共创/伤寒杂病论"
-RENDER = os.path.join(B, "05_texts/版本正文_金匮/02_邓珍本1340.md")
+B = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RENDER = os.path.join(B, "05_texts", "版本正文_金匮", "02_邓珍本1340.md")
 
 
 def extract_dz_fragment():
@@ -82,7 +82,7 @@ def build_entries():
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default=os.path.join(B, "38_总装产出_金匮_v0.3.0"))
+    ap.add_argument("--out", default=os.path.join(B, "50_data", "52_l1_assembly", "jingui"))
     ap.add_argument("--dry", action="store_true")
     a = ap.parse_args()
 

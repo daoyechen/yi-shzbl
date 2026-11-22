@@ -30,8 +30,8 @@ import re
 import zipfile
 
 B = "/Users/levi/Documents/医/共创/伤寒杂病论"
-LIST = os.path.join(B, "39_派发包_待验区/H04_待验书目登记_人工/数据/清单.csv")
-OUT = os.path.join(B, "05_版本档案/C5_分级.json")
+LIST = os.path.join(B, "20_process/21_H04_待验书目登记/H04_待验书目登记_人工/数据/清单.csv")
+OUT = os.path.join(B, "10_material/15_catalog/C5_分级.json")
 
 # 简繁对应样本（高频字，够做比例判断）
 PAIRS = [

@@ -13,8 +13,9 @@ import re
 import sys
 
 SIDE_N = {"sh": 398, "jg": 465}
-REQUIRED_MANIFEST = ("id", "name", "targets", "base", "source", "layer",
-                     "status", "条数", "覆盖", "text_source", "proof_level")
+REQUIRED_MANIFEST = ("id", "name", "targets", "base", "source", "source_page",
+                     "layer", "status", "条数", "覆盖", "text_source", "proof_level",
+                     "files")
 PLACEHOLDER = re.compile(r"待核|未决|存疑|TODO|XXX|？？|\?\?|【\s*】")
 TAG_RESIDUE = re.compile(r"[<>]|属性：|<篇名>|<目录>")
 

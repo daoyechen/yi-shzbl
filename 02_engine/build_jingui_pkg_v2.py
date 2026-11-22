@@ -27,7 +27,7 @@ v1（build_jingui_pkg.py）直接读 `各版原文/*.md` 的 `<!-- pN -->` 槽�
 
 用法
 ----
-    python3 build_jingui_pkg_v2.py --out ../版本包_金匮基线_v2
+    python3 build_jingui_pkg_v2.py --out ../04_packages/版本包_金匮基线_v2
 """
 import argparse
 import difflib
@@ -41,9 +41,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from shjkit import skeleton as SK  # noqa: E402
 
-ROOT = os.path.dirname(HERE)                     # 00_公共地基
-SRC = os.path.join(ROOT, "金匮裁定源")
-MD_DIR = os.path.join(ROOT, "版本正文_金匮")
+ROOT = os.path.dirname(HERE)
+SRC = os.path.join(ROOT, "06_rulings")
+MD_DIR = os.path.join(ROOT, "05_texts", "版本正文_金匮")
 UND = "（本版此条未检出）"
 
 # 裁定源里的版本代号 → 版本包名
@@ -241,7 +241,7 @@ def build_version(vname, sk_items, ctx):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default=os.path.join(ROOT, "版本包_金匮基线_v2"))
+    ap.add_argument("--out", default=os.path.join(ROOT, "04_packages", "版本包_金匮基线_v2"))
     args = ap.parse_args()
 
     sk_items = SK.load_skeleton("jingui")
@@ -388,14 +388,14 @@ def main():
 
     def meta_of(vname, n_ok, n_none, n_rev):
         src = {
-            "赵开美本1599": ["版本正文_金匮/01_赵开美本1599.md（骨架逐段渲染件，1556 段全有文）"],
-            "邓珍本1340": ["版本正文_金匮/02_邓珍本1340.md（313 段有文）",
-                       "金匮裁定源/人工裁定_2_5.json（题 A2_邓珍本1340，补低置信/未匹配段）"],
-            "俞桥本四部丛刊": ["金匮裁定源/逐条核定表_2_5_A3.md（1154 段）",
-                        "金匮裁定源/人工裁定_2_5.json（题 A3_俞桥本）"],
-            "医统正脉1601": ["金匮裁定源/逐条核定表_2_5_A4.md（1170 段）",
+            "赵开美本1599": ["05_texts/版本正文_金匮/01_赵开美本1599.md（骨架逐段渲染件，1556 段全有文）"],
+            "邓珍本1340": ["05_texts/版本正文_金匮/02_邓珍本1340.md（313 段有文）",
+                       "06_rulings/人工裁定_2_5.json（题 A2_邓珍本1340，补低置信/未匹配段）"],
+            "俞桥本四部丛刊": ["06_rulings/逐条核定表_2_5_A3.md（1154 段）",
+                        "06_rulings/人工裁定_2_5.json（题 A3_俞桥本）"],
+            "医统正脉1601": ["06_rulings/逐条核定表_2_5_A4.md（1170 段）",
                        "金匮裁定源/人工裁定_2_5.json（题 A4_医统正脉1601）"],
-            "人卫排印本1964": ["金匮裁定源/A10_条级参照系.json（465 条，条级条文）"],
+            "人卫排印本1964": ["06_rulings/A10_条级参照系.json（465 条，条级条文）"],
         }[vname]
         return {
             "源": src,

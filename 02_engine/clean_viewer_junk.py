@@ -17,7 +17,7 @@
   3. 写修复记录，不静默改。
 
 用法：
-  python3 clean_viewer_junk.py --out 38_总装产出_金匮_v0.3.0
+  python3 clean_viewer_junk.py --out 50_data/52_l1_assembly/jingui
   python3 clean_viewer_junk.py --out ... --dry   # 只报告
 """
 import argparse
@@ -25,7 +25,7 @@ import json
 import os
 import re
 
-B = "/Users/levi/Documents/医/共创/伤寒杂病论"
+B = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 CUT_MARKS = [
     "File:",                       # 维基文库图片链接；【】可能插在 File: 之后，故只锚 File: 本身
@@ -85,7 +85,7 @@ def scan(vd):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default=os.path.join(B, "38_总装产出_金匮_v0.3.0"))
+    ap.add_argument("--out", default=os.path.join(B, "50_data", "52_l1_assembly", "jingui"))
     ap.add_argument("--dry", action="store_true")
     a = ap.parse_args()
 
