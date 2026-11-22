@@ -78,13 +78,14 @@ def load_skel(side):
 
 def build_one(r, apply):
     pk = r["id"]
+    dirname = r["目录名"]
     side = r["侧"]
     vers, n_max, _ = SIDE[side]
     src = os.path.join(NAS_TXT, r["文件名"])
     if not os.path.exists(src):
         return "缺物料：%s" % r["文件名"]
 
-    dst_dir = os.path.join(M, pk)
+    dst_dir = os.path.join(M, dirname)
     if apply:
         for sub in ("数据", "工具", "交付"):
             os.makedirs(os.path.join(dst_dir, sub), exist_ok=True)
@@ -132,7 +133,7 @@ def build_one(r, apply):
             tpl = tpl.replace(k, v)
         open(os.path.join(dst_dir, "任务书.md"), "w", encoding="utf-8").write(tpl)
 
-    return "OK %s（%s，%s 字，%s）" % (pk, r["文件名"], r["字数"], "已打包" if apply else "可打包")
+    return "OK %s（%s，%s 字，%s）" % (dirname, r["文件名"], r["字数"], "已打包" if apply else "可打包")
 
 
 def main():
@@ -149,13 +150,14 @@ def main():
     if apply and ok:
         print("\n打 zip：")
         for r in rows:
-            d = os.path.join(M, r["id"])
+            dn = r["目录名"]
+            d = os.path.join(M, dn)
             if not os.path.isdir(d):
                 continue
-            z = os.path.join(M, "%s_派发包.zip" % r["id"])
+            z = os.path.join(M, "%s_派发包.zip" % dn)
             if os.path.exists(z):
                 os.remove(z)
-            p = subprocess.run([sys.executable, ZIPTOOL, z, M, r["id"]],
+            p = subprocess.run([sys.executable, ZIPTOOL, z, M, dn],
                                capture_output=True, text=True)
             size = os.path.getsize(z) / 1e6 if os.path.exists(z) else 0
             print("  %-22s %6.1f MB  %s" % (os.path.basename(z), size,
