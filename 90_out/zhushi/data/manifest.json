@@ -1,7 +1,7 @@
 {
  "builder": "tools/build_index.py v2.0",
  "site": "zhushi",
- "generated": "2026-11-22T22:36:47+08:00",
+ "generated": "2026-11-22T23:33:13+08:00",
  "packages": {
   "shanghan": {
    "name": "伤寒论",
@@ -23,11 +23,11 @@
    "版本数": 4,
    "review": 6,
    "异文条": 394,
-   "sha256": "e6715f205c084730225f12271dab8ec1cbc5cc0e0382d95ac3b34f3a120281d4",
+   "sha256": "a7b24dff367be7e975b9aff9c92df411414c6944b608da39055d0d0e91bb4631",
    "data": "data/jingui.json",
-   "data_sha256": "a7c6153f2a310500e41453ff9df8f68a9cd33cff78126b55f2065300c8511009",
-   "data_bytes": 4903913,
-   "注本": 8
+   "data_sha256": "bfbf7d5013f9513f4dc851e80d3dcd67acc676a30366a8c0b7cd5199b17c6254",
+   "data_bytes": 5512013,
+   "注本": 10
   },
   "heji": {
    "name": "伤寒杂病论",
@@ -36,8 +36,8 @@
     "jingui"
    ],
    "data": "data/zones.json",
-   "data_sha256": "76f899b358b9d5e502b7b70177ff9b4495a933d33765569bdb222523346caec2",
-   "data_bytes": 14595929
+   "data_sha256": "200de3d185ce6d227c1ae2053cbd2aabb3a89195acb1b37ac7051ac73f3fe6f2",
+   "data_bytes": 15204030
   }
  },
  "index": {
@@ -48,12 +48,12 @@
  },
  "l2": {
   "source": "50_data/51_notes/*/{manifest,notes}.json",
-  "sha256": "59cbcde8c8e79611d2b65c16e18072e98b1706050d560e31b53b049a146af83f",
-  "注本数": 27,
-  "注文条": 10488,
+  "sha256": "5423c3e4d62dc58e43df11cc8e9b4a7bfeb1bbe3e664e9032660106635fb9e99",
+  "注本数": 29,
+  "注文条": 11410,
   "覆盖条": {
    "shanghan": 398,
-   "jingui": 460
+   "jingui": 462
   }
  }
 }
