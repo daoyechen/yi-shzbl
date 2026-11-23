@@ -1,7 +1,7 @@
 {
  "builder": "tools/build_index.py v2.0",
  "site": "zhushi",
- "generated": "2026-11-22T23:33:13+08:00",
+ "generated": "2026-11-23T13:27:57+08:00",
  "packages": {
   "shanghan": {
    "name": "伤寒论",
@@ -10,11 +10,11 @@
    "版本数": 9,
    "review": 97,
    "异文条": 398,
-   "sha256": "1a1a63020cfcfc1e11261782a34ec67ac388f8647f35fb8c7ebf326d4a460ed2",
+   "sha256": "a080ec2bbde5d462826f8b8d120e1ecd084a9bff6ea1f864f3859fbcb9a996de",
    "data": "data/shanghan.json",
-   "data_sha256": "702217d4291b880dd5db6ee85ee239d9d9d4b80eb257d280b1ffcfacb054c1a7",
-   "data_bytes": 9691651,
-   "注本": 19
+   "data_sha256": "f8b45a87d3f6d99dfced6bef6661b96635a8a9d56d07844cd45a8d7e52b31d62",
+   "data_bytes": 9856552,
+   "注本": 20
   },
   "jingui": {
    "name": "金匮要略",
@@ -23,11 +23,11 @@
    "版本数": 4,
    "review": 6,
    "异文条": 394,
-   "sha256": "a7b24dff367be7e975b9aff9c92df411414c6944b608da39055d0d0e91bb4631",
+   "sha256": "a803613fdf030e3615f78440cdc934055c34975f7bad094e2624c3544f432ea7",
    "data": "data/jingui.json",
-   "data_sha256": "bfbf7d5013f9513f4dc851e80d3dcd67acc676a30366a8c0b7cd5199b17c6254",
-   "data_bytes": 5512013,
-   "注本": 10
+   "data_sha256": "0edf223a4c4be7d506aa2b1fedd9c5dc77ea56e8abc82c1e4aea5919af5b11ca",
+   "data_bytes": 5951332,
+   "注本": 11
   },
   "heji": {
    "name": "伤寒杂病论",
@@ -36,8 +36,8 @@
     "jingui"
    ],
    "data": "data/zones.json",
-   "data_sha256": "200de3d185ce6d227c1ae2053cbd2aabb3a89195acb1b37ac7051ac73f3fe6f2",
-   "data_bytes": 15204030
+   "data_sha256": "9d2cca2394a843cb082c896c916b35d9bd1bc1711177c17ab43ee614e4b95b41",
+   "data_bytes": 15808250
   }
  },
  "index": {
@@ -48,12 +48,12 @@
  },
  "l2": {
   "source": "50_data/51_notes/*/{manifest,notes}.json",
-  "sha256": "5423c3e4d62dc58e43df11cc8e9b4a7bfeb1bbe3e664e9032660106635fb9e99",
-  "注本数": 29,
-  "注文条": 11410,
+  "sha256": "f274fd96a906d962ba133c5343f362463db532efc98a36c00f38c93e1c63732c",
+  "注本数": 31,
+  "注文条": 12239,
   "覆盖条": {
    "shanghan": 398,
-   "jingui": 462
+   "jingui": 463
   }
  }
 }
