@@ -188,8 +188,8 @@ main{flex:1;overflow-y:auto;padding:0 0 60px}
 .base{border-color:#d9c9a8}
 .base .ch{background:#f3e6d2}
 .base .ch .vn{color:var(--zhu)}
-/* 主版本吸顶（仅单列）：原文常驻顶部，其他版在下面滚。
-   长文不整卡撑满屏，卡片内滚动；手机上再压低一点。 */
+/* 底本吸顶：单列/双列/三列都吸；选定主注本时，注本卡接在底本下面一起吸。
+   两者合计不超过 40vh，超出部分在内层滚，避免挡住下面的对照。 */
 #detail.stick .card.base{position:sticky;top:var(--stick-top,40px);z-index:22;
   box-shadow:0 4px 14px rgba(38,34,25,.12);max-height:min(42vh,420px);
   display:flex;flex-direction:column}
@@ -205,7 +205,15 @@ main{flex:1;overflow-y:auto;padding:0 0 60px}
 #detail .usebase{margin-left:10px;border:1px solid var(--line2);background:#fff;border-radius:5px;
   padding:2px 8px;cursor:pointer;font-family:var(--sans);font-size:12px;color:var(--zhu)}
 .card.zhu.mainz{border-left-color:var(--zhu);box-shadow:0 0 0 1px #e6cbc4 inset}
+#detail.haszmain.stick .card.base{max-height:min(22vh,200px)}
+#detail.stick .zmainstick{position:sticky;top:calc(var(--stick-top,40px) + var(--base-h,0px) + 14px);
+  z-index:21;max-height:calc(40vh - var(--base-h,0px) - 24px);overflow-y:auto;overflow-x:hidden;
+  overscroll-behavior:contain;margin-bottom:14px;background:var(--paper)}
+#detail .zmainstick .card{margin:0}
+#detail .zmainstick .card + .card{margin-top:10px}
+#detail .zmainstick .card:first-child .ch{position:sticky;top:0;z-index:2}
 @media(max-width:820px){#detail.stick .card.base{max-height:min(34vh,300px)}
+  #detail.haszmain.stick .card.base{max-height:min(20vh,180px)}
   #detail .card.base .ch .pg{display:none}}
 @media(max-width:600px){.fab{display:none!important}}
 mark{background:var(--mark);color:#6b3d05;padding:.5px 1px;border-radius:2px;
@@ -580,6 +588,14 @@ function syncStickTop(){
     : (bar ? bar.offsetHeight : 0);
   document.documentElement.style.setProperty('--stick-top', h + 'px');
 }
+/* 主注本吸顶接在底本下面：量底本实际高度，总高限 40vh。 */
+function syncStickOffsets(){
+  const pane = $('#detail'); if (!pane) return;
+  const b = pane.querySelector('.card.base');
+  const z = pane.querySelector('.zmainstick');
+  if (!b || !z){ pane.style.removeProperty('--base-h'); return; }
+  pane.style.setProperty('--base-h', Math.round(b.getBoundingClientRect().height) + 'px');
+}
 function setBase(v){
   basePick = v || '';
   savePref('shj.base.' + D.id, basePick);
@@ -836,34 +852,39 @@ function select(n){
       (isMain ? zmain : zother).push(html);
     }
   }
-  const cards = [];
+  let notice = '';
   if (zsite && zhuPick && !zmain.length){
     const zb = (D.zhub || []).find(b => b.id === zhuPick) || {};
-    cards.push(`<div class="card zhu miss"><div class="ch"><span class="vn">${esc(zb.name || zhuPick)}</span>
+    notice = `<div class="card zhu miss"><div class="ch"><span class="vn">${esc(zb.name || zhuPick)}</span>
       <span class="tag t-none">此条无注</span></div>
-      <div class="cb2" style="color:var(--ink3);font-size:14px">该注本此条无注文；下面仍列各版原文与其他注本。</div></div>`);
+      <div class="cb2" style="color:var(--ink3);font-size:14px">该注本此条无注文；下面仍列各版原文与其他注本。</div></div>`;
   }
-  if (zsite && zhuPick) cards.push(...zmain);
-  cards.push(...verCards, ...legacy, ...zother);
+  const tail = [...verCards, ...legacy, ...zother];
+  const stickyZ = (zsite && zhuPick && zmain.length && mode !== 'pin')
+    ? `<div class="zmainstick">${zmain.join('')}</div>` : '';
   pane.classList.toggle('stick', mode !== 'pin');   // 单列/双列/三列都吸顶；左固定右滑不吸
+  pane.classList.toggle('haszmain', !!stickyZ);     // 底本+主注本合计限高 40vh
   const fb = $('#fab'); if (fb) fb.classList.toggle('on', +mode > 1);
   if (mode === 'pin'){
-    // 左固定底本 + 右侧各版独立滚动
+    // 左固定底本 + 右侧各版独立滚动（主注本仍排最前，但不做第二层吸顶）
+    const pinCards = [notice, ...(zsite && zhuPick ? zmain : []), ...tail].filter(Boolean);
     pane.innerHTML = `<div class="pinsplit"><div class="pinleft">${baseH}</div>`
       + `<div class="pinright" id="pinright">`
-      + `<div class="pinhint">↑ 左为底本，右侧上下滑动看各版（${cards.length} 卡）</div>`
-      + cards.join('') + '</div></div>';
+      + `<div class="pinhint">↑ 左为底本，右侧上下滑动看各版（${pinCards.length} 卡）</div>`
+      + pinCards.join('') + '</div></div>';
     fitPin();
   } else if (cols > 1){
-    // 瀑布流：底本置顶横跨，其余卡按「最短列优先」贪心分配
-    pane.innerHTML = baseH + `<div class="mflow" data-cols="${cols}">`
+    // 瀑布流：底本与主注本置顶横跨，其余卡按「最短列优先」贪心分配
+    pane.innerHTML = baseH + stickyZ + `<div class="mflow" data-cols="${cols}">`
       + Array.from({length: cols}, () => '<div class="mcol"></div>').join('')
       + '</div>';
-    flowCards(cards);
+    flowCards([notice, ...tail].filter(Boolean));
   } else {
-    pane.innerHTML = baseH + cards.join('');
+    pane.innerHTML = baseH + stickyZ + notice + tail.join('');
   }
   syncStickTop();
+  syncStickOffsets();
+  requestAnimationFrame(syncStickOffsets);
   document.querySelector('main').scrollTop = 0;
   markSide();
   updateNav();
@@ -1316,7 +1337,7 @@ $('#side').addEventListener('click', e => {
 window.addEventListener('error', e => toast('出错了:' + e.message));
 window.addEventListener('resize', () => {
   if ($('#detail .pinsplit')) fitPin();
-  syncStickTop();
+  syncStickTop(); syncStickOffsets();
 });
 $('#q').oninput = () => { $('#qclr').style.display = $('#q').value ? 'block' : 'none'; buildSide(); buildIndep(); };
 $('#qclr').onclick = () => { $('#q').value = ''; $('#qclr').style.display = 'none'; buildSide(); $('#q').focus(); };
@@ -1346,7 +1367,7 @@ $('#nav-set').onclick = () => {
   const open = !r.classList.contains('open');
   r.classList.toggle('open', open);
   $('#nav-set').style.background = open ? 'var(--hl)' : '#fff';
-  syncStickTop();
+  syncStickTop(); syncStickOffsets();
 };
 /* 设置行与桌面筛选行双向同步：改一处，另一处跟着变，不出现两套状态 */
 function syncFilters(){
