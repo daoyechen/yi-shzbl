@@ -123,6 +123,20 @@ main{flex:1;overflow-y:auto;padding:0 0 60px}
 .base{border-color:#d9c9a8}
 .base .ch{background:#f3e6d2}
 .base .ch .vn{color:var(--zhu)}
+/* 主版本吸顶（仅单列）：原文常驻顶部，其他版在下面滚。
+   长文不整卡撑满屏，卡片内滚动；手机上再压低一点。 */
+#detail.stick .card.base{position:sticky;top:var(--stick-top,40px);z-index:22;
+  box-shadow:0 4px 14px rgba(38,34,25,.12);max-height:min(42vh,420px);
+  display:flex;flex-direction:column}
+#detail.stick .card.base .ch{flex:0 0 auto}
+#detail.stick .card.base .cb2{overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain}
+#detail .card.base.pick{border-color:var(--gold)}
+#detail .card.base.miss .cb2{color:var(--ink3);font-size:14px}
+#detail .usebase{margin-left:10px;border:1px solid var(--line2);background:#fff;border-radius:5px;
+  padding:2px 8px;cursor:pointer;font-family:var(--sans);font-size:12px;color:var(--zhu)}
+.card.zhu.mainz{border-left-color:var(--zhu);box-shadow:0 0 0 1px #e6cbc4 inset}
+@media(max-width:820px){#detail.stick .card.base{max-height:min(34vh,300px)}}
+@media(max-width:600px){.fab{display:none!important}}
 mark{background:var(--mark);color:#6b3d05;padding:.5px 1px;border-radius:2px;
   box-shadow:0 1px 0 #d9a441 inset;font-weight:600}
 .pg{font-family:var(--sans);font-size:10.5px;color:var(--ink3)}
@@ -379,6 +393,8 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
             <option value="无">无</option><option value="anch">校记锚点</option>
             <option value="hi">高置信</option><option value="low">低置信</option>
           </select></label>
+          <label class="cb" id="baseWrap2" style="display:none" title="选择吸顶显示的主版本">主版本 <select id="baseSel2"></select></label>
+          <label class="cb" id="zhuWrapSel2" style="display:none" title="选择优先显示的主注本">主注本 <select id="zhuSel2"></select></label>
           <span class="colwrap" id="colwrap"></span>
           <span class="tag" id="set-note"></span>
         </div>
@@ -393,6 +409,8 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
           <option value="无">无</option><option value="anch">校记锚点</option>
           <option value="hi">高置信</option><option value="low">低置信</option>
         </select></label>
+        <label class="cb" id="baseWrap" style="display:none" title="选择吸顶显示的主版本">主版本 <select id="baseSel"></select></label>
+        <label class="cb" id="zhuWrapSel" style="display:none" title="选择优先显示的主注本">主注本 <select id="zhuSel"></select></label>
         <span class="sp"></span>
         <span id="cnt"></span>
         <span class="kv" style="color:var(--ink3)">← 点左侧条目看多版对照</span>
@@ -469,6 +487,42 @@ const mk = s => esc(s).replace(/【([^】]*)】/g, '<mark>$1</mark>');
 const ztxt = s => esc(s).replace(/【([^】]{1,14})】/g, '<b class="zhh">【$1】</b>');
 const CF = {'校记锚点':'t-anch','高置信':'t-hi','中置信':'t-mid','低置信':'t-low'};
 const BASE = () => D.baseLabel || '宋本';   // SH=宋本 / JG=赵开美本
+/* 主版本 / 主注本：按区分开记，刷新与切区都不丢。
+   骨架版选原文版本；注释本选注本——两站的「为主」对象不同。 */
+let basePick = '', zhuPick = '';
+const isZhuSite = () => !!(D.zhub && D.zhub.length);
+function loadPrefs(){
+  try{
+    basePick = localStorage.getItem('shj.base.' + D.id) || '';
+    zhuPick  = localStorage.getItem('shj.zhu.'  + D.id) || '';
+  }catch(e){ basePick = ''; zhuPick = ''; }
+  if (basePick && !VERS.includes(basePick)) basePick = '';
+  if (zhuPick && !(D.zhub || []).some(b => b.id === zhuPick)) zhuPick = '';
+}
+function savePref(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+/* 吸顶起点＝当前固定工具条的高度：桌面取 .bar，手机取 .navbar（含展开的设置行）。 */
+function syncStickTop(){
+  const nav = $('#navbar');
+  const bar = document.querySelector('#v-cmp .bar');
+  const h = window.matchMedia('(max-width:820px)').matches
+    ? (nav ? nav.offsetHeight : 0)
+    : (bar ? bar.offsetHeight : 0);
+  document.documentElement.style.setProperty('--stick-top', h + 'px');
+}
+function setBase(v){
+  basePick = v || '';
+  savePref('shj.base.' + D.id, basePick);
+  ['#baseSel','#baseSel2'].forEach(s => { const e = $(s); if (e) e.value = basePick; });
+  if (cur){ const m = document.querySelector('main'); const y = m.scrollTop;
+    select(cur.n); m.scrollTop = y; }
+}
+function setZhu(v){
+  zhuPick = v || '';
+  savePref('shj.zhu.' + D.id, zhuPick);
+  ['#zhuSel','#zhuSel2'].forEach(s => { const e = $(s); if (e) e.value = zhuPick; });
+  if (cur){ const m = document.querySelector('main'); const y = m.scrollTop;
+    select(cur.n); m.scrollTop = y; }
+}
 let cur = null, curTab = 'cmp';
 /* 条号 → 该条全部注文拼串。搜索要能搜到注文，但不能每次按键现拼 1 MB 字符串。 */
 let ZHUHAY = {};
@@ -593,32 +647,59 @@ function select(n){
   const pane = $('#detail');
   const mode = ($('#colsel') && $('#colsel').value) || '1';
   const cols = +mode || 1;
-  // 先收集各卡 HTML（底本单列，其余进瀑布流）
-  // 底本卡：条号已在导航条显示，此处不再重复；页码(p419)是影印本页码，改由「体例说明」页解释
-  let baseH = `<div class="card base"><div class="ch"><span class="vn">${esc(BASE())}</span>
-    <span class="pg">${esc(it.pian||'')}</span></div>
-    <div class="cb2">${mk(it.s)}</div></div>`;
-  const cards = [];
+  // 底本卡：骨架版可选任一原文版本吸顶；注释本固定骨架，另选主注本。
+  // 条号已在导航条显示，此处不再重复；页码(p419)是影印本页码，改由「体例说明」页解释。
+  const zsite = isZhuSite();
+  const bv = (!zsite && basePick) ? basePick : '';
+  let baseH;
+  if (bv){
+    const bc = it.v[bv];
+    if (bc && bc.ok){
+      baseH = `<div class="card base pick"><div class="ch"><span class="vn">${esc(bv)}</span>
+        <span class="tag t-hi">主版本</span>
+        <span class="pg">异文基准：${esc(BASE())}</span></div>
+        <div class="cb2">${mk(bc.t || '')}</div></div>`;
+    }else{
+      baseH = `<div class="card base miss"><div class="ch"><span class="vn">${esc(bv)}</span>
+        <span class="tag t-none">此版无</span>
+        <span class="pg">${esc(((bc && bc.rs) || '').slice(0, 40))}</span></div>
+        <div class="cb2">此条无${esc(bv)}正文。${esc(((bc && bc.ev) || '').slice(0, 120))}
+          <button class="usebase">改用骨架</button></div></div>`;
+    }
+  }else{
+    baseH = `<div class="card base"><div class="ch"><span class="vn">${esc(BASE())}</span>
+      <span class="pg">${esc(it.pian||'')}</span></div>
+      <div class="cb2">${mk(it.s)}</div></div>`;
+  }
+  const verCards = [];
+  if (bv){
+    // 主版本不是骨架时，骨架仍要留在对照里——它是所有【】的基准
+    verCards.push(`<div class="card"><div class="ch"><span class="vn">${esc(BASE())}</span>
+      <span class="tag t-anch">骨架</span><span class="pg">对照基准</span></div>
+      <div class="cb2">${mk(it.s)}</div></div>`);
+  }
   for (const v of VERS){
+    if (v === bv) continue;                    // 已作主版本吸顶，不再重复
     const c = it.v[v];
     if (c.ok){
       const tag = CF[c.cf] || 't-low';
       const seg = (c.d||c.t).split('\n');
-      cards.push(`<div class="card"><div class="ch"><span class="vn">${esc(v)}</span>
+      verCards.push(`<div class="card"><div class="ch"><span class="vn">${esc(v)}</span>
         <span class="tag ${tag}">${esc(c.cf)}</span></div>
         <div class="cb2">${seg.map(mk).join('<br>')}</div></div>`);
     }else{
-      cards.push(`<div class="card"><div class="ch"><span class="vn" style="color:var(--ink3)">${esc(v)}</span>
+      verCards.push(`<div class="card"><div class="ch"><span class="vn" style="color:var(--ink3)">${esc(v)}</span>
         <span class="tag t-none">此版无</span><span class="pg">${esc(c.rs||'')}</span></div>
         <div class="cb2" style="color:var(--ink3);font-size:14px">依据:${esc(c.ev||'')}</div></div>`);
     }
   }
   // ★ 注文(如成无己注)挂在条下 —— 2026-11-04
+  const legacy = [];
   const nts = (D.notes && D.notes[it.n]) || null;
   if (nts){
     for (const vn of Object.keys(nts)){
       const paras = nts[vn].split('\n').filter(x => x.trim());
-      cards.push(`<div class="card" style="border-left:3px solid var(--gold)">
+      legacy.push(`<div class="card" style="border-left:3px solid var(--gold)">
         <div class="ch"><span class="vn">${esc(vn)}·注文</span>
         <span class="pg">${paras.length} 段</span></div>
         <div class="cb2" style="font-size:14px;line-height:1.85">${
@@ -630,6 +711,8 @@ function select(n){
   //   zhu[n] = [{b:注本序号, t:正文, pg:页码, seg:段号, attr:说话人}]
   //   与上面 L1 遗留的 notes 不同：注文按「注本」成卡，不按「版本」——一个注本可能兼注多版，
   //   所注版本记在 zhub[b].targets，不逐条重复。
+  //   选了主注本：它的卡排在原文之后、其他注本之前；不隐藏任何数据。
+  const zmain = [], zother = [];
   const zl = (D.zhu && D.zhu[it.n]) || null;
   if (zl){
     for (const r of zl){
@@ -640,20 +723,35 @@ function select(n){
       if (r.seg) meta.push('第' + r.seg + '段');
       if (r.attr) meta.push(r.attr);
       if (r.pg != null) meta.push('p' + r.pg);
-      cards.push(`<div class="card zhu${long ? '' : ' short'}">
+      const isMain = !!(zhuPick && b.id === zhuPick);
+      const tgt = (b.targets || []).join('/');
+      const html = `<div class="card zhu${long ? '' : ' short'}${isMain ? ' mainz' : ''}">
         <div class="ch"><span class="vn">${esc(b.name || b.id || '')}</span>
         <span class="tag t-zhu">注</span>
+        ${isMain ? '<span class="tag t-hi">主注本</span>' : ''}
+        ${tgt ? `<span class="pg">注${esc(tgt)}</span>` : ''}
         ${meta.length ? `<span class="pg">${esc(meta.join(' · '))}</span>` : ''}
         ${long ? `<span class="pg">${txt.length} 字</span>` : ''}</div>
         <div class="cb2 ztxt">${ztxt(txt)}</div>
-        <button class="zmore">展开全文 ▾</button></div>`);
+        <button class="zmore">展开全文 ▾</button></div>`;
+      (isMain ? zmain : zother).push(html);
     }
   }
+  const cards = [];
+  if (zsite && zhuPick && !zmain.length){
+    const zb = (D.zhub || []).find(b => b.id === zhuPick) || {};
+    cards.push(`<div class="card zhu miss"><div class="ch"><span class="vn">${esc(zb.name || zhuPick)}</span>
+      <span class="tag t-none">此条无注</span></div>
+      <div class="cb2" style="color:var(--ink3);font-size:14px">该注本此条无注文；下面仍列各版原文与其他注本。</div></div>`);
+  }
+  if (zsite && zhuPick) cards.push(...zmain);
+  cards.push(...verCards, ...legacy, ...zother);
+  pane.classList.toggle('stick', mode === '1');
   if (mode === 'pin'){
     // 左固定底本 + 右侧各版独立滚动
     pane.innerHTML = `<div class="pinsplit"><div class="pinleft">${baseH}</div>`
       + `<div class="pinright" id="pinright">`
-      + `<div class="pinhint">↑ 左为底本，右侧上下滑动看各版（${cards.length} 版）</div>`
+      + `<div class="pinhint">↑ 左为底本，右侧上下滑动看各版（${cards.length} 卡）</div>`
       + cards.join('') + '</div></div>';
     fitPin();
   } else if (cols > 1){
@@ -665,6 +763,7 @@ function select(n){
   } else {
     pane.innerHTML = baseH + cards.join('');
   }
+  syncStickTop();
   document.querySelector('main').scrollTop = 0;
   markSide();
   updateNav();
@@ -1046,13 +1145,33 @@ function fillSel(){
   $('#fVer2').innerHTML = '<option value="">全部</option>' + o1;
   const f3 = $('#fVer3');
   if (f3) f3.innerHTML = '<option value="">全部</option>' + o1;
-  // 视图模式：单列 / 双列瀑布 / 三列瀑布 / 左固定右滑
+  // 视图模式：单列 / 双列 / 三列 / 左固定右滑。
+  // 双列在普通手机上挤成窄条，只在宽屏提供；默认始终单列。
   const cw = $('#colwrap');
+  const wide = window.innerWidth >= 600, wider = window.innerWidth >= 1000;
   if (cw){ cw.innerHTML = '<span class="tag">视图</span><select id="colsel">'
     + '<option value="1">单列</option>'
-    + '<option value="2">双列</option>'
-    + '<option value="3">三列</option>'
+    + (wide ? '<option value="2">双列</option>' : '')
+    + (wider ? '<option value="3">三列</option>' : '')
     + '<option value="pin">左固定右滑</option></select>'; }
+  // 主版本（骨架版）/ 主注本（注释本）：两站各管各的对象
+  const show = (id, on) => { const e = $(id); if (e) e.style.display = on ? 'flex' : 'none'; };
+  const zsite = isZhuSite();
+  if (zsite){
+    const zb = '<option value="">全部注本</option>' + (D.zhub || []).map(b =>
+      `<option value="${esc(b.id)}">${esc(b.name || b.id)}</option>`).join('');
+    ['#zhuSel','#zhuSel2'].forEach(s => { const e = $(s);
+      if (e){ e.innerHTML = zb; e.value = zhuPick || ''; } });
+    show('#zhuWrapSel', true); show('#zhuWrapSel2', true);
+    show('#baseWrap', false);  show('#baseWrap2', false);
+  }else{
+    const bo = `<option value="">骨架（${esc(BASE())}）</option>` + VERS.map(v =>
+      `<option value="${esc(v)}">${esc(v)}</option>`).join('');
+    ['#baseSel','#baseSel2'].forEach(s => { const e = $(s);
+      if (e){ e.innerHTML = bo; e.value = basePick || ''; } });
+    show('#baseWrap', true); show('#baseWrap2', true);
+    show('#zhuWrapSel', false); show('#zhuWrapSel2', false);
+  }
 }
 document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
   document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
@@ -1061,6 +1180,7 @@ document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
   $('#v-' + curTab).classList.add('on');
   if (curTab === 'cmp') buildSide();
   document.querySelector('main').scrollTop = 0;
+  syncStickTop();
   syncDnav();
 });
 /* 抽屉内「视图」入口（移动端 tab 行不显示，从这里进） */
@@ -1111,6 +1231,7 @@ $('#side').addEventListener('click', e => {
 window.addEventListener('error', e => toast('出错了:' + e.message));
 window.addEventListener('resize', () => {
   if ($('#detail .pinsplit')) fitPin();
+  syncStickTop();
 });
 $('#q').oninput = () => { $('#qclr').style.display = $('#q').value ? 'block' : 'none'; buildSide(); buildIndep(); };
 $('#qclr').onclick = () => { $('#q').value = ''; $('#qclr').style.display = 'none'; buildSide(); $('#q').focus(); };
@@ -1143,7 +1264,11 @@ $('#nav-set').onclick = () => {
   const open = !r.classList.contains('open');
   r.classList.toggle('open', open);
   $('#nav-set').style.background = open ? 'var(--hl)' : '#fff';
+  syncStickTop();
 };
+/* 主版本 / 主注本：两处控件（桌面条 + 手机设置行）保持同一状态 */
+['#baseSel','#baseSel2'].forEach(s => { const e = $(s); if (e) e.onchange = () => setBase(e.value); });
+['#zhuSel','#zhuSel2'].forEach(s => { const e = $(s); if (e) e.onchange = () => setZhu(e.value); });
 /* 设置行与桌面筛选行双向同步：改一处，另一处跟着变，不出现两套状态 */
 function syncFilters(){
   $('#fDiff2').checked = $('#fDiff').checked;
@@ -1169,6 +1294,8 @@ document.addEventListener('change', e => {
 });
 /* 注文卡展开/收起：事件委托，卡片每次 select 重渲染后不必重绑 */
 document.addEventListener('click', e => {
+  const ub = e.target && e.target.closest && e.target.closest('.usebase');
+  if (ub){ setBase(''); return; }
   const btn = e.target && e.target.closest && e.target.closest('.zmore');
   if (!btn) return;
   const card = btn.closest('.card.zhu');
@@ -1180,8 +1307,17 @@ document.addEventListener('input', e => {
   if (e.target && e.target.id === 'colsel' && cur) select(cur.n);
 });
 $('#copy').onclick = () => {
-  let md = `### 条 ${cur.n} 〔${cur.pian}〕\n\n**宋本**(p${cur.pg}):${cur.s}\n`;
+  const bv = (!isZhuSite() && basePick) ? basePick : '';
+  const bc = bv ? cur.v[bv] : null;
+  let md = `### 条 ${cur.n} 〔${cur.pian}〕\n\n`
+    + (bv
+        ? (bc && bc.ok
+            ? `**${bv}**(主版本,p${bc.pg}):${bc.t || ''}\n`
+            : `**${bv}**:此版无 —— ${(bc && bc.rs) || ''}\n`)
+        : `**${BASE()}**(p${cur.pg}):${cur.s}\n`);
+  if (bv) md += `- **${BASE()}**(骨架,p${cur.pg}):${cur.s}\n`;
   for (const v of VERS){
+    if (v === bv) continue;
     const c = cur.v[v];
     md += c.ok ? `- **${v}**(${c.cf},p${c.pg}):${c.d || c.t}\n`
                : `- **${v}**:此版无 —— **${c.rs}**。依据:${c.ev}\n`;
@@ -1238,6 +1374,7 @@ function loadZone(i){
   ['#fZhuWrap','#fZhuWrap2'].forEach(s => { const e = $(s); if (e) e.style.display = hasZhu ? 'flex' : 'none'; });
   if ($('#fZhu')) $('#fZhu').checked = false;
   if ($('#fZhu2')) $('#fZhu2').checked = false;
+  loadPrefs();
   refreshCounts(); fillSel(); buildDnav(); checkIntegrity(); buildAll();
   const _sd = $('#side'); if (_sd) _sd.scrollTop = 0;   // 换区后目录回到顶部
   if (h && D.items.some(x=>x.n===h)) select(h);
