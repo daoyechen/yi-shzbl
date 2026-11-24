@@ -1,7 +1,7 @@
 {
  "builder": "tools/build_index.py v2.0",
  "site": "zhushi",
- "generated": "2026-11-24T16:23:54+08:00",
+ "generated": "2026-11-24T16:56:29+08:00",
  "packages": {
   "shanghan": {
    "name": "伤寒论",
@@ -42,8 +42,8 @@
  },
  "index": {
   "file": "index.html",
-  "sha256": "b4331cd27661fcda802d66698f56c1f322e8e5ae99baeb3fa643d7f347f06064",
-  "bytes": 92928,
+  "sha256": "11f215a08d2beef59690bc9a23b3b1887fa1706c6f38c8be24a31db6c6cd2b35",
+  "bytes": 93461,
   "mode": "fetch"
  },
  "l2": {

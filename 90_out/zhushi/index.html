@@ -153,7 +153,7 @@ main{flex:1;overflow-y:auto;padding:0 0 60px}
 .base .ch{background:#f3e6d2}
 .base .ch .vn{color:var(--zhu)}
 /* 底本吸顶：单列/双列/三列都吸；选定主注本时，注本卡接在底本下面一起吸。
-   两者合计不超过 40vh，超出部分在内层滚，避免挡住下面的对照。 */
+   两者合计不超过 45vh（全览同样），超出部分在内层滚，下面留一半给对照。 */
 #detail.stick .card.base{position:sticky;top:var(--stick-top,40px);z-index:22;
   box-shadow:0 4px 14px rgba(38,34,25,.12);max-height:min(42vh,420px);
   display:flex;flex-direction:column}
@@ -169,13 +169,19 @@ main{flex:1;overflow-y:auto;padding:0 0 60px}
 #detail .usebase{margin-left:10px;border:1px solid var(--line2);background:#fff;border-radius:5px;
   padding:2px 8px;cursor:pointer;font-family:var(--sans);font-size:12px;color:var(--zhu)}
 .card.zhu.mainz{border-left-color:var(--zhu);box-shadow:0 0 0 1px #e6cbc4 inset}
-#detail.haszmain.stick .card.base{max-height:min(22vh,200px)}
+#detail.haszmain.stick .card.base{max-height:min(18vh,180px)}
 #detail.stick .zmainstick{position:sticky;top:calc(var(--stick-top,40px) + var(--base-h,0px) + 14px);
-  z-index:21;max-height:calc(40vh - var(--base-h,0px) - 24px);overflow-y:auto;overflow-x:hidden;
+  z-index:21;max-height:calc(45vh - var(--base-h,0px) - 24px);overflow-y:auto;overflow-x:hidden;
   overscroll-behavior:contain;margin-bottom:14px;background:var(--paper)}
 #detail .zmainstick .card{margin:0}
 #detail .zmainstick .card + .card{margin-top:10px}
 #detail .zmainstick .card:first-child .ch{position:sticky;top:0;z-index:2}
+/* 全览：坞是拿来跟下面各版对照的，不能铺平。注文不折叠，改为坞内滚，
+   总高仍 45/50vh，下半个屏幕留给原文各版与其他注本。 */
+#detail.allmode .zmainstick .card .ztxt{max-height:none}
+#detail.allmode .zmainstick .card .ztxt::after{display:none}
+#detail.allmode .zmainstick .card .zmore{display:none}
+#detail.allmode .zmainstick .card .zclose{display:none}
 /* 点「展开全文」后，吸顶坞退成普通区块，注文铺开到页面里读；
    否则坞只有 40/55vh，展开还是在那个小窗口里滚，等于没展开。 */
 #detail.expandz .zmainstick{position:static!important;max-height:none!important;
@@ -192,7 +198,7 @@ main{flex:1;overflow-y:auto;padding:0 0 60px}
   #detail.haszmain.stick .card.base{max-height:min(16vh,160px)}
   /* 手机坞放到 55vh、底本压到 16vh，给注文留出「卡头＋6 行＋展开按钮」的整块高度；
      否则 40vh 时按钮会被挤出可视区。 */
-  #detail.stick .zmainstick{max-height:calc(55vh - var(--base-h,0px) - 24px)}
+  #detail.stick .zmainstick{max-height:calc(50vh - var(--base-h,0px) - 24px)}
   #detail .card.base .ch .pg{display:none}}
 @media(max-width:600px){.fab{display:none!important}}
 mark{background:var(--mark);color:#6b3d05;padding:.5px 1px;border-radius:2px;
@@ -948,7 +954,8 @@ function select(n){
   const stickyZ = (zsite && zhuPick && zmain.length && mode !== 'pin' && zmode !== 'yuan')
     ? `<div class="zmainstick">${zmain.join('')}</div>` : '';
   pane.classList.toggle('stick', mode !== 'pin');   // 单列/双列/三列都吸顶；左固定右滑不吸
-  pane.classList.toggle('haszmain', !!stickyZ);     // 底本+主注本合计限高 40vh
+  pane.classList.toggle('haszmain', !!stickyZ);     // 底本+主注本合计限高 45vh
+  pane.classList.toggle('allmode', zmode === 'all'); // 全览：坞内注文不折叠，留半屏给对照
   const fb = $('#fab');
   if (fb){ fb.classList.toggle('on', +mode > 1);
     fb.style.display = (zsite && zmode === 'zhu') ? 'none' : ''; }
