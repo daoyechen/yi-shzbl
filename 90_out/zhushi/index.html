@@ -571,7 +571,8 @@ function loadPrefs(){
   try{
     basePick = localStorage.getItem('shj.base.' + ZKEY()) || '';
     const zs = localStorage.getItem('shj.zhu.' + ZKEY());
-    const defZ = (D.zhub || []).find(b => b.id === 'nihaixia') || (D.zhub || [])[0];
+    const defZ = (D.zhub || []).find(b => b.id === 'nihaixia' || b.id === 'nihaixia_sh')
+              || (D.zhub || [])[0];   // 默认倪海厦；两区各一本（JG nihaixia / SH nihaixia_sh）
     zhuPick = (zs === null) ? (defZ ? defZ.id : '') : zs;
     viewMode = localStorage.getItem('shj.view') || '1';
     readMode = localStorage.getItem('shj.read.' + ZKEY()) || 'zhu';
