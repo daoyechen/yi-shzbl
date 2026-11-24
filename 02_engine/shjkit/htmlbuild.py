@@ -201,11 +201,17 @@ main{flex:1;overflow-y:auto;padding:0 0 60px}
 .card.zhu .ztxt::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2.4em;
   background:linear-gradient(180deg,rgba(255,253,248,0) 0%,var(--panel) 90%);pointer-events:none}
 .card.zhu.short .ztxt::after,.card.zhu.open .ztxt::after{display:none}
-.card.zhu .zmore{display:block;width:100%;border:none;border-top:1px dashed var(--line);
-  background:#fbf7ee;padding:6px 10px;font-size:12px;color:var(--zhu);cursor:pointer;text-align:center;
-  font-family:var(--sans)}
-.card.zhu .zmore:hover{background:#f6efdf}
-.card.zhu.short .zmore{display:none}
+/* 展开按钮：居中小胶囊。原来是通栏细条，看着像分隔线不像按钮。 */
+.card.zhu .zmore,.card.biji .zmore{display:block;margin:0 auto 12px;border:1px solid var(--line2);
+  border-radius:15px;background:#fff;padding:3px 16px;font-size:12px;line-height:1.7;color:var(--zhu);
+  cursor:pointer;text-align:center;font-family:var(--sans);box-shadow:0 1px 2px rgba(38,34,25,.05)}
+.card.zhu .zmore:hover,.card.biji .zmore:hover{border-color:var(--gold);background:#fbf7ee;color:var(--ink)}
+/* 展开后按钮在末尾很远，卡头给一个「收起」 */
+.card .zclose{display:none;margin-left:auto;flex:none;border:1px solid var(--line2);background:#fff;
+  border-radius:12px;padding:1px 10px;font-family:var(--sans);font-size:11.5px;color:var(--zhu);cursor:pointer}
+.card.open .zclose{display:inline-block}
+.card.open .zclose:hover{border-color:var(--gold);background:#fbf7ee}
+.card.zhu.short .zmore,.card.biji.short .zmore{display:none}
 .card.zhu .zhh{color:var(--zhu);font-weight:700}
 .base .cb2{background:#fdfaf3}
 .base{border-color:#d9c9a8}
@@ -235,8 +241,23 @@ main{flex:1;overflow-y:auto;padding:0 0 60px}
 #detail .zmainstick .card{margin:0}
 #detail .zmainstick .card + .card{margin-top:10px}
 #detail .zmainstick .card:first-child .ch{position:sticky;top:0;z-index:2}
+/* 点「展开全文」后，吸顶坞退成普通区块，注文铺开到页面里读；
+   否则坞只有 40/55vh，展开还是在那个小窗口里滚，等于没展开。 */
+#detail.expandz .zmainstick{position:static!important;max-height:none!important;
+  overflow:visible!important;top:auto!important;box-shadow:none}
+#detail.expandz .zmainstick .card .ztxt{max-height:none}
+#detail.expandz .zmainstick .card .ztxt::after{display:none}
+/* .card 的 overflow:hidden 会把 sticky 卡头锁死，展开时放开 */
+#detail.expandz .zmainstick .card{overflow:visible}
+/* 展开后卡头仍吸顶，让「收起」常驻可达 */
+#detail.expandz .zmainstick .card:first-child .ch{position:sticky;top:var(--stick-top,40px);z-index:3}
+/* 展开读注文时底本不必再占顶部，否则一直挡着 */
+#detail.expandz .card.base{position:static!important}
 @media(max-width:820px){#detail.stick .card.base{max-height:min(34vh,300px)}
-  #detail.haszmain.stick .card.base{max-height:min(20vh,180px)}
+  #detail.haszmain.stick .card.base{max-height:min(16vh,160px)}
+  /* 手机坞放到 55vh、底本压到 16vh，给注文留出「卡头＋6 行＋展开按钮」的整块高度；
+     否则 40vh 时按钮会被挤出可视区。 */
+  #detail.stick .zmainstick{max-height:calc(55vh - var(--base-h,0px) - 24px)}
   #detail .card.base .ch .pg{display:none}}
 @media(max-width:600px){.fab{display:none!important}}
 mark{background:var(--mark);color:#6b3d05;padding:.5px 1px;border-radius:2px;
@@ -963,9 +984,10 @@ function select(n){
           ${isMain ? '<span class="tag t-hi">主注本</span>' : ''}
           ${tgt ? `<span class="pg">注${esc(tgt)}</span>` : ''}
           ${meta.length ? `<span class="pg">${esc(meta.join(' · '))}</span>` : ''}
-          ${long ? `<span class="pg">${txt.length} 字</span>` : ''}</div>
+          ${long ? `<span class="pg">${txt.length} 字</span>` : ''}
+          ${long ? '<button class="zclose">收起</button>' : ''}</div>
           <div class="cb2 ztxt">${ztxt(txt)}</div>
-          <button class="zmore">展开全文 ▾</button></div>`;
+          <button class="zmore">展开全文</button></div>`;
         (isMain ? zmain : zother).push(html);
       }
     }
@@ -1255,9 +1277,10 @@ function buildBiji(){
         <span class="tag t-zhu">笔记</span>
         <span class="pg">${esc(b.name || b.id || '')}</span>
         ${meta.length ? `<span class="pg">${esc(meta.join(' · '))}</span>` : ''}
-        ${long ? `<span class="pg">${txt.length} 字</span>` : ''}</div>
+        ${long ? `<span class="pg">${txt.length} 字</span>` : ''}
+        ${long ? '<button class="zclose">收起</button>' : ''}</div>
         <div class="cb2 ztxt">${ztxt(txt)}</div>
-        ${long ? '<button class="zmore">展开全文 ▾</button>' : ''}</div>`;
+        ${long ? '<button class="zmore">展开全文</button>' : ''}</div>`;
     }
   }
   box.innerHTML = h || '<div class="empty">此筛选下没有笔记</div>';
@@ -1645,12 +1668,29 @@ document.addEventListener('click', e => {
   if (nl){ openBiji(nl.dataset.pian || ''); return; }
   const nz = e.target && e.target.closest && e.target.closest('.nextzhu');
   if (nz && cur){ nextZhu(cur.n); return; }
+  const cl = e.target && e.target.closest && e.target.closest('.zclose');
+  if (cl){
+    const c2 = cl.closest('.card');
+    if (c2){
+      c2.classList.remove('open');
+      const mb = c2.querySelector('.zmore'); if (mb) mb.textContent = '展开全文';
+      if (c2.closest('.zmainstick')){ const d=$('#detail'); if (d) d.classList.remove('expandz'); }
+      const m=document.querySelector('main'); if (m && c2.getBoundingClientRect().top < 0) c2.scrollIntoView({block:'start'});
+    }
+    return;
+  }
   const btn = e.target && e.target.closest && e.target.closest('.zmore');
   if (!btn) return;
   const card = btn.closest('.card.zhu, .card.biji');
   if (!card) return;
   const on = card.classList.toggle('open');
-  btn.textContent = on ? '收起 ▴' : '展开全文 ▾';
+  btn.textContent = on ? '收起' : '展开全文';
+  // 吸顶坞里的注文：展开同时把坞放平，否则只是在小窗口里滚
+  if (card.closest('.zmainstick')){
+    const d = $('#detail');
+    if (d) d.classList.toggle('expandz', on);
+    if (on) requestAnimationFrame(syncStickOffsets);
+  }
 });
 $('#copy').onclick = () => {
   if (!cur) return;
