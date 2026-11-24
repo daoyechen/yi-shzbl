@@ -33,7 +33,7 @@
       │  assemble
       ├──> 50_data/52_l1_assembly/shanghan/   (SH, 12 件)
       └──> 50_data/52_l1_assembly/jingui/     (JG, 15 件)
-                │  50_data/ 注本层  33 部注本 12,491 条注文（L2）
+                │  50_data/ 注本层  33 部注本 12,493 条注文（L2）
                 │  08_tools/build_index.py
                 ├──> 90_out/gujia/           骨架版：各版原文逐条对照
                 └──> 90_out/zhushi/          注释版：原文 + 注文（锚同一套骨架条号）
@@ -87,7 +87,7 @@
 | 项 | 说明 |
 | --- | --- |
 | 注本 | **33 部**（SH 22 部、JG 11 部） |
-| 注文 | **12,491 条** |
+| 注文 | **12,493 条** |
 | 覆盖 | SH 398 / 398 条；JG 463 / 465 条 |
 | 出处 | 每部 `manifest.json` 记 `base` / `source_page` / `text_source` / `proof_level`，正文逐段可回查 |
 | 编译 | `08_tools/build_index.py` 并入 `90_out/zhushi/`，注文与原文锚同一套骨架条号 |
