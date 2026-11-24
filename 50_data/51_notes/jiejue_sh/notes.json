@@ -1,6 +1,9 @@
 [
  {
-  "n": 1,
+  "n": null,
+  "scope": "book",
+  "pian": null,
+  "title": "读法·识症诊脉",
   "versions": [
    "宋本"
   ],
@@ -8,7 +11,10 @@
   "pg": null
  },
  {
-  "n": 1,
+  "n": null,
+  "scope": "book",
+  "pian": null,
+  "title": "传经日程",
   "versions": [
    "宋本"
   ],

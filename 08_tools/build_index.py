@@ -130,36 +130,49 @@ def load_l2(expect):
         if not zone:
             errors.append(f"{name}: targets={targets} 无法映射到 SH/JG（只认 宋本 / 赵开美本）")
             continue
-        bad = [x["n"] for x in notes if not (1 <= int(x["n"]) <= expect[zone])]
+        tiao = [x for x in notes if (x.get("scope") or "tiao") == "tiao"]
+        biji = [x for x in notes if (x.get("scope") or "tiao") != "tiao"]
+        bad = [x.get("n") for x in tiao if not isinstance(x.get("n"), int)
+               or not (1 <= int(x["n"]) <= expect[zone])]
         if bad:
-            errors.append(f"{name}: {len(bad)} 条条号越界（{bad[:6]}…），该区共 {expect[zone]} 条")
+            errors.append(f"{name}: {len(bad)} 条条号越界或非整数（{bad[:6]}…），该区共 {expect[zone]} 条")
+            continue
+        bad_biji = [i + 1 for i, x in enumerate(biji)
+                    if x.get("n") is not None or not (x.get("title") or "").strip()
+                    or ((x.get("scope") or "") == "pian" and not (x.get("pian") or "").strip())]
+        if bad_biji:
+            errors.append(f"{name}: {len(bad_biji)} 篇笔记字段不全（n 须 null、title 必填、pian 须有篇名）")
             continue
         for x in notes:
             vs = x.get("versions") or []
             if vs and vs != targets:
-                errors.append(f"{name}: 条 {x['n']} 的 versions={vs} 与 manifest.targets={targets} 不一致")
+                errors.append(f"{name}: 条 {x.get('n') or x.get('title')} 的 versions={vs} 与 manifest.targets={targets} 不一致")
                 break
         found[name] = {"mf": mf, "notes": notes, "zone": zone, "targets": targets}
 
     order = [k for k in ZHU_ORDER if k in found] + \
             [k for k in sorted(found) if k not in ZHU_ORDER]
-    out = {z: {"zhub": [], "zhu": {}, "errors": errors} for z in ("shanghan", "jingui")}
+    out = {z: {"zhub": [], "zhu": {}, "biji": [], "errors": errors}
+           for z in ("shanghan", "jingui")}
     for idx, name in enumerate(order):
         f = found[name]
         mf, zone = f["mf"], f["zone"]
         b = len(out[zone]["zhub"])
-        cov = sorted({int(x["n"]) for x in f["notes"]})
+        tiao = [x for x in f["notes"] if (x.get("scope") or "tiao") == "tiao"]
+        biji = [x for x in f["notes"] if (x.get("scope") or "tiao") != "tiao"]
+        cov = sorted({int(x["n"]) for x in tiao})
         out[zone]["zhub"].append({
             "id": name,
             "name": mf.get("name") or name,
             "targets": f["targets"],
-            "n": len(f["notes"]),
+            "n": len(tiao),
+            "biji": len(biji),
             "cover": mf.get("覆盖") or mf.get("覆盖率") or f"{len(cov)}/{expect[zone]}",
             "status": mf.get("status") or "",
             "base": mf.get("base") or "",
             "source": mf.get("source") or "",
         })
-        for x in f["notes"]:
+        for x in tiao:
             r = {"b": b, "t": x.get("text") or ""}
             if x.get("pg") is not None:
                 r["pg"] = x["pg"]
@@ -168,12 +181,25 @@ def load_l2(expect):
             if x.get("attr"):
                 r["attr"] = x["attr"]
             out[zone]["zhu"].setdefault(str(int(x["n"])), []).append(r)
+        for x in biji:
+            r = {"b": b, "t": x.get("text") or "",
+                 "title": x.get("title") or "",
+                 "scope": x.get("scope") or "pian"}
+            if x.get("pian"):
+                r["pian"] = x["pian"]
+            if x.get("pg") is not None:
+                r["pg"] = x["pg"]
+            if x.get("seg"):
+                r["seg"] = x["seg"]
+            if x.get("attr"):
+                r["attr"] = x["attr"]
+            out[zone]["biji"].append(r)
     return out
 
 
 def l2_digest(l2):
     """注文指纹：只取内容，不含 errors 字段。"""
-    return digest({z: {"zhub": l2[z]["zhub"], "zhu": l2[z]["zhu"]}
+    return digest({z: {"zhub": l2[z]["zhub"], "zhu": l2[z]["zhu"], "biji": l2[z]["biji"]}
                    for z in ("shanghan", "jingui")})
 
 
@@ -242,6 +268,7 @@ def payloads():
         d = strip_l1(src)
         d["zhub"] = l2[z]["zhub"]
         d["zhu"] = l2[z]["zhu"]
+        d["biji"] = l2[z]["biji"]
         zs[z] = d
     return {"gujia": gu, "zhushi": zs}, l2
 
@@ -278,6 +305,7 @@ def manifest_of(kind, packs, l2):
             "sha256": l2_digest(l2),
             "注本数": sum(len(l2[z]["zhub"]) for z in ("shanghan", "jingui")),
             "注文条": sum(len(v) for z in ("shanghan", "jingui") for v in l2[z]["zhu"].values()),
+            "笔记篇": sum(len(l2[z]["biji"]) for z in ("shanghan", "jingui")),
             "覆盖条": {z: len(l2[z]["zhu"]) for z in ("shanghan", "jingui")},
         }
     return man
@@ -301,7 +329,7 @@ def landing_html(mans):
     </a>"""
 
     zs = (mans.get("zhushi") or {}).get("l2") or {}
-    extra = (f'<br>注本 {zs.get("注本数","?")} 部 · 注文 {zs.get("注文条","?")} 条'
+    extra = (f'<br>注本 {zs.get("注本数","?")} 部 · 注文 {zs.get("注文条","?")} 条 · 笔记 {zs.get("笔记篇","?")} 篇'
              if zs else "")
     return f"""<!DOCTYPE html>
 <html lang="zh-Hans">
@@ -450,7 +478,7 @@ def main():
         mans[kind] = man
         print(f"已编译 {kind}/index.html {man['index']['bytes']/1024:.1f} KB"
               f" · data/zones.json {man['packages']['heji']['data_bytes']/1048576:.1f} MB"
-              + (f" · 注本 {man['l2']['注本数']} 部 / 注文 {man['l2']['注文条']} 条"
+              + (f" · 注本 {man['l2']['注本数']} 部 / 注文 {man['l2']['注文条']} 条 / 笔记 {man['l2'].get('笔记篇',0)} 篇"
                  if kind == "zhushi" else ""))
 
     # 落地页：数字取两站 manifest（新编的用内存里的，没重编的读盘）

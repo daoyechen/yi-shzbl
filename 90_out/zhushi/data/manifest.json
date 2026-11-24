@@ -1,7 +1,7 @@
 {
  "builder": "tools/build_index.py v2.0",
  "site": "zhushi",
- "generated": "2026-11-24T09:41:54+08:00",
+ "generated": "2026-11-24T12:44:15+08:00",
  "packages": {
   "shanghan": {
    "name": "伤寒论",
@@ -10,10 +10,10 @@
    "版本数": 9,
    "review": 97,
    "异文条": 398,
-   "sha256": "b07efa00cae29d87c0f3863d7579dad87aa9877b713d6483fe11830556520765",
+   "sha256": "af14b0e27a36b6446b3a091dccbd02784aac24ab774b3e5875058371bcb6ddcd",
    "data": "data/shanghan.json",
-   "data_sha256": "5cd616fc639227c970ca54c41a6386e89afb4c905759016686115ce361744c25",
-   "data_bytes": 10025201,
+   "data_sha256": "5afa8631bae7c3b8f4a471dd8fce34321e958012ece47c57c22ec1522be1fb4d",
+   "data_bytes": 10031694,
    "注本": 22
   },
   "jingui": {
@@ -23,10 +23,10 @@
    "版本数": 4,
    "review": 6,
    "异文条": 394,
-   "sha256": "153cae71e653e8085ea7a1d64b9d7c0336096d342eb880492d9987bd29f21079",
+   "sha256": "976ad1a0b7d1e6f88e46f5395e60d865bc4e42be8b7f4a42570c1dc2802847e9",
    "data": "data/jingui.json",
-   "data_sha256": "8f56f8c92522d78e791ad3c70a6590561422d0fdb98fd3a4b3cf4fcf829a96a5",
-   "data_bytes": 5948782,
+   "data_sha256": "605f40fad3ee3ade5db6af214136700e55d29048c5f996d854e96a215898c0aa",
+   "data_bytes": 5949023,
    "注本": 11
   },
   "heji": {
@@ -36,21 +36,22 @@
     "jingui"
    ],
    "data": "data/zones.json",
-   "data_sha256": "7841f65aa0cc51b5db8ce7ebadfd850ed6edb9df4e19a90ef0e4b06528a2607b",
-   "data_bytes": 15974349
+   "data_sha256": "b3b002f8c136c98f2c31fcea8035b5460a33a2fd60c6a775914ab9ad8b7b65dd",
+   "data_bytes": 15981083
   }
  },
  "index": {
   "file": "index.html",
-  "sha256": "e61ad3fb19ca37d1c56e3867df511b2ad967dbb0bedf44754aef3de0770ada81",
-  "bytes": 77831,
+  "sha256": "61764fc0fee56b31b71a326ce1ade5a292c8ac7571fcfc50901e2a3008ff8bfc",
+  "bytes": 90172,
   "mode": "fetch"
  },
  "l2": {
   "source": "50_data/51_notes/*/{manifest,notes}.json",
-  "sha256": "193f867b2b801fea0e7a938049d07ee1c29b26eb749cecef489bf777178a1a09",
+  "sha256": "9d87241885a2fd55d494d4fde38d77e99465c36dd9ce5db01902d85ce42fc34d",
   "注本数": 33,
-  "注文条": 12493,
+  "注文条": 12410,
+  "笔记篇": 83,
   "覆盖条": {
    "shanghan": 398,
    "jingui": 463

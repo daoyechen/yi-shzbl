@@ -70,37 +70,57 @@ def main():
     prev = 0
     ns = []
     total = 0
+    ntiao = nbiji = 0
     for i, x in enumerate(notes):
         if not isinstance(x, dict):
             errs.append("第 %d 项不是对象" % (i + 1))
             continue
-        if "n" not in x or "text" not in x:
-            errs.append("第 %d 项缺 n 或 text" % (i + 1))
+        if "text" not in x:
+            errs.append("第 %d 项缺 text" % (i + 1))
             continue
-        n = x["n"]
-        if not isinstance(n, int):
-            errs.append("第 %d 项 n 不是整数：%r" % (i + 1, n))
+        scope = x.get("scope") or "tiao"
+        if scope not in ("tiao", "pian", "book"):
+            errs.append("第 %d 项 scope=%r 不合法（tiao/pian/book）" % (i + 1, scope))
             continue
-        if not (1 <= n <= N):
-            errs.append("第 %d 项 n=%d 越界（1..%d）" % (i + 1, n, N))
-        if n < prev:
-            errs.append("第 %d 项 n=%d 小于前一条 %d（条号必须单调不减）" % (i + 1, n, prev))
-        prev = max(prev, n)
         t = x["text"]
         if not isinstance(t, str) or not t.strip():
             errs.append("第 %d 项 text 为空" % (i + 1))
             continue
         if han(t) < 5:
-            warns.append("第 %d 项（n=%d）只有 %d 个汉字，可能是碎片" % (i + 1, n, han(t)))
+            warns.append("第 %d 项（%s）只有 %d 个汉字，可能是碎片"
+                         % (i + 1, ("n=%s" % x.get("n")) if x.get("n") is not None else scope, han(t)))
         m = PLACEHOLDER.search(t)
         if m:
-            errs.append("第 %d 项（n=%d）正文含占位「%s」" % (i + 1, n, m.group(0)))
+            errs.append("第 %d 项（%s）正文含占位「%s」"
+                        % (i + 1, ("n=%s" % x.get("n")) if x.get("n") is not None else scope, m.group(0)))
         if TAG_RESIDUE.search(t):
-            errs.append("第 %d 项（n=%d）正文含标签残留「%s」" % (i + 1, n, TAG_RESIDUE.search(t).group(0)))
+            errs.append("第 %d 项（%s）正文含标签残留「%s」"
+                        % (i + 1, ("n=%s" % x.get("n")) if x.get("n") is not None else scope,
+                           TAG_RESIDUE.search(t).group(0)))
         if "\n" in t:
-            warns.append("第 %d 项（n=%d）正文含硬换行" % (i + 1, n))
-        ns.append(n)
+            warns.append("第 %d 项（%s）正文含硬换行"
+                         % (i + 1, ("n=%s" % x.get("n")) if x.get("n") is not None else scope))
         total += han(t)
+        if scope == "tiao":
+            n = x.get("n")
+            if not isinstance(n, int):
+                errs.append("第 %d 项条注 n 不是整数：%r" % (i + 1, n))
+                continue
+            if not (1 <= n <= N):
+                errs.append("第 %d 项 n=%d 越界（1..%d）" % (i + 1, n, N))
+            if n < prev:
+                errs.append("第 %d 项 n=%d 小于前一条 %d（条号必须单调不减）" % (i + 1, n, prev))
+            prev = max(prev, n)
+            ns.append(n)
+            ntiao += 1
+        else:
+            if x.get("n") is not None:
+                errs.append("第 %d 项 scope=%s 时 n 必须为 null（现为 %r）" % (i + 1, scope, x.get("n")))
+            if not (x.get("title") or "").strip():
+                errs.append("第 %d 项 scope=%s 缺 title" % (i + 1, scope))
+            if scope == "pian" and not (x.get("pian") or "").strip():
+                errs.append("第 %d 项 scope=pian 缺 pian（L1 篇名）" % (i + 1))
+            nbiji += 1
 
     uniq = sorted(set(ns))
     cover = len(uniq) / float(N)
@@ -108,14 +128,19 @@ def main():
     print("=" * 56)
     print("交付目录 : %s" % d)
     print("侧       : %s（%d 条）" % (side.upper(), N))
-    print("段数     : %d" % len(notes))
+    print("段数     : %d（条注 %d / 笔记 %d）" % (len(notes), ntiao, nbiji))
     print("条号     : %d 个，范围 %s..%s" % (len(uniq), uniq[0] if uniq else "-", uniq[-1] if uniq else "-"))
     print("覆盖     : %d/%d = %.1f%%" % (len(uniq), N, cover * 100))
     print("汉字     : %d" % total)
     print("=" * 56)
 
     # 与 manifest 自报对比
-    if str(man.get("条数")) != str(len(notes)):
+    if "条注数" in man:
+        if str(man.get("条注数")) != str(ntiao):
+            warns.append("manifest 报条注数 %s，实际条注 %d" % (man.get("条注数"), ntiao))
+        if str(man.get("笔记数")) != str(nbiji):
+            warns.append("manifest 报笔记数 %s，实际笔记 %d" % (man.get("笔记数"), nbiji))
+    elif str(man.get("条数")) != str(len(notes)):
         warns.append("manifest 报条数 %s，实际段数 %d" % (man.get("条数"), len(notes)))
     print("\n硬伤 %d，提示 %d" % (len(errs), len(warns)))
     for e in errs[:30]:

@@ -86,6 +86,29 @@ main{flex:1;overflow-y:auto;padding:0 0 60px}
 /* 宽表在窄屏会撑破布局：统一外包一层横向滚动容器 */
 .tscroll{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .bar .cb{display:flex;align-items:center;gap:4px;cursor:pointer;user-select:none}
+/* 筛选抽屉：默认收起，点「筛选」展开；和看法、计数同一行，不另占一屏 */
+.bar .fbox{display:none;flex:1 0 100%;gap:10px;align-items:center;flex-wrap:wrap;
+  padding-top:7px;margin-top:1px;border-top:1px dashed var(--line2)}
+.bar .fbox.open{display:flex}
+.fbtn{border:1px solid var(--line2);background:#fff;padding:4px 10px;border-radius:5px;cursor:pointer;
+  font-family:var(--sans);font-size:12px;color:var(--ink2)}
+.fbtn.on{background:var(--hl);border-color:var(--gold);color:var(--zhu)}
+.chip{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line2);background:#fff;
+  border-radius:10px;padding:1px 8px;font-family:var(--sans);font-size:11.5px;color:var(--ink2)}
+.chip b{color:var(--zhu);cursor:pointer}
+/* 篇首「本篇笔记」入口：不占正文，给一条可点的窄条 */
+.notelink{display:flex;align-items:center;gap:8px;margin:0 0 12px;padding:6px 11px;
+  border:1px dashed var(--line2);border-radius:7px;background:#fbf7ee;cursor:pointer;
+  font-family:var(--sans);font-size:12px;color:var(--ink2)}
+.notelink b{color:var(--zhu)}
+.notelink:hover{border-color:var(--gold);background:#f7f0df}
+/* 笔记页：按篇分组，卡片比条注略窄 */
+.bgroup{margin:18px 0 6px;padding:5px 0 4px;border-bottom:1px solid var(--line);
+  font-family:var(--sans);font-size:12px;font-weight:700;color:var(--zhu);letter-spacing:.5px}
+.bgroup .c{color:var(--ink3);font-weight:400;margin-left:6px}
+.card.biji{border-left:3px solid var(--gold)}
+.card.biji .ch .vn{font-size:14px}
+.card.biji .cb2{font-size:14px;line-height:1.9}
 .wrap2{padding:16px 22px}
 
 .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;margin-bottom:14px;overflow:hidden}
@@ -217,7 +240,9 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
   /* tab 行与统计条在移动版不再占位置：入口进抽屉 */
   .tabs{display:none}
   .stat{display:none}
-  .integrity{top:56px}
+  /* 手机：丢到下方，别压住导航条与筛选抽屉 */
+  .integrity{top:auto;bottom:calc(70px + env(safe-area-inset-bottom,0px));max-width:calc(100vw - 28px)}
+  .integrity.hide{transform:translate(-50%,14px)}
   aside{position:fixed;left:0;top:0;bottom:0;width:84vw;max-width:340px;height:100vh;height:100dvh;
     transform:translateX(-101%);transition:transform .22s ease;z-index:70;
     box-shadow:2px 0 16px rgba(0,0,0,.2);border-right:1px solid var(--line2)}
@@ -285,6 +310,10 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
 .navbar .setrow select{border:1px solid var(--line2);background:#fff;padding:3px 6px;border-radius:5px;
   font-size:12px;flex:none}
 .navbar .setrow .tag{font-family:var(--sans);font-size:11.5px;color:var(--ink3);flex:none}
+.navbar .setrow.open{flex-wrap:wrap;white-space:normal;overflow:visible}
+.navbar .setrow .fbox{display:none;flex:1 0 100%;flex-wrap:wrap;gap:8px;align-items:center;
+  padding-top:6px;border-top:1px dashed var(--line2);white-space:normal}
+.navbar .setrow .fbox.open{display:flex}
 /* 多栏对比：JS 按高度动态分列的真瀑布流（.mflow）。
    为什么不用 CSS column-count：它是「先填满左列再填右列」，阅读顺序变纵向，
    版本对照要的是「同一行左右可比」，所以必须按高度贪心分配。 */
@@ -371,6 +400,7 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
   <div class="tabs" id="tabs">
     <button class="tab on" data-v="cmp">条文对照</button>
     <button class="tab" data-v="fang">方剂对照<span class="cnt" id="c-fang"></span></button>
+    <button class="tab" data-v="biji">笔记<span class="cnt" id="c-biji"></span></button>
     <button class="tab" data-v="pian">篇级对照</button>
     <button class="tab" data-v="indep">独有序<span class="cnt" id="c-indep"></span></button>
     <button class="tab" data-v="review">待复核<span class="cnt" id="c-rev"></span></button>
@@ -398,35 +428,67 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
           <button class="navbtn" id="nav-set" aria-label="筛选设置" title="筛选设置">⚙</button>
         </div>
         <div class="setrow" id="setrow">
-          <span class="cb"><input type="checkbox" id="fDiff2"> 只看有异文</span>
-          <span class="cb"><input type="checkbox" id="fSame2"> 只看全同</span>
-          <span class="cb" id="fZhuWrap2" style="display:none"><input type="checkbox" id="fZhu2"> 只看有注文</span>
-          <label class="cb">版本 <select id="fVer3"></select></label>
-          <label class="cb">状态 <select id="fSt2">
-            <option value="">全部</option><option value="有">有</option>
-            <option value="无">无</option><option value="anch">校记锚点</option>
-            <option value="hi">高置信</option><option value="low">低置信</option>
+          <label class="cb">看法 <select id="readsel2">
+            <option value="zhu">读注</option><option value="yuan">原文</option><option value="all">全览</option>
           </select></label>
-          <span class="colwrap" id="colwrap"></span>
+          <button class="fbtn" id="filterbtn2">筛选</button>
+          <div class="fbox" id="fbox2">
+            <label class="cb">差异 <select id="fDiffMode2">
+              <option value="">全部</option><option value="diff">只看有异文</option><option value="same">只看全同</option>
+            </select></label>
+            <label class="cb" id="fZhuWrap2"><input type="checkbox" id="fZhu2"> 只看有注文</label>
+            <label class="cb">版本 <select id="fVer3"></select></label>
+            <label class="cb">状态 <select id="fSt2">
+              <option value="">全部</option><option value="有">有</option>
+              <option value="无">无</option><option value="anch">校记锚点</option>
+              <option value="hi">高置信</option><option value="low">低置信</option>
+            </select></label>
+            <label class="cb">视图 <select id="colsel2">
+              <option value="1">单列</option><option value="2">双列</option>
+              <option value="3">三列</option><option value="pin">左固定右滑</option>
+            </select></label>
+            <button id="freset2">重置</button>
+          </div>
           <span class="tag" id="set-note"></span>
         </div>
       </div>
       <div class="bar">
-        <span class="cb"><input type="checkbox" id="fDiff"> 只看有异文的条</span>
-        <span class="cb"><input type="checkbox" id="fSame"> 只看各版全同</span>
-        <span class="cb" id="fZhuWrap" style="display:none"><input type="checkbox" id="fZhu"> 只看有注文</span>
-        <label class="cb" title="只选版本:只看该版有此条的条文">版本 <select id="fVer"></select></label>
-        <label class="cb" title="需与版本筛选配合使用">状态 <select id="fSt">
-          <option value="">全部</option><option value="有">有</option>
-          <option value="无">无</option><option value="anch">校记锚点</option>
-          <option value="hi">高置信</option><option value="low">低置信</option>
+        <label class="cb">看法 <select id="readsel">
+          <option value="zhu">读注</option><option value="yuan">原文</option><option value="all">全览</option>
         </select></label>
+        <button class="fbtn" id="filterbtn">筛选</button>
+        <div class="fbox" id="fbox">
+          <label class="cb">差异 <select id="fDiffMode">
+            <option value="">全部</option><option value="diff">只看有异文</option><option value="same">只看全同</option>
+          </select></label>
+          <label class="cb" id="fZhuWrap"><input type="checkbox" id="fZhu"> 只看有注文</label>
+          <label class="cb" title="只选版本:只看该版有此条的条文">版本 <select id="fVer"></select></label>
+          <label class="cb" title="需与版本筛选配合使用">状态 <select id="fSt">
+            <option value="">全部</option><option value="有">有</option>
+            <option value="无">无</option><option value="anch">校记锚点</option>
+            <option value="hi">高置信</option><option value="low">低置信</option>
+          </select></label>
+          <label class="cb">视图 <select id="colsel">
+            <option value="1">单列</option><option value="2">双列</option>
+            <option value="3">三列</option><option value="pin">左固定右滑</option>
+          </select></label>
+          <button id="freset">重置</button>
+        </div>
         <span class="sp"></span>
         <span id="cnt"></span>
         <span class="kv" style="color:var(--ink3)">← 点左侧条目看多版对照</span>
         <button id="copy">复制本条 Markdown</button>
       </div>
       <div class="wrap2 pane" id="detail"></div>
+    </section>
+
+    <section class="view" id="v-biji">
+      <div class="bar">
+        <label class="cb">注本 <select id="bijiSel"></select></label>
+        <span class="chip" id="bijiPianChip" style="display:none"></span>
+        <span class="sp"></span><span id="biji-cnt"></span>
+      </div>
+      <div class="wrap2" id="bijibox"></div>
     </section>
 
     <section class="view" id="v-fang">
@@ -497,21 +559,32 @@ const mk = s => esc(s).replace(/【([^】]*)】/g, '<mark>$1</mark>');
 const ztxt = s => esc(s).replace(/【([^】]{1,14})】/g, '<b class="zhh">【$1】</b>');
 const CF = {'校记锚点':'t-anch','高置信':'t-hi','中置信':'t-mid','低置信':'t-low'};
 const BASE = () => D.baseLabel || '宋本';   // SH=宋本 / JG=赵开美本
+const ZKEY = () => (D.skel && D.skel.id) || D.id || 'zone';
 /* 主版本 / 主注本：按区分开记，刷新与切区都不丢。
    骨架版选原文版本；注释本选注本——两站的「为主」对象不同。 */
 let basePick = '', zhuPick = '', viewMode = '1';
+let readMode = 'zhu';                 // 读注 / 原文 / 全览
+let diffMode = '', zhuOnly = true;    // 差异三态；读注默认只列有注文的条
+let bijiPick = '', bijiPian = '';     // 笔记页：注本筛选、篇筛选
 const isZhuSite = () => !!(D.zhub && D.zhub.length);
 function loadPrefs(){
   try{
-    basePick = localStorage.getItem('shj.base.' + D.id) || '';
-    zhuPick  = localStorage.getItem('shj.zhu.'  + D.id) || '';
+    basePick = localStorage.getItem('shj.base.' + ZKEY()) || '';
+    const zs = localStorage.getItem('shj.zhu.' + ZKEY());
+    const defZ = (D.zhub || []).find(b => b.id === 'nihaixia') || (D.zhub || [])[0];
+    zhuPick = (zs === null) ? (defZ ? defZ.id : '') : zs;
     viewMode = localStorage.getItem('shj.view') || '1';
-  }catch(e){ basePick = ''; zhuPick = ''; viewMode = '1'; }
+    readMode = localStorage.getItem('shj.read.' + ZKEY()) || 'zhu';
+    diffMode = localStorage.getItem('shj.diff') || '';
+    zhuOnly = localStorage.getItem('shj.zhuonly') !== '0';
+  }catch(e){ basePick = ''; zhuPick = ''; viewMode = '1'; readMode = 'zhu'; diffMode = ''; zhuOnly = true; }
   if (basePick && !VERS.includes(basePick)) basePick = '';
   if (zhuPick && !(D.zhub || []).some(b => b.id === zhuPick)) zhuPick = '';
   const max = window.innerWidth >= 1000 ? 3 : (window.innerWidth >= 600 ? 2 : 1);
   if (!['1','2','3','pin'].includes(viewMode)) viewMode = '1';
   if (viewMode !== 'pin' && +viewMode > max) viewMode = '1';
+  if (!isZhuSite()) readMode = 'yuan';
+  if (!['zhu','yuan','all'].includes(readMode)) readMode = 'zhu';
 }
 function savePref(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
 /* 吸顶起点＝当前固定工具条的高度：桌面取 .bar，手机取 .navbar（含展开的设置行）。 */
@@ -533,13 +606,16 @@ function syncStickOffsets(){
 }
 function setBase(v){
   basePick = v || '';
-  savePref('shj.base.' + D.id, basePick);
+  savePref('shj.base.' + ZKEY(), basePick);
   if (cur){ const m = document.querySelector('main'); const y = m.scrollTop;
     select(cur.n); m.scrollTop = y; }
 }
 function setZhu(v){
   zhuPick = v || '';
-  savePref('shj.zhu.' + D.id, zhuPick);
+  savePref('shj.zhu.' + ZKEY(), zhuPick);
+  ['#zhuSel','#zhuSel2'].forEach(s => { const e = $(s); if (e) e.value = zhuPick; });
+  fillSel();
+  buildSide();
   if (cur){ const m = document.querySelector('main'); const y = m.scrollTop;
     select(cur.n); m.scrollTop = y; }
 }
@@ -550,9 +626,27 @@ function setView(v){
   const max = window.innerWidth >= 1000 ? 3 : (window.innerWidth >= 600 ? 2 : 1);
   if (viewMode !== 'pin' && +viewMode > max) viewMode = '1';
   savePref('shj.view', viewMode);
-  const e = $('#colsel'); if (e) e.value = viewMode;
+  ['#colsel','#colsel2'].forEach(s => { const e = $(s); if (e) e.value = viewMode; });
   if (cur){ const m = document.querySelector('main'); const y = m.scrollTop;
     select(cur.n); m.scrollTop = y; }
+}
+function setRead(v){
+  readMode = ['zhu','yuan','all'].includes(v) ? v : 'zhu';
+  savePref('shj.read.' + ZKEY(), readMode);
+  fillSel(); buildSide();
+  if (cur) select(cur.n);
+}
+function setDiff(v){
+  diffMode = ['diff','same'].includes(v) ? v : '';
+  savePref('shj.diff', diffMode);
+  ['#fDiffMode','#fDiffMode2'].forEach(s => { const e = $(s); if (e) e.value = diffMode; });
+  buildSide();
+}
+function setZhuOnly(on){
+  zhuOnly = !!on;
+  savePref('shj.zhuonly', zhuOnly ? '1' : '0');
+  ['#fZhu','#fZhu2'].forEach(s => { const e = $(s); if (e) e.checked = zhuOnly; });
+  buildSide();
 }
 /* 吸顶卡头里的切换器：骨架版选原文版本，注释本选注本。 */
 function baseSelHtml(){
@@ -567,7 +661,9 @@ function zhuSelHtml(){
     + (D.zhub || []).map(b => `<option value="${esc(b.id)}"${b.id === zhuPick ? ' selected' : ''}>${esc(b.name || b.id)}</option>`).join('')
     + '</select>';
 }
-const pickSelHtml = () => isZhuSite() ? zhuSelHtml() : baseSelHtml();
+const pickSelHtml = () => isZhuSite()
+  ? (readMode === 'yuan' ? '' : zhuSelHtml())
+  : baseSelHtml();
 let cur = null, curTab = 'cmp';
 /* 条号 → 该条全部注文拼串。搜索要能搜到注文，但不能每次按键现拼 1 MB 字符串。 */
 let ZHUHAY = {};
@@ -575,17 +671,30 @@ let ZHUHAY = {};
 /* ---------- 侧栏:条目录 ---------- */
 function diffVers(it){ return VERS.filter(v => it.v[v].ok && /【/.test(it.v[v].d||'')); }
 /* 筛选谓词：buildSide 与 nav/compose 都从当前筛选控件现取，避免两套状态 */
+function noteHay(n, onlyPick){
+  const arr = (D.zhu && D.zhu[n]) || [];
+  return arr.filter(r => {
+    if (!onlyPick) return true;
+    const b = (D.zhub || [])[r.b] || {};
+    return b.id === zhuPick;
+  }).map(r => r.t || '').join(' ');
+}
+function hasNote(n){
+  const arr = (D.zhu && D.zhu[n]) || [];
+  if (!zhuPick) return arr.length > 0;
+  return arr.some(r => ((D.zhub || [])[r.b] || {}).id === zhuPick);
+}
+/* 筛选谓词：条注按当前注本判断；原文模式不注文。 */
 function makeMatch(){
   const q = ($('#q') && $('#q').value || '').trim();
-  const fDiff = $('#fDiff') && $('#fDiff').checked;
-  const fSame = $('#fSame') && $('#fSame').checked;
-  const fZhu  = $('#fZhu')  && $('#fZhu').checked;
   const fv = ($('#fVer') && $('#fVer').value) || '';
   const fst = ($('#fSt') && $('#fSt').value) || '';
+  const isZ = isZhuSite();
+  const needNote = isZ && readMode === 'zhu' && (zhuOnly || !!zhuPick);
   return it => {
-    if (fDiff && !diffVers(it).length) return false;
-    if (fSame && diffVers(it).length) return false;
-    if (fZhu && !ZHUHAY[it.n]) return false;
+    if (diffMode === 'diff' && !diffVers(it).length) return false;
+    if (diffMode === 'same' && diffVers(it).length) return false;
+    if (needNote && !hasNote(it.n)) return false;
     const okState = c => {
       if (fst==='有') return c.ok;
       if (fst==='无') return !c.ok;
@@ -602,8 +711,9 @@ function makeMatch(){
       if (!VERS.some(v => okState(it.v[v]))) return false;
     }
     if (q){
+      const nh = isZ ? noteHay(it.n, readMode !== 'yuan' && !!zhuPick) : '';
       const hay = it.n+' '+it.s+' '+VERS.map(v=>it.v[v].ok?it.v[v].t:'').join(' ')
-                  + ' ' + (ZHUHAY[it.n]||'');
+                  + ' ' + nh;
       if (!hay.includes(q)) return false;
     }
     return true;
@@ -690,13 +800,14 @@ function select(n){
   if (!it) return;
   cur = it;
   const pane = $('#detail');
-  let mode = viewMode || '1';
+  const zsite = isZhuSite();
+  const zmode = zsite ? readMode : 'yuan';       // 骨架版固定原文；注释本按看法
+  let mode = (zmode === 'zhu') ? '1' : (viewMode || '1');
   const max = window.innerWidth >= 1000 ? 3 : (window.innerWidth >= 600 ? 2 : 1);
   if (mode !== 'pin' && +mode > max) mode = '1';
   const cols = +mode || 1;
   // 底本卡：骨架版可选任一原文版本吸顶；注释本固定骨架，另选主注本。
   // 条号已在导航条显示，此处不再重复；页码(p419)是影印本页码，改由「体例说明」页解释。
-  const zsite = isZhuSite();
   const bv = (!zsite && basePick) ? basePick : '';
   let baseH;
   if (bv){
@@ -721,88 +832,106 @@ function select(n){
       ${pickSelHtml()}</div>
       <div class="cb2">${mk(it.s)}</div></div>`;
   }
+  // 原文模式不列各版；读注模式只留骨架＋注本
   const verCards = [];
-  if (bv){
-    // 主版本不是骨架时，骨架仍要留在对照里——它是所有【】的基准
-    verCards.push(`<div class="card"><div class="ch"><span class="vn">${esc(BASE())}</span>
-      <span class="tag t-anch">骨架</span><span class="pg">对照基准</span></div>
-      <div class="cb2">${mk(it.s)}</div></div>`);
-  }
-  for (const v of VERS){
-    if (v === bv) continue;                    // 已作主版本吸顶，不再重复
-    const c = it.v[v];
-    if (c.ok){
-      const tag = CF[c.cf] || 't-low';
-      const seg = (c.d||c.t).split('\n');
-      verCards.push(`<div class="card"><div class="ch"><span class="vn">${esc(v)}</span>
-        <span class="tag ${tag}">${esc(c.cf)}</span></div>
-        <div class="cb2">${seg.map(mk).join('<br>')}</div></div>`);
-    }else{
-      verCards.push(`<div class="card"><div class="ch"><span class="vn" style="color:var(--ink3)">${esc(v)}</span>
-        <span class="tag t-none">此版无</span><span class="pg">${esc(c.rs||'')}</span></div>
-        <div class="cb2" style="color:var(--ink3);font-size:14px">依据:${esc(c.ev||'')}</div></div>`);
+  if (zmode !== 'zhu'){
+    if (bv){
+      // 主版本不是骨架时，骨架仍要留在对照里——它是所有【】的基准
+      verCards.push(`<div class="card"><div class="ch"><span class="vn">${esc(BASE())}</span>
+        <span class="tag t-anch">骨架</span><span class="pg">对照基准</span></div>
+        <div class="cb2">${mk(it.s)}</div></div>`);
+    }
+    for (const v of VERS){
+      if (v === bv) continue;                    // 已作主版本吸顶，不再重复
+      const c = it.v[v];
+      if (c.ok){
+        const tag = CF[c.cf] || 't-low';
+        const seg = (c.d||c.t).split('\n');
+        verCards.push(`<div class="card"><div class="ch"><span class="vn">${esc(v)}</span>
+          <span class="tag ${tag}">${esc(c.cf)}</span></div>
+          <div class="cb2">${seg.map(mk).join('<br>')}</div></div>`);
+      }else{
+        verCards.push(`<div class="card"><div class="ch"><span class="vn" style="color:var(--ink3)">${esc(v)}</span>
+          <span class="tag t-none">此版无</span><span class="pg">${esc(c.rs||'')}</span></div>
+          <div class="cb2" style="color:var(--ink3);font-size:14px">依据:${esc(c.ev||'')}</div></div>`);
+      }
     }
   }
-  // ★ 注文(如成无己注)挂在条下 —— 2026-11-04
+  // ★ 注文(如成无己注)挂在条下 —— 2026-11-04；只在全览保留
   const legacy = [];
-  const nts = (D.notes && D.notes[it.n]) || null;
-  if (nts){
-    for (const vn of Object.keys(nts)){
-      const paras = nts[vn].split('\n').filter(x => x.trim());
-      legacy.push(`<div class="card" style="border-left:3px solid var(--gold)">
-        <div class="ch"><span class="vn">${esc(vn)}·注文</span>
-        <span class="pg">${paras.length} 段</span></div>
-        <div class="cb2" style="font-size:14px;line-height:1.85">${
-          paras.map(p => esc(p).replace(/^((注\d+·[^）]*)|（[^）]*）)$/,
-            '<b style="color:var(--gold)">$1</b>')).join('<br>')}</div></div>`);
+  if (zmode === 'all'){
+    const nts = (D.notes && D.notes[it.n]) || null;
+    if (nts){
+      for (const vn of Object.keys(nts)){
+        const paras = nts[vn].split('\n').filter(x => x.trim());
+        legacy.push(`<div class="card" style="border-left:3px solid var(--gold)">
+          <div class="ch"><span class="vn">${esc(vn)}·注文</span>
+          <span class="pg">${paras.length} 段</span></div>
+          <div class="cb2" style="font-size:14px;line-height:1.85">${
+            paras.map(p => esc(p).replace(/^((注\d+·[^）]*)|（[^）]*）)$/,
+              '<b style="color:var(--gold)">$1</b>')).join('<br>')}</div></div>`);
+      }
     }
   }
   // ★ L2 注文（41_注释本对比，2026-11-17）
   //   zhu[n] = [{b:注本序号, t:正文, pg:页码, seg:段号, attr:说话人}]
-  //   与上面 L1 遗留的 notes 不同：注文按「注本」成卡，不按「版本」——一个注本可能兼注多版，
-  //   所注版本记在 zhub[b].targets，不逐条重复。
-  //   选了主注本：它的卡排在原文之后、其他注本之前；不隐藏任何数据。
+  //   读注：只留选中注本；全览：主注本置顶、其余照列。
   const zmain = [], zother = [];
-  const zl = (D.zhu && D.zhu[it.n]) || null;
-  if (zl){
-    for (const r of zl){
-      const b = (D.zhub || [])[r.b] || {};
-      const txt = r.t || '';
-      const long = txt.length > 240 || txt.split('\n').length > 5;
-      const meta = [];
-      if (r.seg) meta.push('第' + r.seg + '段');
-      if (r.attr) meta.push(r.attr);
-      if (r.pg != null) meta.push('p' + r.pg);
-      const isMain = !!(zhuPick && b.id === zhuPick);
-      const tgt = (b.targets || []).join('/');
-      const html = `<div class="card zhu${long ? '' : ' short'}${isMain ? ' mainz' : ''}">
-        <div class="ch"><span class="vn">${esc(b.name || b.id || '')}</span>
-        <span class="tag t-zhu">注</span>
-        ${isMain ? '<span class="tag t-hi">主注本</span>' : ''}
-        ${tgt ? `<span class="pg">注${esc(tgt)}</span>` : ''}
-        ${meta.length ? `<span class="pg">${esc(meta.join(' · '))}</span>` : ''}
-        ${long ? `<span class="pg">${txt.length} 字</span>` : ''}</div>
-        <div class="cb2 ztxt">${ztxt(txt)}</div>
-        <button class="zmore">展开全文 ▾</button></div>`;
-      (isMain ? zmain : zother).push(html);
+  if (zmode !== 'yuan'){
+    const zl = (D.zhu && D.zhu[it.n]) || null;
+    if (zl){
+      for (const r of zl){
+        const b = (D.zhub || [])[r.b] || {};
+        const txt = r.t || '';
+        const long = txt.length > 240 || txt.split('\n').length > 5;
+        const meta = [];
+        if (r.seg) meta.push('第' + r.seg + '段');
+        if (r.attr) meta.push(r.attr);
+        if (r.pg != null) meta.push('p' + r.pg);
+        const isMain = !!(zhuPick && b.id === zhuPick);
+        if (zmode === 'zhu' && zhuPick && !isMain) continue;   // 读注：其他注本不列
+        const tgt = (b.targets || []).join('/');
+        const html = `<div class="card zhu${long ? '' : ' short'}${isMain ? ' mainz' : ''}">
+          <div class="ch"><span class="vn">${esc(b.name || b.id || '')}</span>
+          <span class="tag t-zhu">注</span>
+          ${isMain ? '<span class="tag t-hi">主注本</span>' : ''}
+          ${tgt ? `<span class="pg">注${esc(tgt)}</span>` : ''}
+          ${meta.length ? `<span class="pg">${esc(meta.join(' · '))}</span>` : ''}
+          ${long ? `<span class="pg">${txt.length} 字</span>` : ''}</div>
+          <div class="cb2 ztxt">${ztxt(txt)}</div>
+          <button class="zmore">展开全文 ▾</button></div>`;
+        (isMain ? zmain : zother).push(html);
+      }
     }
   }
   let notice = '';
-  if (zsite && zhuPick && !zmain.length){
+  if (zmode === 'zhu' && zhuPick && !zmain.length){
     const zb = (D.zhub || []).find(b => b.id === zhuPick) || {};
     notice = `<div class="card zhu miss"><div class="ch"><span class="vn">${esc(zb.name || zhuPick)}</span>
       <span class="tag t-none">此条无注</span></div>
-      <div class="cb2" style="color:var(--ink3);font-size:14px">该注本此条无注文；下面仍列各版原文与其他注本。</div></div>`;
+      <div class="cb2" style="color:var(--ink3);font-size:14px">该注本此条无注文。
+        <button class="nextzhu">跳到下一条有注</button></div></div>`;
+  }
+  // 篇首入口：本篇有笔记时给一条窄链，不把总论塞进条1
+  let noteLink = '';
+  if (zsite && zmode !== 'yuan'){
+    const pn = (D.biji || []).filter(x => x.pian === it.pian).length;
+    const first = D.items.find(x => x.pian === it.pian);
+    if (pn && first && first.n === it.n){
+      noteLink = `<div class="notelink" data-pian="${esc(it.pian)}">本篇笔记 <b>${pn}</b> 篇 · 点此查看 →</div>`;
+    }
   }
   const tail = [...verCards, ...legacy, ...zother];
-  const stickyZ = (zsite && zhuPick && zmain.length && mode !== 'pin')
+  const stickyZ = (zsite && zhuPick && zmain.length && mode !== 'pin' && zmode !== 'yuan')
     ? `<div class="zmainstick">${zmain.join('')}</div>` : '';
   pane.classList.toggle('stick', mode !== 'pin');   // 单列/双列/三列都吸顶；左固定右滑不吸
   pane.classList.toggle('haszmain', !!stickyZ);     // 底本+主注本合计限高 40vh
-  const fb = $('#fab'); if (fb) fb.classList.toggle('on', +mode > 1);
+  const fb = $('#fab');
+  if (fb){ fb.classList.toggle('on', +mode > 1);
+    fb.style.display = (zsite && zmode === 'zhu') ? 'none' : ''; }
   if (mode === 'pin'){
     // 左固定底本 + 右侧各版独立滚动（主注本仍排最前，但不做第二层吸顶）
-    const pinCards = [notice, ...(zsite && zhuPick ? zmain : []), ...tail].filter(Boolean);
+    const pinCards = [noteLink, notice, ...(zsite && zhuPick && zmode !== 'yuan' ? zmain : []), ...tail].filter(Boolean);
     pane.innerHTML = `<div class="pinsplit"><div class="pinleft">${baseH}</div>`
       + `<div class="pinright" id="pinright">`
       + `<div class="pinhint">↑ 左为底本，右侧上下滑动看各版（${pinCards.length} 卡）</div>`
@@ -810,12 +939,12 @@ function select(n){
     fitPin();
   } else if (cols > 1){
     // 瀑布流：底本与主注本置顶横跨，其余卡按「最短列优先」贪心分配
-    pane.innerHTML = baseH + stickyZ + `<div class="mflow" data-cols="${cols}">`
+    pane.innerHTML = baseH + noteLink + stickyZ + `<div class="mflow" data-cols="${cols}">`
       + Array.from({length: cols}, () => '<div class="mcol"></div>').join('')
       + '</div>';
     flowCards([notice, ...tail].filter(Boolean));
   } else {
-    pane.innerHTML = baseH + stickyZ + notice + tail.join('');
+    pane.innerHTML = baseH + noteLink + stickyZ + notice + tail.join('');
   }
   syncStickTop();
   syncStickOffsets();
@@ -872,6 +1001,7 @@ function statRows(){
   ];
   if (D.zhub && D.zhub.length){
     rows.push({a:'zhu', label:`有注文 <b>${Object.keys(D.zhu || {}).length}</b> 条 · 注本 <b>${D.zhub.length}</b> 部`});
+    if ((D.biji || []).length) rows.push({a:'biji', label:`笔记 <b>${D.biji.length}</b> 篇（总论、篇级）`});
   }
   for (const v of VERS){
     const s = D.stats[v];
@@ -1021,6 +1151,67 @@ function buildIndep(){
   $('#indepbox').innerHTML = h;
 }
 
+/* ---------- 笔记：总论、篇级与专题，不绑条号 ---------- */
+function pianOrder(){
+  const m = new Map(); let i = 0;
+  for (const it of D.items){ if (!m.has(it.pian)) m.set(it.pian, i++); }
+  return m;
+}
+function buildBiji(){
+  const box = $('#bijibox'); if (!box) return;
+  let arr = (D.biji || []).slice();
+  if (bijiPick) arr = arr.filter(x => (((D.zhub || [])[x.b] || {}).id === bijiPick));
+  if (bijiPian) arr = arr.filter(x => x.pian === bijiPian);
+  const order = pianOrder(), groups = new Map();
+  for (const x of arr){
+    const k = x.pian || '全书·读法';
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k).push(x);
+  }
+  const keys = [...groups.keys()].sort((a, b) => {
+    if (a === '全书·读法') return -1;
+    if (b === '全书·读法') return 1;
+    return (order.get(a) ?? 999) - (order.get(b) ?? 999);
+  });
+  let h = '';
+  for (const k of keys){
+    const list = groups.get(k);
+    h += `<div class="bgroup">${esc(k.replace(/\s+/g,' '))}<span class="c">${list.length} 篇</span></div>`;
+    for (const x of list){
+      const b = (D.zhub || [])[x.b] || {};
+      const txt = x.t || '';
+      const long = txt.length > 240 || txt.split('\n').length > 5;
+      const meta = [];
+      if (x.scope === 'book') meta.push('全书');
+      if (x.pg != null) meta.push('p' + x.pg);
+      h += `<div class="card biji${long ? '' : ' short'}">
+        <div class="ch"><span class="vn">${esc(x.title || '笔记')}</span>
+        <span class="tag t-zhu">笔记</span>
+        <span class="pg">${esc(b.name || b.id || '')}</span>
+        ${meta.length ? `<span class="pg">${esc(meta.join(' · '))}</span>` : ''}
+        ${long ? `<span class="pg">${txt.length} 字</span>` : ''}</div>
+        <div class="cb2 ztxt">${ztxt(txt)}</div>
+        ${long ? '<button class="zmore">展开全文 ▾</button>' : ''}</div>`;
+    }
+  }
+  box.innerHTML = h || '<div class="empty">此筛选下没有笔记</div>';
+  const bc = $('#biji-cnt'); if (bc) bc.textContent = arr.length + ' 篇';
+  const cb = $('#c-biji'); if (cb) cb.textContent = (D.biji || []).length || '';
+  wrapTables();
+}
+function openBiji(pian){
+  bijiPian = pian || '';
+  fillSel();
+  const t = document.querySelector('#tabs .tab[data-v="biji"]');
+  if (t) t.click();
+  buildBiji();
+}
+function nextZhu(n){
+  const arr = D.items.filter(it => hasNote(it.n)).map(it => it.n).sort((a,b) => a-b);
+  const nx = arr.find(x => x > n);
+  if (nx) select(nx); else toast('后面没有更多有注的条');
+}
+
 /* ---------- 待复核 ---------- */
 function buildReview(){
   const h = `<table><thead><tr><th style="width:70px">条号</th><th style="width:120px">版本</th>
@@ -1074,11 +1265,12 @@ function buildAbout(){
       <span class="pg">${D.zhub.length} 部</span></div><div class="cb2" style="font-size:13.5px">
       <div class="kv" style="margin-bottom:9px">注文一律锚在骨架条号上，与各版原文并列，不改动原文；
       只记录注本说了什么，不判断其对不对。页码 pN 是注本自身的实体书页，未得则空。</div>
-      <div class="tscroll"><table><thead><tr><th>注本</th><th>所注</th><th>条数</th>
-      <th>覆盖</th><th>状态</th></tr></thead><tbody>`
+      <div class="tscroll"><table><thead><tr><th>注本</th><th>所注</th><th>条注</th>
+      <th>笔记</th><th>覆盖</th><th>状态</th></tr></thead><tbody>`
       + D.zhub.map(b => `<tr><td><b>${esc(b.name)}</b>${b.base ? `<div class="kv" style="color:var(--ink3)">${esc(String(b.base).slice(0,60))}</div>` : ''}</td>
         <td class="kv">${esc((b.targets || []).join('、'))}</td>
         <td>${b.n != null ? b.n : ''}</td>
+        <td>${b.biji != null ? b.biji : ''}</td>
         <td class="kv">${esc(b.cover || '')}</td>
         <td class="kv">${esc(b.status || '')}</td></tr>`).join('')
       + `</tbody></table></div></div></div>`;
@@ -1153,6 +1345,20 @@ function checkIntegrity(){
       if (declared && declared !== cnt) errs.push('注文实收 ' + cnt + ' 条 ≠ 注本表声明 ' + declared);
       D._zn = cnt;
     }
+    // 笔记：b 必须指向已登记注本，标题必填，总数与注本表一致
+    if (D.biji){
+      let cnt = 0, badb = 0, notitle = 0;
+      for (const r of D.biji){
+        cnt++;
+        if (!(D.zhub || [])[r.b]) badb++;
+        if (!(r.title || '').trim()) notitle++;
+      }
+      if (badb) errs.push(badb + ' 篇笔记指向未登记的注本');
+      if (notitle) errs.push(notitle + ' 篇笔记缺标题');
+      const declaredB = (D.zhub || []).reduce((a, b) => a + (b.biji || 0), 0);
+      if (declaredB && declaredB !== cnt) errs.push('笔记实收 ' + cnt + ' 篇 ≠ 注本表声明 ' + declaredB);
+      D._bn = cnt;
+    }
     // 底本无编号篇:非空 + 不混有编号篇 + 矩阵齐全
     // 金匮 24 篇全编条号,本字段本就为空,不该按「失真」报错
     const spian = D.spian || [];
@@ -1172,7 +1378,7 @@ function checkIntegrity(){
   if (errs.length){ banner('⚠ 数据完整性自检未通过:' + errs.join(';'), true); return false; }
   banner('✓ 数据完整性自检通过:' + D.items.length + ' 条 × ' + (D.vers||[]).length +
          ' 版' + (D.spian.length ? ',无编号篇 ' + D.spian.length + ' 个' : '') +
-         (D.zhub && D.zhub.length ? ',注本 ' + D.zhub.length + ' 部 / 注文 ' + (D._zn||0) + ' 条' : '') +
+         (D.zhub && D.zhub.length ? ',注本 ' + D.zhub.length + ' 部 / 注文 ' + (D._zn||0) + ' 条 / 笔记 ' + (D._bn||0) + ' 篇' : '') +
          (Object.keys(D.notes||{}).length ? ',L1 遗留注 ' + Object.keys(D.notes||{}).length + ' 条' : ''),
          false);
   return true;
@@ -1192,27 +1398,54 @@ function wrapTables(){
 }
 function buildAll(){
   buildStat(); buildSide(); select(cur ? cur.n : D.items[0].n);
-  buildFang(); buildPian(); buildIndep(); buildReview(); buildAbout();
+  buildFang(); buildPian(); buildBiji(); buildIndep(); buildReview(); buildAbout();
   wrapTables();
 }
 function fillSel(){
+  const zsite = isZhuSite();
   const o1 = VERS.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join('');
   $('#fVer').innerHTML = '<option value="">全部</option>' + o1;
   $('#fVer2').innerHTML = '<option value="">全部</option>' + o1;
   const f3 = $('#fVer3');
   if (f3) f3.innerHTML = '<option value="">全部</option>' + o1;
-  // 视图模式：单列 / 双列 / 三列 / 左固定右滑。
-  // 双列在普通手机上挤成窄条，只在宽屏提供；默认始终单列。
-  const cw = $('#colwrap');
+  // 看法：只有注释本站有意义；骨架版固定原文
+  ['#readsel','#readsel2'].forEach(s => { const e = $(s);
+    if (e){ e.value = readMode; const w = e.closest('label'); if (w) w.style.display = zsite ? 'flex' : 'none'; } });
+  // 视图：读注固定单列，控件收起；原文/全览可用
   const wide = window.innerWidth >= 600, wider = window.innerWidth >= 1000;
   const opts = ['1', ...(wide ? ['2'] : []), ...(wider ? ['3'] : []), 'pin'];
-  if (!opts.includes(viewMode)) { viewMode = '1'; }
-  if (cw){ cw.innerHTML = '<span class="tag">视图</span><select id="colsel">'
-    + '<option value="1">单列</option>'
-    + (wide ? '<option value="2">双列</option>' : '')
-    + (wider ? '<option value="3">三列</option>' : '')
-    + '<option value="pin">左固定右滑</option></select>';
-    const cs = $('#colsel'); if (cs) cs.value = viewMode; }
+  if (!opts.includes(viewMode)) viewMode = '1';
+  ['#colsel','#colsel2'].forEach(s => { const e = $(s);
+    if (!e) return;
+    e.innerHTML = '<option value="1">单列</option>'
+      + (wide ? '<option value="2">双列</option>' : '')
+      + (wider ? '<option value="3">三列</option>' : '')
+      + '<option value="pin">左固定右滑</option>';
+    e.value = viewMode;
+    const w = e.closest('label'); if (w) w.style.display = (zsite && readMode === 'zhu') ? 'none' : 'flex';
+  });
+  // 差异 / 只看有注文：状态回填
+  ['#fDiffMode','#fDiffMode2'].forEach(s => { const e = $(s); if (e) e.value = diffMode; });
+  ['#fZhu','#fZhu2'].forEach(s => { const e = $(s); if (e) e.checked = zhuOnly; });
+  const showZ = zsite && readMode === 'zhu' && !zhuPick;
+  ['#fZhuWrap','#fZhuWrap2'].forEach(s => { const e = $(s); if (e) e.style.display = showZ ? 'flex' : 'none'; });
+  // 笔记页注本筛选
+  const bs = $('#bijiSel');
+  if (bs){
+    const cnt = {};
+    for (const x of (D.biji || [])) cnt[x.b] = (cnt[x.b] || 0) + 1;
+    bs.innerHTML = '<option value="">全部笔记</option>'
+      + (D.zhub || []).map((b, i) => cnt[i] ? `<option value="${esc(b.id)}">${esc(b.name || b.id)}（${cnt[i]}）</option>` : '').join('');
+    bs.value = bijiPick;
+  }
+  const cb = $('#c-biji'); if (cb) cb.textContent = (D.biji || []).length || '';
+  const bt = document.querySelector('#tabs .tab[data-v="biji"]');
+  if (bt) bt.style.display = (D.biji || []).length ? '' : 'none';
+  const chip = $('#bijiPianChip');
+  if (chip){
+    chip.style.display = bijiPian ? 'inline-flex' : 'none';
+    chip.innerHTML = bijiPian ? `篇：${esc(bijiPian.replace(/\s+/g,' '))} <b data-clear-pian="1">✕</b>` : '';
+  }
 }
 document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
   document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
@@ -1220,6 +1453,7 @@ document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
   t.classList.add('on'); curTab = t.dataset.v;
   $('#v-' + curTab).classList.add('on');
   if (curTab === 'cmp') buildSide();
+  if (curTab === 'biji') buildBiji();
   document.querySelector('main').scrollTop = 0;
   syncStickTop();
   syncDnav();
@@ -1227,7 +1461,7 @@ document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
 /* 抽屉内「视图」入口（移动端 tab 行不显示，从这里进） */
 function buildDnav(){
   const box = $('#dnav'); if (!box) return;
-  const T = [...document.querySelectorAll('#tabs .tab')];
+  const T = [...document.querySelectorAll('#tabs .tab')].filter(t => t.style.display !== 'none');
   box.innerHTML = '<div class="dt">视图</div>' + T.map(t => {
     const lbl = t.textContent.replace(/\s+/g,'');
     return `<button data-v="${t.dataset.v}">${esc(lbl)}</button>`;
@@ -1276,20 +1510,21 @@ window.addEventListener('resize', () => {
 });
 $('#q').oninput = () => { $('#qclr').style.display = $('#q').value ? 'block' : 'none'; buildSide(); buildIndep(); };
 $('#qclr').onclick = () => { $('#q').value = ''; $('#qclr').style.display = 'none'; buildSide(); $('#q').focus(); };
-$('#fDiff').onchange = buildSide; $('#fSame').onchange = buildSide;
-$('#fVer').onchange = buildSide; $('#fSt').onchange = buildSide;
-if ($('#fZhu')) $('#fZhu').onchange = buildSide;
-$('#fOnly').onchange = buildFang; $('#fVer2').onchange = buildFang;
-
-/* ---------- 移动版：搜索按钮 / 导航条 / 设置行同步 ---------- */
-$('#srchbtn').onclick = () => {
-  const s = $('#searchbox');
-  const open = !s.classList.contains('open');
-  s.classList.toggle('open', open);
-  if (open){ $('#q').focus(); } else { $('#q').blur(); }
-};
-$('#nav-up').onclick = () => stepSel(-1);
-$('#nav-dn').onclick = () => stepSel(1);
+$('#fVer').onchange = () => { const e=$('#fVer3'); if(e) e.value=$('#fVer').value; buildSide(); };
+$('#fSt').onchange  = () => { const e=$('#fSt2');  if(e) e.value=$('#fSt').value;  buildSide(); };
+$('#fVer3').onchange = () => { $('#fVer').value = $('#fVer3').value; buildSide(); };
+$('#fSt2').onchange  = () => { $('#fSt').value  = $('#fSt2').value;  buildSide(); };
+['#fZhu','#fZhu2'].forEach(s => { const e=$(s); if (e) e.onchange = () => setZhuOnly(e.checked); });
+['#fDiffMode','#fDiffMode2'].forEach(s => { const e=$(s); if (e) e.onchange = () => setDiff(e.value); });
+['#readsel','#readsel2'].forEach(s => { const e=$(s); if (e) e.onchange = () => setRead(e.value); });
+function toggleFbox(id, btn){
+  const b=$(id); if(!b) return;
+  b.classList.toggle('open');
+  const t=$(btn); if(t) t.classList.toggle('on', b.classList.contains('open'));
+  syncStickTop();
+}
+$('#filterbtn').onclick = () => toggleFbox('#fbox','#filterbtn');
+$('#filterbtn2').onclick = () => toggleFbox('#fbox2','#filterbtn2');
 /* 悬浮按钮：单列 ⇄ 双列。走状态，不读 select 的当前值。 */
 $('#fab').onclick = () => {
   const next = viewMode === '1' ? '2' : '1';
@@ -1304,62 +1539,74 @@ $('#nav-set').onclick = () => {
   $('#nav-set').style.background = open ? 'var(--hl)' : '#fff';
   syncStickTop(); syncStickOffsets();
 };
+function resetFilters(){
+  setDiff('');
+  setZhuOnly(true);
+  $('#fVer').value = ''; $('#fSt').value = '';
+  const a=$('#fVer3'); if(a) a.value='';
+  const b=$('#fSt2'); if(b) b.value='';
+  buildSide();
+}
+$('#freset').onclick = resetFilters;
+$('#freset2').onclick = resetFilters;
+$('#bijiSel').onchange = () => { bijiPick = $('#bijiSel').value || ''; buildBiji(); };
+document.addEventListener('click', e => {
+  const cl = e.target && e.target.closest && e.target.closest('[data-clear-pian]');
+  if (cl){ bijiPian=''; fillSel(); buildBiji(); return; }
+});
 /* 设置行与桌面筛选行双向同步：改一处，另一处跟着变，不出现两套状态 */
 function syncFilters(){
-  $('#fDiff2').checked = $('#fDiff').checked;
-  $('#fSame2').checked = $('#fSame').checked;
-  if ($('#fZhu2') && $('#fZhu')) $('#fZhu2').checked = $('#fZhu').checked;
-  $('#fVer3').value = $('#fVer').value;
-  $('#fSt2').value  = $('#fSt').value;
+  const f3 = $('#fVer3'); if (f3) f3.value = $('#fVer').value;
+  const s2 = $('#fSt2');  if (s2) s2.value  = $('#fSt').value;
   const n = D.items.filter(makeMatch()).length;
-  $('#set-note').textContent = n + ' / ' + D.items.length;
+  const sn = $('#set-note'); if (sn) sn.textContent = n + ' / ' + D.items.length;
 }
-$('#fDiff2').onchange = () => { $('#fDiff').checked = $('#fDiff2').checked; buildSide(); syncFilters(); };
-$('#fSame2').onchange = () => { $('#fSame').checked = $('#fSame2').checked; buildSide(); syncFilters(); };
-if ($('#fZhu2')) $('#fZhu2').onchange = () => { $('#fZhu').checked = $('#fZhu2').checked; buildSide(); syncFilters(); };
-$('#fVer3').onchange  = () => { $('#fVer').value = $('#fVer3').value; buildSide(); syncFilters(); };
-$('#fSt2').onchange   = () => { $('#fSt').value = $('#fSt2').value; buildSide(); syncFilters(); };
-$('#fDiff').addEventListener('change', syncFilters);
-$('#fSame').addEventListener('change', syncFilters);
-if ($('#fZhu')) $('#fZhu').addEventListener('change', syncFilters);
-$('#fVer').addEventListener('change', syncFilters);
-$('#fSt').addEventListener('change', syncFilters);
 document.addEventListener('change', e => {
   const id = e.target && e.target.id;
   if (id === 'baseSel' && e.target.value !== basePick) return setBase(e.target.value);
   if (id === 'zhuSel'  && e.target.value !== zhuPick)  return setZhu(e.target.value);
-  if (id === 'colsel'  && e.target.value !== viewMode) return setView(e.target.value);
+  if ((id === 'colsel' || id === 'colsel2') && e.target.value !== viewMode) return setView(e.target.value);
 });
 /* Safari 上个别版本先发 input 不发 change；值不同才处理，避免双渲染 */
 document.addEventListener('input', e => {
-  if (e.target && e.target.id === 'colsel' && e.target.value !== viewMode) setView(e.target.value);
+  if (e.target && (e.target.id === 'colsel' || e.target.id === 'colsel2') && e.target.value !== viewMode) setView(e.target.value);
 });
 /* 注文卡展开/收起：事件委托，卡片每次 select 重渲染后不必重绑 */
 document.addEventListener('click', e => {
   const ub = e.target && e.target.closest && e.target.closest('.usebase');
   if (ub){ setBase(''); return; }
+  const nl = e.target && e.target.closest && e.target.closest('.notelink');
+  if (nl){ openBiji(nl.dataset.pian || ''); return; }
+  const nz = e.target && e.target.closest && e.target.closest('.nextzhu');
+  if (nz && cur){ nextZhu(cur.n); return; }
   const btn = e.target && e.target.closest && e.target.closest('.zmore');
   if (!btn) return;
-  const card = btn.closest('.card.zhu');
+  const card = btn.closest('.card.zhu, .card.biji');
   if (!card) return;
   const on = card.classList.toggle('open');
   btn.textContent = on ? '收起 ▴' : '展开全文 ▾';
 });
 $('#copy').onclick = () => {
-  const bv = (!isZhuSite() && basePick) ? basePick : '';
-  const bc = bv ? cur.v[bv] : null;
-  let md = `### 条 ${cur.n} 〔${cur.pian}〕\n\n`
-    + (bv
-        ? (bc && bc.ok
-            ? `**${bv}**(主版本,p${bc.pg}):${bc.t || ''}\n`
-            : `**${bv}**:此版无 —— ${(bc && bc.rs) || ''}\n`)
-        : `**${BASE()}**(p${cur.pg}):${cur.s}\n`);
-  if (bv) md += `- **${BASE()}**(骨架,p${cur.pg}):${cur.s}\n`;
-  for (const v of VERS){
-    if (v === bv) continue;
-    const c = cur.v[v];
-    md += c.ok ? `- **${v}**(${c.cf},p${c.pg}):${c.d || c.t}\n`
-               : `- **${v}**:此版无 —— **${c.rs}**。依据:${c.ev}\n`;
+  if (!cur) return;
+  const zsite = isZhuSite();
+  let md = `### 条 ${cur.n} 〔${cur.pian}〕\n\n**${BASE()}**(p${cur.pg}):${cur.s}\n`;
+  if (!zsite || readMode === 'yuan'){
+    for (const v of VERS){
+      const c = cur.v[v];
+      md += c.ok ? `- **${v}**(${c.cf},p${c.pg}):${c.d || c.t}\n`
+                 : `- **${v}**:此版无 —— **${c.rs}**。依据:${c.ev}\n`;
+    }
+  } else {
+    const arr = ((D.zhu && D.zhu[cur.n]) || []).filter(r => {
+      if (!zhuPick) return true;
+      return (((D.zhub || [])[r.b] || {}).id === zhuPick);
+    });
+    for (const r of arr){
+      const b = (D.zhub || [])[r.b] || {};
+      const meta = [r.seg ? '第' + r.seg + '段' : '', r.attr || '', r.pg != null ? 'p' + r.pg : '']
+        .filter(Boolean).join(' · ');
+      md += `\n**${b.name || b.id}**${meta ? '（' + meta + '）' : ''}:\n${r.t || ''}\n`;
+    }
   }
   navigator.clipboard.writeText(md).then(()=>toast('已复制本条 Markdown'),
     ()=>toast('复制失败,请手动选取'));
@@ -1382,13 +1629,14 @@ function refreshCounts(){
   $('#c-fang').textContent = Object.values(D.fang||{}).reduce((a,v)=>a+Object.keys(v).length,0);
   $('#c-indep').textContent = VERS.reduce((a,v)=>a+(((D.indep||{})[v])||[]).length,0);
   $('#c-rev').textContent = (D.review||[]).length;
+  const cb = $('#c-biji'); if (cb) cb.textContent = (D.biji||[]).length || '';
 }
 function loadZone(i){
   if (!ZONES[i]) return;
   ZI = i;
   const z = ZONES[i];
   D = z.data || {}; VERS = D.vers || [];
-  cur = null; curTab = 'cmp';
+  cur = null; curTab = 'cmp'; bijiPick = ''; bijiPian = '';
   drawer(false);
   $('#ttl').textContent = z.title || (z.name || '') + '多版本对照';
   $('#skn').textContent = (D.skel && D.skel['名称']) || '';
@@ -1401,9 +1649,9 @@ function loadZone(i){
   ['#detail','#fangbox','#pianbox','#indepbox','#revbox','#aboutbox']
     .forEach(s=>{ const e=$(s); if (e) e.innerHTML=''; });
   $('#q').value=''; $('#qclr').style.display='none';
-  if ($('#fDiff')) $('#fDiff').checked=false;
-  if ($('#fSame')) $('#fSame').checked=false;
+  ['#fDiffMode','#fDiffMode2'].forEach(k=>{ const e=$(k); if (e) e.value=diffMode; });
   if ($('#fSt')) $('#fSt').value='';
+  if ($('#fSt2')) $('#fSt2').value='';
   // 深链必须在 buildAll 之前读取:buildAll 内的 select 会改写 hash(旧版踩过)
   const h = +location.hash.replace('#','');
   // 注文索引 + 筛选可见性：没有注文的站点（骨架版 gujia）不显示这个勾选框，避免给出空功能
