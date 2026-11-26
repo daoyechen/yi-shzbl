@@ -1,19 +1,19 @@
 {
  "builder": "tools/build_index.py v2.0",
  "site": "gujia",
- "generated": "2026-11-24T17:29:14+08:00",
+ "generated": "2026-11-26T12:49:22+08:00",
  "packages": {
   "shanghan": {
    "name": "伤寒论",
    "source": "50_data/52_l1_assembly/shanghan/viewer_data.json",
    "条数": 398,
-   "版本数": 9,
+   "版本数": 10,
    "review": 97,
    "异文条": 398,
-   "sha256": "816fdb6709309206a2717b53431a87d98f96f264f3e15f891d4ec8f0d66987c4",
+   "sha256": "13b5920b8be46dcf31f93def0196f25f324c559f77e52bf946f0eaedaf08ca1f",
    "data": "data/shanghan.json",
-   "data_sha256": "9036977f6c033cfcae24cc264bd3a652cd225b471362131de7e0cbd741a35534",
-   "data_bytes": 2970764,
+   "data_sha256": "b1ce63e701b79761c9d1eff26d1789825243e4218fb3120c15e5fd742ea4a582",
+   "data_bytes": 3047431,
    "注本": 0
   },
   "jingui": {
@@ -36,8 +36,8 @@
     "jingui"
    ],
    "data": "data/zones.json",
-   "data_sha256": "9f9bfcf6a178b10dd2f746d1e7a3b6503632bbd6bd2e4ffb1fad876b575382ee",
-   "data_bytes": 4321529
+   "data_sha256": "11e88da6474db3a1fe17a9971396dccc0480e3231dbfb9de60e74d07ba8ac0e2",
+   "data_bytes": 4398198
   }
  },
  "index": {
