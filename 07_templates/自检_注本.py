@@ -114,6 +114,9 @@ def main():
             si = x.get("sent")
             if si is not None and (not isinstance(si, int) or si < 0):
                 errs.append("第 %d 项 sent=%r 不合法（应为 0 起的句子序号）" % (i + 1, si))
+            se2 = x.get("sent_span")
+            if se2 is not None and (not isinstance(se2, int) or (si is not None and se2 < si)):
+                errs.append("第 %d 项 sent_span=%r 不合法（应为 ≥ sent 的末句号）" % (i + 1, se2))
             # n_span = 本条注文跨到的「末条号」（含起条），覆盖按它展开
             span = x.get("n_span")
             if span is None:

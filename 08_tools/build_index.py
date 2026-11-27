@@ -18,7 +18,8 @@
 注文数据结构（写进 zones.json 的每个 zone）：
 
     "zhub": [{"id","name","targets","n","cover","status","base","source"}, ...]
-    "zhu":  {"<骨架条号>": [{"b":注本序号, "t":正文, "pg":页码?, "seg":段号?, "attr":语气归属?}, ...]}
+    "zhu":  {"<骨架条号>": [{"b":注本序号, "t":正文, "pg":页码?, "seg":段号?, "attr":语气归属?,
+                            "sent":句号?, "sent_span":末句号?, "n_span":末条号?}, ...]}
 
   b   = zhub 数组下标。注文的「所注版本」记在 zhub[b].targets，不逐条重复
         —— 实测 9 部注本内部 targets 完全一致，逐条存等于冗余 2682 次。
@@ -180,6 +181,13 @@ def load_l2(expect):
                 r["seg"] = x["seg"]
             if x.get("attr"):
                 r["attr"] = x["attr"]
+            # 句锚与跨条：契约里是可选字段，必须透传到前端，否则「定位」「注 N–M 条」都是空功能
+            if x.get("sent") is not None:
+                r["sent"] = x["sent"]
+            if x.get("sent_span") is not None:
+                r["sent_span"] = x["sent_span"]
+            if x.get("n_span") is not None:
+                r["n_span"] = x["n_span"]
             out[zone]["zhu"].setdefault(str(int(x["n"])), []).append(r)
         for x in biji:
             r = {"b": b, "t": x.get("text") or "",

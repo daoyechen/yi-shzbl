@@ -970,11 +970,18 @@ function select(n){
         const meta = [];
         if (rows.length > 1) meta.push(rows.length + ' 段');
         else if (rows[0].seg) meta.push('第' + rows[0].seg + '段');
-        const sents = [...new Set(rows.map(r => r.sent).filter(v => v != null))].sort((a,b)=>a-b);
+        // sent + 可选 sent_span（末句号）共同确定所注句区间
+        const sentSet = new Set();
+        for (const r of rows){
+          if (r.sent == null) continue;
+          const e2 = (r.sent_span != null && r.sent_span >= r.sent) ? r.sent_span : r.sent;
+          for (let k = r.sent; k <= e2; k++) sentSet.add(k);
+        }
+        const sents = [...sentSet].sort((a,b)=>a-b);
         if (sents.length === 1) meta.push('第' + (sents[0] + 1) + '句');
         else if (sents.length > 1) meta.push('第' + (sents[0] + 1) + '–' + (sents[sents.length-1] + 1) + '句');
         const sp0 = rows[0].n_span;
-        if (sp0 != null && sp0 > (rows[0].n || 0)) meta.push('注 ' + rows[0].n + '–' + sp0 + ' 条');
+        if (sp0 != null && sp0 > it.n) meta.push('注 ' + it.n + '–' + sp0 + ' 条');
         const attrs = [...new Set(rows.map(r => r.attr).filter(Boolean))];
         if (attrs.length) meta.push(attrs.join('/'));
         const pgs = [...new Set(rows.map(r => r.pg).filter(v => v != null))];
@@ -989,7 +996,7 @@ function select(n){
           ${tgt ? `<span class="pg">注${esc(tgt)}</span>` : ''}
           ${meta.length ? `<span class="pg">${esc(meta.join(' · '))}</span>` : ''}
           ${long ? `<span class="pg">${txt.length} 字</span>` : ''}
-          ${sents.length ? `<button class="locate" data-n="${rows[0].n}" data-sent="${sents[0]}" title="定位到原文该句">定位</button>` : ''}
+          ${sents.length ? `<button class="locate" data-n="${it.n}" data-sent="${sents[0]}" data-sent2="${sents[sents.length-1]}" title="定位到原文该句">定位</button>` : ''}
           ${long ? '<button class="zclose">收起</button>' : ''}</div>
           <div class="cb2 ztxt">${ztxt(txt)}</div>
           <button class="zmore">展开全文</button></div>`;
@@ -1674,12 +1681,17 @@ document.addEventListener('click', e => {
   if (nl){ openBiji(nl.dataset.pian || ''); return; }
   const lc = e.target && e.target.closest && e.target.closest('.locate');
   if (lc){
-    const n = lc.dataset.n, si = lc.dataset.sent;
-    const el = document.querySelector(`#detail .sent[data-n="${n}"][data-i="${si}"]`);
-    if (el){
-      el.scrollIntoView({block:'center', behavior:'smooth'});
-      el.classList.add('hl');
-      setTimeout(()=>el.classList.remove('hl'), 2200);
+    const n = lc.dataset.n, s0 = +lc.dataset.sent;
+    const s1 = lc.dataset.sent2 != null ? +lc.dataset.sent2 : s0;
+    const els = [];
+    for (let k = s0; k <= s1; k++){
+      const el = document.querySelector(`#detail .sent[data-n="${n}"][data-i="${k}"]`);
+      if (el) els.push(el);
+    }
+    if (els.length){
+      els[0].scrollIntoView({block:'center', behavior:'smooth'});
+      els.forEach(el => el.classList.add('hl'));
+      setTimeout(() => els.forEach(el => el.classList.remove('hl')), 2200);
     }
     return;
   }
@@ -1777,6 +1789,7 @@ function loadZone(i){
   if ($('#fSt2')) $('#fSt2').value='';
   // 深链必须在 buildAll 之前读取:buildAll 内的 select 会改写 hash(旧版踩过)
   const h = +location.hash.replace('#','');
+  if (h && D.items.some(x => x.n === h)) select(h);   // 深链：#条号 直达（2026-11-27 补回，之前被误删）
   // 注文索引 + 筛选可见性：没有注文的站点（骨架版 gujia）不显示这个勾选框，避免给出空功能
   ZHUHAY = {};
   if (D.zhu) for (const k in D.zhu) ZHUHAY[k] = D.zhu[k].map(r => r.t).join(' ');
