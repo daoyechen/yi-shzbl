@@ -1045,8 +1045,9 @@ function select(n){
         const sents = [...sentSet].sort((a,b)=>a-b);
         if (sents.length === 1) meta.push('第' + (sents[0] + 1) + '句');
         else if (sents.length > 1) meta.push('第' + (sents[0] + 1) + '–' + (sents[sents.length-1] + 1) + '句');
-        const sp0 = rows[0].n_span;
-        if (sp0 != null && sp0 > it.n) meta.push('注 ' + it.n + '–' + sp0 + ' 条');
+        // 同条多段可能各带不同 n_span（如讲二 14–22 与讲五单条 14），取最大末条号
+        const sp0 = Math.max(...rows.map(r => (r.n_span != null && r.n_span > it.n) ? r.n_span : it.n));
+        if (sp0 > it.n) meta.push('注 ' + it.n + '–' + sp0 + ' 条');
         const attrs = [...new Set(rows.map(r => r.attr).filter(Boolean))];
         if (attrs.length) meta.push(attrs.join('/'));
         const pgs = [...new Set(rows.map(r => r.pg).filter(v => v != null))];
