@@ -492,6 +492,11 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
 #boot #bootretry:active{background:#f7f2e8}
 #boot.err .bootspin{display:none}
 #boot.err #bootmsg{color:var(--zhu)}
+/* 句子定位：注文卡「定位」跳到骨架该句并短暂高亮 */
+#detail .sent.hl{background:#ffe6a6;box-shadow:0 0 0 3px #ffe6a6;border-radius:3px;transition:background .3s}
+#detail .card.zhu .locate{border:1px solid var(--line2);background:#fff;border-radius:5px;
+  padding:1px 7px;font-family:var(--sans);font-size:11.5px;color:var(--zhu);cursor:pointer;flex:none}
+#detail .card.zhu .locate:hover{background:#fdf6ea}
 </style>
 </head>
 <body>
@@ -674,6 +679,12 @@ const $ = s => document.querySelector(s);
 const esc = s => (s==null?'':String(s)).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 // 【…】→ <mark>
 const mk = s => esc(s).replace(/【([^】]*)】/g, '<mark>$1</mark>');
+/* 骨架按句切 span：注文定位用；句子 ID = n:i，将来 L3 文本锚可直接复用 */
+const mkSent = it => {
+  const ss = it.sent;
+  if (!ss || !ss.length) return mk(it.s);
+  return ss.map((x, i) => `<span class="sent" data-n="${it.n}" data-i="${i}">${mk(x)}</span>`).join('');
+};
 /* 注文里的【解析】【按】是注本自身的体例标题，不是异文标记，不能套 <mark> 高亮 */
 const ztxt = s => esc(s).replace(/【([^】]{1,14})】/g, '<b class="zhh">【$1】</b>');
 const CF = {'校记锚点':'t-anch','高置信':'t-hi','中置信':'t-mid','低置信':'t-low'};
@@ -950,7 +961,7 @@ function select(n){
     baseH = `<div class="card base"><div class="ch"><span class="vn">${esc(BASE())}</span>
       <span class="pg">${esc(it.pian||'')}</span>
       ${pickSelHtml()}</div>
-      <div class="cb2">${mk(it.s)}</div></div>`;
+      <div class="cb2">${mkSent(it)}</div></div>`;
   }
   // 原文模式不列各版；读注模式只留骨架＋注本
   const verCards = [];
@@ -959,7 +970,7 @@ function select(n){
       // 主版本不是骨架时，骨架仍要留在对照里——它是所有【】的基准
       verCards.push(`<div class="card"><div class="ch"><span class="vn">${esc(BASE())}</span>
         <span class="tag t-anch">骨架</span><span class="pg">对照基准</span></div>
-        <div class="cb2">${mk(it.s)}</div></div>`);
+        <div class="cb2">${mkSent(it)}</div></div>`);
     }
     for (const v of VERS){
       if (v === bv) continue;                    // 已作主版本吸顶，不再重复
@@ -1024,6 +1035,11 @@ function select(n){
         const meta = [];
         if (rows.length > 1) meta.push(rows.length + ' 段');
         else if (rows[0].seg) meta.push('第' + rows[0].seg + '段');
+        const sents = [...new Set(rows.map(r => r.sent).filter(v => v != null))].sort((a,b)=>a-b);
+        if (sents.length === 1) meta.push('第' + (sents[0] + 1) + '句');
+        else if (sents.length > 1) meta.push('第' + (sents[0] + 1) + '–' + (sents[sents.length-1] + 1) + '句');
+        const sp0 = rows[0].n_span;
+        if (sp0 != null && sp0 > (rows[0].n || 0)) meta.push('注 ' + rows[0].n + '–' + sp0 + ' 条');
         const attrs = [...new Set(rows.map(r => r.attr).filter(Boolean))];
         if (attrs.length) meta.push(attrs.join('/'));
         const pgs = [...new Set(rows.map(r => r.pg).filter(v => v != null))];
@@ -1038,6 +1054,7 @@ function select(n){
           ${tgt ? `<span class="pg">注${esc(tgt)}</span>` : ''}
           ${meta.length ? `<span class="pg">${esc(meta.join(' · '))}</span>` : ''}
           ${long ? `<span class="pg">${txt.length} 字</span>` : ''}
+          ${sents.length ? `<button class="locate" data-n="${rows[0].n}" data-sent="${sents[0]}" title="定位到原文该句">定位</button>` : ''}
           ${long ? '<button class="zclose">收起</button>' : ''}</div>
           <div class="cb2 ztxt">${ztxt(txt)}</div>
           <button class="zmore">展开全文</button></div>`;
@@ -1720,6 +1737,17 @@ document.addEventListener('click', e => {
   if (ub){ setBase(''); return; }
   const nl = e.target && e.target.closest && e.target.closest('.notelink');
   if (nl){ openBiji(nl.dataset.pian || ''); return; }
+  const lc = e.target && e.target.closest && e.target.closest('.locate');
+  if (lc){
+    const n = lc.dataset.n, si = lc.dataset.sent;
+    const el = document.querySelector(`#detail .sent[data-n="${n}"][data-i="${si}"]`);
+    if (el){
+      el.scrollIntoView({block:'center', behavior:'smooth'});
+      el.classList.add('hl');
+      setTimeout(()=>el.classList.remove('hl'), 2200);
+    }
+    return;
+  }
   const nz = e.target && e.target.closest && e.target.closest('.nextzhu');
   if (nz && cur){ nextZhu(cur.n); return; }
   const cl = e.target && e.target.closest && e.target.closest('.zclose');

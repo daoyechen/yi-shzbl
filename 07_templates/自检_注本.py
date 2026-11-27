@@ -111,6 +111,9 @@ def main():
             if n < prev:
                 errs.append("第 %d 项 n=%d 小于前一条 %d（条号必须单调不减）" % (i + 1, n, prev))
             prev = max(prev, n)
+            si = x.get("sent")
+            if si is not None and (not isinstance(si, int) or si < 0):
+                errs.append("第 %d 项 sent=%r 不合法（应为 0 起的句子序号）" % (i + 1, si))
             # n_span = 本条注文跨到的「末条号」（含起条），覆盖按它展开
             span = x.get("n_span")
             if span is None:

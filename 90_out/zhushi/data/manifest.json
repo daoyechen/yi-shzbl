@@ -1,7 +1,7 @@
 {
  "builder": "tools/build_index.py v2.0",
  "site": "zhushi",
- "generated": "2026-11-27T13:54:26+08:00",
+ "generated": "2026-11-27T14:25:20+08:00",
  "packages": {
   "shanghan": {
    "name": "伤寒论",
@@ -10,10 +10,10 @@
    "版本数": 10,
    "review": 97,
    "异文条": 398,
-   "sha256": "aa927433ec106848a8b0f437b82dc4bd40bd05520a036b55ec5d742a0a0c7605",
+   "sha256": "d6545d98dbb3b03471ade6468b5cfb72438df9a3383456b79b138f4430d71550",
    "data": "data/shanghan.json",
-   "data_sha256": "b0cf1ef2674c81961d2afb1d822d65e685786fee315c99b8a561ae82d6654009",
-   "data_bytes": 12399644,
+   "data_sha256": "ddac2e83491d00fb9a0e5b683c5f008b86f3068232f9b117c282e89b085eceb9",
+   "data_bytes": 12468169,
    "注本": 27
   },
   "jingui": {
@@ -23,10 +23,10 @@
    "版本数": 4,
    "review": 6,
    "异文条": 394,
-   "sha256": "976ad1a0b7d1e6f88e46f5395e60d865bc4e42be8b7f4a42570c1dc2802847e9",
+   "sha256": "cc9eb60927ee191d2f98cea4a71d1546348dec348802dcec163b2acb5d133096",
    "data": "data/jingui.json",
-   "data_sha256": "605f40fad3ee3ade5db6af214136700e55d29048c5f996d854e96a215898c0aa",
-   "data_bytes": 5949023,
+   "data_sha256": "f0677fb655421eb7c3aed9ba865af0e064c2899372a461ffb5dc9be00c6aa49f",
+   "data_bytes": 6061309,
    "注本": 11
   },
   "heji": {
@@ -36,14 +36,14 @@
     "jingui"
    ],
    "data": "data/zones.json",
-   "data_sha256": "399d29b02e30e512e8a94cbad904f3b4d68b90e014bc25afe7984cf0ae8c983a",
-   "data_bytes": 18349035
+   "data_sha256": "37c2271de4e4edb78fcaf70a9c1e93e3a8d4fc0aee9afd3c546aa135e7cb3a39",
+   "data_bytes": 18529846
   }
  },
  "index": {
   "file": "index.html",
-  "sha256": "9c77249ee8e1a2c1d0635bf1e9c1f7b592ba0726fc3e1ec77f11ef69fc6dd44d",
-  "bytes": 97844,
+  "sha256": "8a6acd8c4fc61febcd1bcb52c4a9edf617cf133d71730cff2daa3c3b48dfc877",
+  "bytes": 99559,
   "mode": "fetch"
  },
  "l2": {
