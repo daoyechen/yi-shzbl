@@ -413,9 +413,26 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
   .colwrap .tag{font-family:var(--sans);font-size:11.5px;color:var(--ink3)}
   .colwrap select{border:1px solid var(--line2);background:#fff;padding:3px 6px;border-radius:5px;font-size:12px}
 }
+/* 首屏加载遮罩：数据未就绪时给明确提示，失败可重试 */
+#boot{position:fixed;inset:0;z-index:9999;background:var(--paper);display:flex;align-items:center;
+  justify-content:center;transition:opacity .22s ease}
+#boot.off{opacity:0;pointer-events:none}
+#boot .bootbox{text-align:center;font-family:var(--sans);color:var(--ink2);max-width:320px;padding:0 20px}
+#boot .bootspin{width:26px;height:26px;margin:0 auto 12px;border:3px solid var(--line2);
+  border-top-color:var(--zhu);border-radius:50%;animation:bootspin .8s linear infinite}
+@keyframes bootspin{to{transform:rotate(360deg)}}
+#boot #bootmsg{font-size:14px;line-height:1.65}
+#boot #bootretry{margin-top:14px;padding:7px 20px;border:1px solid var(--line2);border-radius:6px;
+  background:#fff;font-family:var(--sans);font-size:14px;color:var(--zhu);cursor:pointer}
+#boot #bootretry:active{background:#f7f2e8}
+#boot.err .bootspin{display:none}
+#boot.err #bootmsg{color:var(--zhu)}
 </style>
 </head>
 <body>
+<div id="boot"><div class="bootbox"><div class="bootspin"></div>
+  <div id="bootmsg">正在加载数据…</div>
+  <button id="bootretry" type="button" hidden>重试</button></div></div>
 <noscript><div style="padding:14px 20px;background:#fdeaea;color:#8c2f22;font-family:sans-serif;font-size:13px">
 本页面需要启用 JavaScript 才能交互(数据已内嵌在文件内,无需联网)。若在预览窗格中打开,请先下载到本地再用浏览器打开。</div></noscript>
 <header>
@@ -569,6 +586,7 @@ kbd{font-family:var(--sans);font-size:10px;background:#efe8da;border:1px solid v
 
 <script>window.__SHJ_FETCH__=1;</script>
 <script>
+window.addEventListener('error', function(e){ try{ document.title = 'ERR:' + (e.message||''); }catch(x){} });
 let D = null, VERS = [];
 /* 数据装载:双区(SH/JG)或单区。双区时 ZONES=[{id,name,data}] */
 let ZONES = (function(){
@@ -689,7 +707,7 @@ function setZhuOnly(on){
 function baseSelHtml(){
   return '<select id="baseSel" class="basesel" aria-label="主版本">'
     + `<option value=""${basePick ? '' : ' selected'}>骨架（${esc(BASE())}）</option>`
-    + VERS.map(v => `<option value="${esc(v)}"${v === basePick ? ' selected' : ''}>${esc(v)}</option>`).join('')
+    + VERS.filter(v => v !== '倪本').map(v => `<option value="${esc(v)}"${v === basePick ? ' selected' : ''}>${esc(v)}</option>`).join('')
     + '</select>';
 }
 function zhuSelHtml(){
@@ -884,9 +902,18 @@ function select(n){
       if (c.ok){
         const tag = CF[c.cf] || 't-low';
         const seg = (c.d||c.t).split('\n');
-        verCards.push(`<div class="card"><div class="ch"><span class="vn">${esc(v)}</span>
-          <span class="tag ${tag}">${esc(c.cf)}</span></div>
-          <div class="cb2">${seg.map(mk).join('<br>')}</div></div>`);
+        // 倪本是今人整理，多数与宋本逐字同；同文不重出，否则和吸顶的骨架看着像重复
+        const same = (v === '倪本') &&
+          (c.t||'').replace(/[^\u4e00-\u9fff]/g,'') === (it.s||'').replace(/[^\u4e00-\u9fff]/g,'');
+        if (same){
+          verCards.push(`<div class="card"><div class="ch"><span class="vn">${esc(v)}</span>
+            <span class="tag ${tag}">${esc(c.cf)}</span><span class="pg">与骨架同文</span></div>
+            <div class="cb2" style="color:var(--ink3);font-size:14px">本条倪本与宋本逐字相同，不重出。</div></div>`);
+        }else{
+          verCards.push(`<div class="card"><div class="ch"><span class="vn">${esc(v)}</span>
+            <span class="tag ${tag}">${esc(c.cf)}</span></div>
+            <div class="cb2">${seg.map(mk).join('<br>')}</div></div>`);
+        }
       }else{
         verCards.push(`<div class="card"><div class="ch"><span class="vn" style="color:var(--ink3)">${esc(v)}</span>
           <span class="tag t-none">此版无</span><span class="pg">${esc(c.rs||'')}</span></div>
@@ -917,14 +944,25 @@ function select(n){
   if (zmode !== 'yuan'){
     const zl = (D.zhu && D.zhu[it.n]) || null;
     if (zl){
+      // 同一注本在同一条的多段记录合并成一张卡，否则会渲染成好几张同名卡，看着像重复
+      const groups = new Map();
       for (const r of zl){
         const b = (D.zhub || [])[r.b] || {};
-        const txt = r.t || '';
+        const key = b.id || ('b' + r.b);
+        if (!groups.has(key)) groups.set(key, {b, rows: []});
+        groups.get(key).rows.push(r);
+      }
+      for (const g of groups.values()){
+        const b = g.b, rows = g.rows;
+        const txt = rows.map(r => r.t || '').join('\n');
         const long = txt.length > 240 || txt.split('\n').length > 5;
         const meta = [];
-        if (r.seg) meta.push('第' + r.seg + '段');
-        if (r.attr) meta.push(r.attr);
-        if (r.pg != null) meta.push('p' + r.pg);
+        if (rows.length > 1) meta.push(rows.length + ' 段');
+        else if (rows[0].seg) meta.push('第' + rows[0].seg + '段');
+        const attrs = [...new Set(rows.map(r => r.attr).filter(Boolean))];
+        if (attrs.length) meta.push(attrs.join('/'));
+        const pgs = [...new Set(rows.map(r => r.pg).filter(v => v != null))];
+        if (pgs.length) meta.push('p' + pgs.join(','));
         const isMain = !!(zhuPick && b.id === zhuPick);
         if (zmode === 'zhu' && zhuPick && !isMain) continue;   // 读注：其他注本不列
         const tgt = (b.targets || []).join('/');
@@ -1728,18 +1766,26 @@ function loadZone(i){
     history.replaceState(null, '', u.href);
   }catch(e){}
 }
-(async function(){
-  // fetch 发布模式：index.html 只带模板，数据从 data/zones.json 取。
-  // file:// 下 fetch 会被 CORS 拒绝，此时给出明确提示（改用 http(s) 或单文件版）。
-  if (window.__SHJ_FETCH__ && !(ZONES && ZONES.length)){
-    try{
+async function boot(){
+  document.documentElement.setAttribute('data-boot','start');
+  const bt = document.getElementById('boot'), bm = document.getElementById('bootmsg'), br = document.getElementById('bootretry');
+  if (bt){ bt.classList.remove('off','err'); if (br) br.hidden = true; }
+  if (bm) bm.textContent = '正在加载数据…';
+  try{
+    // fetch 发布模式：index.html 只带模板，数据从 data/zones.json 取。
+    // file:// 下 fetch 会被 CORS 拒绝，此时给出明确提示（改用 http(s) 或单文件版）。
+    if (window.__SHJ_FETCH__ && !(ZONES && ZONES.length)){
       const r = await fetch('data/zones.json', {cache:'no-store'});
       if (!r.ok) throw new Error('HTTP ' + r.status);
       ZONES = await r.json();
-    }catch(e){
-      banner('数据加载失败：' + e.message + '（请通过 http(s) 访问；file:// 不支持 fetch，可改用单文件版）', true);
-      return;
     }
+  }catch(e){
+    if (bt) bt.classList.add('err');
+    if (bm) bm.innerHTML = '数据加载失败：' + esc(e.message || e)
+      + '<br><span style="font-size:12.5px;color:var(--ink3)">检查网络后点「重试」；若以 file:// 打开，请改用 http(s) 或单文件版</span>';
+    if (br) br.hidden = false;
+    banner('数据加载失败：' + e.message + '（请通过 http(s) 访问；file:// 不支持 fetch，可改用单文件版）', true);
+    return;
   }
   const sw = $('#zsw');
   if (ZONES.length > 1){
@@ -1754,9 +1800,21 @@ function loadZone(i){
   }
   const m = /[?&]zone=(\d+)/.exec(location.search);
   const t = new URLSearchParams(location.search).get('tab');
-  loadZone(m ? Math.min(+m[1], ZONES.length-1) : 0);
-  if (t){ const b = document.querySelector(`.tab[data-v="${t}"]`); if (b) b.click(); }
-})();
+  try{
+    loadZone(m ? Math.min(+m[1], ZONES.length-1) : 0);
+    if (t){ const b = document.querySelector(`.tab[data-v="${t}"]`); if (b) b.click(); }
+  }finally{
+    document.documentElement.setAttribute('data-boot','end');
+    if (bt){ bt.classList.add('off'); bt.style.display = 'none'; }
+  }
+}
+// 上下条按钮：之前只绑了键盘 j/k，按钮本身没绑（2026-11-27 修）
+const _nu = $('#nav-up'), _nd = $('#nav-dn');
+if (_nu) _nu.onclick = () => stepSel(-1);
+if (_nd) _nd.onclick = () => stepSel(1);
+const _br = $('#bootretry');
+if (_br) _br.onclick = () => boot();
+boot();
 </script>
 </body>
 </html>
