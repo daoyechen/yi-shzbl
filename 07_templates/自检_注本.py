@@ -111,7 +111,15 @@ def main():
             if n < prev:
                 errs.append("第 %d 项 n=%d 小于前一条 %d（条号必须单调不减）" % (i + 1, n, prev))
             prev = max(prev, n)
-            ns.append(n)
+            # n_span = 本条注文跨到的「末条号」（含起条），覆盖按它展开
+            span = x.get("n_span")
+            if span is None:
+                ns.append(n)
+            elif not isinstance(span, int) or not (n <= span <= N):
+                errs.append("第 %d 项 n_span=%r 不合法（应为 %d..%d 的末条号）" % (i + 1, span, n, N))
+                ns.append(n)
+            else:
+                ns.extend(range(n, span + 1))
             ntiao += 1
         else:
             if x.get("n") is not None:
