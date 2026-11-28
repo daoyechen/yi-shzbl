@@ -693,7 +693,7 @@ const ZKEY = () => (D.skel && D.skel.id) || D.id || 'zone';
 /* 主版本 / 主注本：按区分开记，刷新与切区都不丢。
    骨架版选原文版本；注释本选注本——两站的「为主」对象不同。 */
 let basePick = '', zhuPick = '', viewMode = '1';
-let readMode = 'zhu';                 // 读注 / 原文 / 全览
+let readMode = 'all';                 // 读注 / 原文 / 全览（注释本默认全览，2026-11-28 用户定）
 let diffMode = '', zhuOnly = true;    // 差异三态；读注默认只列有注文的条
 let bijiPick = '', bijiPian = '';     // 笔记页：注本筛选、篇筛选
 const isZhuSite = () => !!(D.zhub && D.zhub.length);
@@ -705,17 +705,17 @@ function loadPrefs(){
               || (D.zhub || [])[0];   // 默认倪海厦；两区各一本（JG nihaixia / SH nihaixia_sh）
     zhuPick = (zs === null) ? (defZ ? defZ.id : '') : zs;
     viewMode = localStorage.getItem('shj.view') || '1';
-    readMode = localStorage.getItem('shj.read.' + ZKEY()) || 'zhu';
+    readMode = localStorage.getItem('shj.read.' + ZKEY()) || 'all';
     diffMode = localStorage.getItem('shj.diff') || '';
     zhuOnly = localStorage.getItem('shj.zhuonly') !== '0';
-  }catch(e){ basePick = ''; zhuPick = ''; viewMode = '1'; readMode = 'zhu'; diffMode = ''; zhuOnly = true; }
+  }catch(e){ basePick = ''; zhuPick = ''; viewMode = '1'; readMode = 'all'; diffMode = ''; zhuOnly = true; }
   if (basePick && !VERS.includes(basePick)) basePick = '';
   if (zhuPick && !(D.zhub || []).some(b => b.id === zhuPick)) zhuPick = '';
   const max = window.innerWidth >= 1000 ? 3 : (window.innerWidth >= 600 ? 2 : 1);
   if (!['1','2','3','pin'].includes(viewMode)) viewMode = '1';
   if (viewMode !== 'pin' && +viewMode > max) viewMode = '1';
   if (!isZhuSite()) readMode = 'yuan';
-  if (!['zhu','yuan','all'].includes(readMode)) readMode = 'zhu';
+  if (!['zhu','yuan','all'].includes(readMode)) readMode = 'all';
 }
 function savePref(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
 /* 吸顶起点＝当前固定工具条的高度：桌面取 .bar，手机取 .navbar（含展开的设置行）。 */
@@ -762,7 +762,7 @@ function setView(v){
     select(cur.n); m.scrollTop = y; }
 }
 function setRead(v){
-  readMode = ['zhu','yuan','all'].includes(v) ? v : 'zhu';
+  readMode = ['zhu','yuan','all'].includes(v) ? v : 'all';
   savePref('shj.read.' + ZKEY(), readMode);
   fillSel(); buildSide();
   if (cur) select(cur.n);

@@ -1,7 +1,7 @@
 {
  "builder": "tools/build_index.py v2.0",
  "site": "gujia",
- "generated": "2026-11-27T21:46:51+08:00",
+ "generated": "2026-11-28T22:33:44+08:00",
  "packages": {
   "shanghan": {
    "name": "伤寒论",
@@ -42,8 +42,8 @@
  },
  "index": {
   "file": "index.html",
-  "sha256": "8843e2115e41782bdafea742de29f539d12401bf5d2ec7e53bbccffa5a0298f2",
-  "bytes": 100373,
+  "sha256": "1c19e934d764a71946afa2a41e7416f90316fbb02d51dd67dd38017e3f041deb",
+  "bytes": 100423,
   "mode": "fetch"
  }
 }
